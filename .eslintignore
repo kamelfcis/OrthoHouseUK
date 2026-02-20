@@ -1,0 +1,9 @@
+# Netlify headers file (not YAML)
+public/_headers
+
+# Build outputs
+dist
+build
+*.log
+
+

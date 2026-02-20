@@ -1,0 +1,200 @@
+/* Template Styles Matching Original Cybron Theme */
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headers), serif;
+  font-weight: 600;
+  letter-spacing: var(--font-headers-letterspacing);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.75em;
+}
+
+h4 {
+  font-size: 1.5em;
+}
+
+h5 {
+  font-size: 1.25em;
+}
+
+h6 {
+  font-size: 1em;
+}
+
+/* Section Headers */
+.section-title {
+  font-family: var(--font-headers), serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: rgba(29, 41, 57, 0.7);
+}
+
+/* Navbar Styles Matching Original */
+#lte-nav-wrapper {
+  width: 100%;
+  min-height: 100px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: var(--white);
+  transition: all 0.3s ease;
+}
+
+#lte-nav-wrapper.scrolled {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.lte-navbar {
+  z-index: 3;
+  border-radius: 0;
+  border: 0 none;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.lte-navbar > .container {
+  position: relative;
+  overflow: visible;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100px;
+}
+
+.lte-navbar .lte-navbar-logo {
+  margin-right: 30px;
+  min-height: 100px;
+  line-height: 100px;
+  display: flex;
+  align-items: center;
+}
+
+.lte-navbar .lte-navbar-logo img {
+  max-height: 78px;
+  width: auto;
+}
+
+/* Page Header Styles */
+.lte-page-header,
+.page-header {
+  color: var(--white);
+  background-color: var(--black);
+  text-align: center;
+  padding: 180px 0;
+  position: relative;
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+  background-size: cover;
+}
+
+.lte-page-header .container,
+.page-header .container {
+  position: relative;
+  z-index: 2;
+}
+
+.lte-page-header h1,
+.page-header h1 {
+  color: var(--white) !important;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.lte-page-header p,
+.page-header p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+}
+
+@media (max-width: 991px) {
+  .lte-page-header,
+  .page-header {
+    padding: 120px 0;
+  }
+  
+  .lte-page-header h1,
+  .page-header h1 {
+    font-size: 2rem;
+  }
+}
+
+/* Content Sections */
+.inner-page,
+.margin-default {
+  padding-top: 100px;
+  padding-bottom: 120px;
+}
+
+@media (max-width: 991px) {
+  .inner-page,
+  .margin-default {
+    padding-top: 80px;
+    padding-bottom: 90px;
+  }
+}
+
+/* Clearfix */
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+/* Color Utilities */
+.color-main {
+  color: var(--main);
+}
+
+.color-second {
+  color: var(--second);
+}
+
+.color-black {
+  color: var(--black);
+}
+
+.color-white {
+  color: var(--white);
+}
+
+/* Background Utilities */
+.lte-background-black {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.lte-background-gray {
+  background-color: var(--gray);
+}
+
+.lte-background-main {
+  background-color: var(--main);
+  color: var(--white);
+}
+

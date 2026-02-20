@@ -1,0 +1,119 @@
+.wave-divider {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  z-index: 1;
+  margin: -1px 0;
+}
+
+.wave-divider.flip {
+  transform: rotate(180deg);
+}
+
+.wave-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.wave-path {
+  transition: all 0.1s ease-out;
+  filter: blur(0.5px);
+}
+
+.wave-1 {
+  fill: #005f9a;
+  opacity: 0.95;
+  filter: blur(0px);
+}
+
+.wave-2 {
+  fill: #0077b6;
+  opacity: 0.85;
+  filter: blur(1px);
+}
+
+.wave-3 {
+  fill: #0096c7;
+  opacity: 0.75;
+  filter: blur(1.5px);
+}
+
+.wave-4 {
+  fill: #00b4d8;
+  opacity: 0.65;
+  filter: blur(2px);
+}
+
+/* Add subtle glow effect */
+.wave-divider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 95, 154, 0.1) 0%,
+    transparent 50%,
+    rgba(0, 150, 199, 0.1) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Add animated gradient overlay */
+.wave-divider::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: waveShine 3s infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes waveShine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Enhanced wave movement */
+.wave-path {
+  transform-origin: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .wave-divider {
+    height: 100px;
+  }
+  
+  .wave-path {
+    filter: blur(0.3px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .wave-divider {
+    height: 80px;
+  }
+}
+

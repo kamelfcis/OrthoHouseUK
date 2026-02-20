@@ -1,0 +1,25 @@
+{
+  "name": "OrthoHouse UK - Prosthetics & Biomedical Engineering",
+  "short_name": "OrthoHouse UK",
+  "description": "OrthoHouse UK - Leading provider of prosthetic limbs, orthotic solutions, biomedical devices, and rehabilitation services",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#005f9a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/images/Logo_SVG.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/Logo_SVG.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
+

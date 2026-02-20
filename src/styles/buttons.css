@@ -1,0 +1,204 @@
+/* Button Styles Matching Original Template */
+
+.lte-btn,
+.btn {
+  position: relative;
+  overflow: hidden;
+  background-clip: border-box !important;
+  transform: scale(1);
+  transition: all 0.3s ease !important;
+  border-radius: 32px;
+  font-family: var(--font-headers), serif;
+  font-weight: 600;
+  letter-spacing: var(--font-headers-letterspacing);
+  font-size: 16px;
+  padding: 12px 30px;
+  min-width: 180px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border: 0px solid transparent;
+  color: var(--white);
+  background: var(--main-gradient);
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+}
+
+ 
+
+/* Button with Icon - Matching Original Template */
+.lte-btn.hasIcon,
+.btn.hasIcon {
+  font-size: 18px;
+}
+
+.lte-btn .lte-icon,
+.btn .lte-icon {
+  margin-top: -22px;
+  margin-bottom: -22px;
+  margin-right: 16px;
+  margin-inline-end: 16px;
+  margin-inline-start: 0;
+}
+
+.lte-btn .lte-icon i,
+.btn .lte-icon i {
+  font-size: 24px;
+  color: var(--black);
+  background-color: var(--gray);
+  width: 64px;
+  height: 64px;
+  line-height: 66px;
+  text-align: center;
+  display: block;
+  border-radius: 50%;
+  background-clip: border-box;
+  margin-right: 0;
+  margin-inline-end: 0;
+  margin-inline-start: 0;
+}
+
+.lte-btn .lte-icon i:before,
+.btn .lte-icon i:before {
+  position: relative;
+  top: -1px;
+  right: -2px;
+}
+
+/* Icon with Teal Background Variant */
+.lte-btn .lte-icon.icon-teal i,
+.btn .lte-icon.icon-teal i {
+  background: var(--main-gradient);
+  color: var(--white);
+}
+
+.lte-btn .lte-icon + .lte-btn-after,
+.btn .lte-icon + .lte-btn-after {
+  display: none;
+}
+
+.lte-btn span,
+.btn span {
+  transition: background 0.25s, color 0.25s, border 0.25s !important;
+  position: relative;
+  z-index: 1;
+}
+
+.lte-btn::before,
+.btn::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 100%;
+  z-index: 0;
+  background-color: transparent;
+  transition: all 0.45s ease-out;
+}
+
+.lte-btn::after,
+.btn::after {
+  content: "";
+  position: absolute;
+  right: 50%;
+  bottom: 0;
+  width: 0;
+  height: 100%;
+  z-index: 0;
+  background-color: transparent;
+  transition: all 0.45s ease-out;
+}
+
+.lte-btn:hover,
+.btn:hover {
+  color: var(--white);
+  border-color: var(--white);
+}
+
+.lte-btn:hover::before,
+.lte-btn:hover::after,
+.btn:hover::before,
+.btn:hover::after {
+  width: 100%;
+}
+
+/* Button Variants */
+.btn-main,
+.lte-btn.btn-main {
+  background-color: var(--main);
+  color: var(--black);
+}
+
+.btn-main:hover,
+.lte-btn.btn-main:hover {
+  color: var(--white);
+}
+
+.btn-outline,
+.lte-btn.btn-outline {
+  background-color: transparent;
+  border: 2px solid var(--white);
+  color: var(--white);
+}
+
+.btn-outline:hover,
+.lte-btn.btn-outline:hover {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.btn-outline-white,
+.lte-btn.btn-outline-white {
+  background-color: transparent;
+  border: 2px solid var(--white);
+  color: var(--white);
+}
+
+ 
+
+.btn-black,
+.lte-btn.btn-black {
+  color: var(--white);
+  background-color: var(--black);
+}
+
+.btn-black:hover,
+.lte-btn.btn-black:hover {
+  color: var(--black);
+  background-color: var(--main);
+}
+
+.btn-white,
+.lte-btn.btn-white {
+  color: var(--black);
+  background-color: var(--white);
+  border-color: var(--white);
+}
+ 
+
+/* Button Sizes */
+.btn-lg,
+.lte-btn.btn-lg {
+  padding: 18px 42px;
+  min-width: 250px;
+  font-size: 18px;
+}
+
+.btn-xs,
+.lte-btn.btn-xs {
+  padding: 10px 24px;
+  min-width: 90px;
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+@media (max-width: 767px) {
+  .btn-lg,
+  .lte-btn.btn-lg {
+    padding: 16px 30px;
+    min-width: 200px !important;
+  }
+}
+

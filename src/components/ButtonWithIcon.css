@@ -1,0 +1,89 @@
+/* Button with Icon Component Styles - Matching Original Template */
+
+.lte-btn.hasIcon {
+  font-size: 18px;
+}
+
+.lte-btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.lte-btn.hasIcon .lte-icon {
+  margin-top: -22px;
+  margin-bottom: -22px;
+  margin-right: 16px;
+  margin-inline-end: 16px;
+  margin-inline-start: 0;
+}
+
+.lte-btn.hasIcon .lte-icon i {
+  font-size: 24px;
+  color: var(--white);
+  background-color: var(--main);
+  width: 64px;
+  height: 64px;
+  line-height: 66px;
+  text-align: center;
+  display: block;
+  border-radius: 50%;
+  background-clip: border-box;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.lte-btn.hasIcon .lte-icon i:before {
+  position: relative;
+  top: -1px;
+  right: -2px;
+}
+
+.lte-btn.hasIcon:hover .lte-icon i {
+  background-color: var(--black);
+  transform: scale(1.05);
+}
+
+.lte-btn.hasIcon .lte-icon.icon-teal i {
+  background-color: var(--main);
+  color: var(--white);
+}
+
+.lte-btn.hasIcon .lte-icon.icon-teal i:before {
+  color: var(--white);
+}
+
+.lte-btn.hasIcon .lte-icon.icon-teal:hover i {
+  background-color: var(--black);
+}
+
+/* Alternative icon styles */
+.lte-btn.hasIcon .lte-icon.icon-gray i {
+  background-color: var(--gray);
+  color: var(--black);
+}
+
+.lte-btn.hasIcon .lte-icon.icon-gray i:before {
+  color: var(--black);
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .lte-btn.hasIcon {
+    padding: 12px 24px 12px 12px;
+    font-size: 16px;
+  }
+
+  .lte-btn.hasIcon .lte-icon i {
+    width: 56px;
+    height: 56px;
+    line-height: 58px;
+    font-size: 20px;
+  }
+
+  .lte-btn.hasIcon .lte-icon {
+    margin-right: 12px;
+  }
+}

@@ -1,0 +1,352 @@
+.lte-has-flip-card .lte-back-card.has-background-image .lte-icon-content {
+  position: relative;
+}
+/* Capabilities Section - Matching Original Template */
+.capabilities-section {
+  padding: 5rem 0;
+  background: var(--gray);
+  overflow: hidden;
+  position: relative;
+}
+
+.capabilities-section .section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.capabilities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.5rem;
+  margin-top: 0;
+  width: 100%;
+  overflow: visible;
+}
+
+/* Flip Card Styles - Matching Original Template */
+.lte-has-flip-card {
+  perspective: 1000px;
+  height: 350px;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.7s;
+  transform-style: preserve-3d;
+}
+
+.lte-has-flip-card:hover .flip-card-inner,
+.lte-has-flip-card.is-flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.lte-has-flip-card:nth-child(odd):hover .flip-card-inner,
+.lte-has-flip-card:nth-child(odd).is-flipped .flip-card-inner {
+  transform: rotateY(-180deg);
+}
+
+.lte-has-flip-card .lte-back-card,
+.lte-has-flip-card .lte-front-card {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition: ease-in-out 700ms;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.lte-has-flip-card .lte-back-card {
+  background-color: var(--white);
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.lte-has-flip-card .lte-back-card.has-background-image {
+  background: var(--white);
+  background-size: cover;
+  background-position: center;
+  color: var(--white);
+  position: relative;
+}
+
+.lte-has-flip-card .lte-back-card.has-background-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(6, 19, 41, 0.55) 0%, rgba(6, 19, 41, 0.7) 70%, rgba(6, 19, 41, 0.6) 100%);
+  z-index: -1;
+}
+
+.lte-has-flip-card .lte-front-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: rotateY(-180deg);
+  background: transparent;
+  display: block;
+  padding: 0;
+  border-radius: 8px;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+.lte-has-flip-card .lte-front-card.has-background-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 8px;
+}
+
+.lte-has-flip-card .lte-front-card:before {
+  content: "";
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  pointer-events: none;
+  background-image: -webkit-linear-gradient(270deg, transparent 0%, rgba(29, 41, 57, 0.6) 70%);
+  background-image: -moz-linear-gradient(270deg, transparent 0%, rgba(29, 41, 57, 0.6) 70%);
+  background-image: -ms-linear-gradient(270deg, transparent 0%, rgba(29, 41, 57, 0.6) 70%);
+  background-image: -o-linear-gradient(270deg, transparent 0%, rgba(29, 41, 57, 0.6) 70%);
+  background-image: linear-gradient(-180deg, transparent 0%, rgba(29, 41, 57, 0.6) 70%);
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  opacity: 1;
+  border-radius: 8px;
+}
+
+.lte-has-flip-card .lte-front-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(9, 27, 54, 0.55), rgba(9, 27, 54, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lte-has-flip-card:hover .lte-front-card::before {
+  opacity: 0.25;
+}
+
+.lte-has-flip-card .lte-front-card .lte-header {
+  margin-top: 0 !important;
+  font-family: var(--font-headers), serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+
+.lte-has-flip-card .lte-front-card i {
+  display: none !important;
+}
+
+.capability-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  background: var(--main-gradient);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 2.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 95, 154, 0.3);
+}
+
+.capability-title {
+  font-family: var(--font-headers), serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 1rem;
+}
+
+.capability-description {
+  color: rgba(29, 41, 57, 0.7);
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.lte-has-flip-card .lte-back-card.has-background-image .capability-title {
+  color: #ffffff;
+  font-size: 1.6rem;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  text-shadow: 0 10px 30px rgba(9, 27, 54, 0.45);
+}
+
+.lte-has-flip-card .lte-back-card.has-background-image .capability-description {
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.9;
+  font-size: 1.05rem;
+  font-weight: 500;
+  text-shadow: 0 8px 24px rgba(9, 27, 54, 0.4);
+}
+
+.lte-has-flip-card .lte-back-card.has-background-image .capability-title::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+  border-radius: 999px;
+  margin: 12px auto 0;
+  opacity: 0.85;
+}
+
+.capability-back-content {
+  width: 100%;
+}
+
+.capability-back-title {
+  font-family: var(--font-headers), serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+
+.capability-back-description {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.capability-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  width: 100%;
+  max-width: 250px;
+}
+
+.capability-features li {
+  color: var(--white);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.capability-features li i {
+  color: var(--white);
+  font-size: 0.8rem;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .capabilities-section {
+    padding: 4rem 0;
+  }
+
+  .capabilities-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .capabilities-section {
+    padding: 3rem 0;
+  }
+
+  .capabilities-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .lte-has-flip-card {
+    min-height: 280px;
+    /* Disable hover on mobile, use click only */
+    touch-action: manipulation;
+  }
+
+  /* On mobile, only use click/tap, not hover */
+  @media (hover: none) and (pointer: coarse) {
+    .lte-has-flip-card:hover .flip-card-inner {
+      transform: none;
+    }
+    
+    .lte-has-flip-card:nth-child(odd):hover .flip-card-inner {
+      transform: none;
+    }
+  }
+
+  .lte-has-flip-card .lte-front-card {
+    left: 0;
+    right: 0;
+    padding: 2rem;
+  }
+
+  .lte-has-flip-card .lte-back-card {
+    padding: 2rem;
+  }
+
+  .capability-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .capability-title,
+  .capability-back-title {
+    font-size: 1.375rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .capabilities-section {
+    padding: 2.5rem 0;
+  }
+
+  .capabilities-grid {
+    gap: 1.5rem;
+  }
+
+  .lte-has-flip-card {
+    min-height: 260px;
+  }
+
+  .lte-has-flip-card .lte-front-card,
+  .lte-has-flip-card .lte-back-card {
+    padding: 1.5rem;
+  }
+}
+

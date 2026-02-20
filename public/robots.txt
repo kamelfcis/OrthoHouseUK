@@ -1,0 +1,28 @@
+# robots.txt for Ortho House
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin/*
+Disallow: /api/
+
+# Allow important pages
+Allow: /
+Allow: /about
+Allow: /products
+Allow: /products/*
+Allow: /blog
+Allow: /blog/*
+Allow: /partners
+Allow: /partners/*
+Allow: /contact
+Allow: /team
+Allow: /gallery
+Allow: /testimonials
+
+# Sitemap
+Sitemap: https://www.orthohouseuk.com/sitemap.xml
+
+# Crawl-delay (optional, adjust as needed)
+Crawl-delay: 1
+

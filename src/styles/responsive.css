@@ -1,0 +1,173 @@
+/* Responsive Styles Matching Original Template */
+
+/* Container Responsive Widths - Matching Original Template */
+@media (max-width: 1599px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
+@media (max-width: 1440px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (max-width: 1320px) {
+  .container {
+    max-width: 1180px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .container {
+    width: 86%;
+    max-width: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .container {
+    width: auto;
+    padding: 0 15px;
+  }
+}
+
+/* Typography Responsive */
+@media (max-width: 1599px) {
+  body {
+    font-size: 16px;
+  }
+  
+  h1 { font-size: 2.25em; }
+  h2 { font-size: 1.875em; }
+  h3 { font-size: 1.625em; }
+  h4 { font-size: 1.375em; }
+  h5 { font-size: 1.125em; }
+  h6 { font-size: 1em; }
+}
+
+@media (max-width: 991px) {
+  h1 { font-size: 2em; }
+  h2 { font-size: 1.75em; }
+  h3 { font-size: 1.5em; }
+  h4 { font-size: 1.25em; }
+}
+
+@media (max-width: 767px) {
+  body {
+    font-size: 15px;
+  }
+  
+  h1 { font-size: 1.75em; }
+  h2 { font-size: 1.5em; }
+  h3 { font-size: 1.375em; }
+  h4 { font-size: 1.125em; }
+  h5 { font-size: 1em; }
+  h6 { font-size: 0.9375em; }
+}
+
+/* Section Padding Responsive */
+@media (max-width: 991px) {
+  .margin-default,
+  .inner-page {
+    padding-top: 80px;
+    padding-bottom: 90px;
+  }
+}
+
+@media (max-width: 767px) {
+  .margin-default,
+  .inner-page {
+    padding-top: 60px;
+    padding-bottom: 70px;
+  }
+}
+
+/* Grid Responsive */
+@media (max-width: 1199px) {
+  .row {
+    margin: 0 -10px;
+  }
+  
+  [class*="col-"] {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 767px) {
+  .row {
+    margin: 0 -15px;
+  }
+  
+  [class*="col-"] {
+    padding: 0 15px;
+  }
+}
+
+/* Button Responsive */
+@media (max-width: 767px) {
+  .lte-btn,
+  .btn {
+    padding: 10px 24px;
+    min-width: 150px;
+    font-size: 14px;
+  }
+  
+  .lte-btn.btn-lg,
+  .btn.btn-lg {
+    padding: 14px 28px;
+    min-width: 180px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  .lte-btn,
+  .btn {
+    padding: 8px 20px;
+    min-width: 120px;
+    font-size: 13px;
+  }
+}
+
+/* Image Responsive */
+@media (max-width: 991px) {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Text Responsive */
+@media (max-width: 767px) {
+  p {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  
+  .section-title {
+    font-size: 2em;
+  }
+  
+  .section-subtitle {
+    font-size: 1rem;
+  }
+}
+
+/* Utility Classes Responsive */
+@media (max-width: 767px) {
+  .text-center-mobile {
+    text-align: center;
+  }
+  
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .show-mobile {
+    display: none !important;
+  }
+}

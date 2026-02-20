@@ -1,0 +1,112 @@
+/* Brand Gradient Utilities - Using Brand Colors */
+
+/* Gradient Backgrounds */
+.bg-gradient-brand {
+  background: var(--main-gradient);
+}
+
+.bg-gradient-brand-reverse {
+  background: var(--main-gradient-reverse);
+}
+
+.bg-gradient-brand-horizontal {
+  background: var(--main-gradient-horizontal);
+}
+
+.bg-gradient-brand-vertical {
+  background: var(--main-gradient-vertical);
+}
+
+/* Gradient Text */
+.text-gradient-brand {
+  background: var(--main-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+/* Gradient Borders */
+.border-gradient-brand {
+  border: 2px solid transparent;
+  background-image: linear-gradient(white, white), var(--main-gradient);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* Button Gradients */
+.btn-gradient-brand {
+  background: var(--main-gradient);
+  border: none;
+  color: var(--white);
+  transition: all 0.3s ease;
+}
+
+.btn-gradient-brand:hover {
+  background: var(--main-gradient-reverse);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 95, 154, 0.3);
+}
+
+/* Icon Gradient Backgrounds */
+.icon-gradient-brand {
+  background: var(--main-gradient);
+  color: var(--white);
+}
+
+.icon-gradient-brand:hover {
+  background: var(--main-gradient-reverse);
+  transform: scale(1.1);
+}
+
+/* Card Gradient Overlay */
+.card-gradient-overlay {
+  position: relative;
+}
+
+.card-gradient-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--main-gradient);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+}
+
+.card-gradient-overlay:hover::before {
+  opacity: 0.1;
+}
+
+/* Section Gradient Backgrounds */
+.section-gradient-brand {
+  background: var(--main-gradient-vertical);
+  color: var(--white);
+}
+
+.section-gradient-brand-light {
+  background: linear-gradient(135deg, rgba(0, 95, 154, 0.05) 0%, rgba(36, 120, 181, 0.05) 50%, rgba(45, 173, 213, 0.05) 100%);
+}
+
+/* Animated Gradient Background */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(-45deg, var(--brand-primary), var(--brand-secondary), var(--brand-tertiary), var(--brand-secondary));
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+

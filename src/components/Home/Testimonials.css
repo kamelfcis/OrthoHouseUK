@@ -1,0 +1,142 @@
+.testimonials-section {
+  padding: 5rem 0;
+  background: var(--gray);
+}
+
+.testimonials-slider {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  background: var(--white);
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.testimonial-rating {
+  color: var(--yellow);
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.testimonial-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: rgba(29, 41, 57, 0.8);
+  font-style: italic;
+  margin-bottom: 2rem;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.author-info {
+  text-align: center;
+}
+
+.author-name {
+  font-family: var(--font-headers);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 0.25rem;
+}
+
+.author-role {
+  color: rgba(29, 41, 57, 0.6);
+  font-size: 0.9rem;
+}
+
+.testimonial-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.nav-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(29, 41, 57, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-dot.active {
+  background: var(--main-gradient);
+  transform: scale(1.2);
+  box-shadow: 0 2px 10px rgba(0, 95, 154, 0.4);
+}
+
+@media (max-width: 991px) {
+  .testimonials-section {
+    padding: 4rem 0;
+  }
+
+  .testimonials-slider {
+    max-width: 700px;
+  }
+
+  .testimonial-card {
+    padding: 2.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .testimonials-section {
+    padding: 3rem 0;
+  }
+
+  .testimonial-card {
+    padding: 2rem;
+  }
+
+  .testimonial-text {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .testimonial-author {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .author-name {
+    font-size: 1.125rem;
+  }
+
+  .author-role {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .testimonials-section {
+    padding: 2.5rem 0;
+  }
+
+  .testimonial-card {
+    padding: 1.5rem;
+  }
+
+  .testimonial-text {
+    font-size: 0.9375rem;
+  }
+
+  .testimonial-rating {
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+  }
+}
