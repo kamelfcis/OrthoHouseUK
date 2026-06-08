@@ -28,10 +28,7 @@ const buildPartnerLogos = (branchData) => {
     const partner = branchPartner.partners
     if (!partner?.logo_url) return logos
 
-    const url = toPublicStorageUrl('partner-logos', partner.logo_url, {
-      width: 240,
-      quality: 75
-    })
+    const url = toPublicStorageUrl('partner-logos', partner.logo_url)
     if (!url || seen.has(url)) return logos
 
     seen.add(url)

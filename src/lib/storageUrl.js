@@ -5,11 +5,7 @@ export const toPublicStorageUrl = (bucket, path, options = {}) => {
   if (!path) return null
 
   const { width, quality } = options
-  let cleanPath = path.trim().replace(/^\/+/, '')
-
-  if (cleanPath.toLowerCase().startsWith(`${bucket.toLowerCase()}/`)) {
-    cleanPath = cleanPath.substring(bucket.length + 1)
-  }
+  const cleanPath = path.trim().replace(/^\/+/, '')
 
   if (/^https?:\/\//i.test(cleanPath)) {
     return cleanPath
