@@ -76,6 +76,15 @@ export default defineConfig({
           }
           // Component chunks
           if (id.includes('/components/')) {
+            if (id.includes('/components/Layout/ChatAssistant')) {
+              return 'chat-assistant'
+            }
+            if (id.includes('/components/Home/HomeGallerySlider')) {
+              return 'home-gallery-slider'
+            }
+            if (id.includes('/components/admin/ThreeJSBackground')) {
+              return 'three-background'
+            }
             const componentType = id.split('/components/')[1].split('/')[0]
             return `component-${componentType}`
           }
@@ -96,15 +105,28 @@ export default defineConfig({
       }
     },
     chunkSizeWarningLimit: 800,
-    reportCompressedSize: true
+    reportCompressedSize: true,
+    modulePreload: {
+      resolveDependencies: (_filename, deps) =>
+        deps.filter(
+          (dep) =>
+            !dep.includes('animation-vendor') &&
+            !dep.includes('three-vendor') &&
+            !dep.includes('three-background') &&
+            !dep.includes('swiper-vendor') &&
+            !dep.includes('supabase-vendor') &&
+            !dep.includes('chat-assistant') &&
+            !dep.includes('admin-pages')
+        )
+    }
   },
   server: {
-    port: 3001,
+    port: 5173,
     strictPort: false,
     open: false,
     hmr: {
-      port: 3001,
-      clientPort: 3001
+      port: 5173,
+      clientPort: 5173
     }
   },
   optimizeDeps: {

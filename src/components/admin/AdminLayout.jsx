@@ -128,7 +128,7 @@ const AdminLayout = () => {
       <aside className={`admin-sidebar ${sidebarOpen ? 'open' : 'closed'} ${mobileSidebarOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-header">
           <Link to="/admin/dashboard" className="sidebar-logo" onClick={() => window.innerWidth <= 1024 && setMobileSidebarOpen(false)}>
-            <img src="/assets/images/Logo_SVG.png" alt="OrthoHouse" />
+            <img src="/assets/images/Logo_SVG.svg" alt="OrthoHouse" width={120} height={40} decoding="async" />
             {sidebarOpen && <span>Admin Panel</span>}
           </Link>
           <button

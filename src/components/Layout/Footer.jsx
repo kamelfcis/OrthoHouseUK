@@ -36,7 +36,7 @@ const Footer = () => {
           <div className="row footer-row">
             <div className="col-lg-4 col-md-12">
               <div className="footer-widget footer-about">
-                <img src="/assets/images/Logo_SVG.png" alt="OrthoHouse UK Logo" className="footer-logo" />
+                <img src="/assets/images/Logo_SVG.svg" alt="OrthoHouse UK Logo" className="footer-logo" width={160} height={56} loading="lazy" decoding="async" />
                 <h3>About OrthoHouse UK</h3>
                 <p>
                   OrthoHouse UK delivers leading prosthetics and biomedical engineering solutions,

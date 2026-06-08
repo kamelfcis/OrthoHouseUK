@@ -322,3 +322,4 @@ CSS variables for brand colours are defined in `index.css`:
 | **react-masonry-css** | Masonry grid layout for the gallery |
 | **Terser** | JavaScript minification for production builds |
 
+

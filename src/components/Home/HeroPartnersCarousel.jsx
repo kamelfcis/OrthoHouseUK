@@ -1,128 +1,61 @@
-import { useEffect, useState, useRef } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, EffectCoverflow, Navigation } from 'swiper/modules'
-import { supabase } from '../../lib/supabase'
-import 'swiper/css'
-import 'swiper/css/effect-coverflow'
+import { useMemo } from 'react'
+import { toPublicStorageUrl } from '../../lib/storageUrl'
 import './HeroPartnersCarousel.css'
 
+const sortPartners = (partners = []) => {
+  return [...partners].sort((a, b) => {
+    const orderA = Number(a.display_order ?? a.sort_order ?? Number.POSITIVE_INFINITY)
+    const orderB = Number(b.display_order ?? b.sort_order ?? Number.POSITIVE_INFINITY)
+    if (orderA !== orderB) return orderA - orderB
+
+    const idA = Number(a.partners?.partner_id ?? 0)
+    const idB = Number(b.partners?.partner_id ?? 0)
+    if (idA !== idB) return idA - idB
+
+    const nameA = a.partners?.partner_name ?? ''
+    const nameB = b.partners?.partner_name ?? ''
+    return nameA.localeCompare(nameB)
+  })
+}
+
+const buildPartnerLogos = (branchData) => {
+  if (!branchData?.partners?.length) return []
+
+  const seen = new Set()
+  const sortedPartners = sortPartners(branchData.partners)
+
+  return sortedPartners.reduce((logos, branchPartner, index) => {
+    const partner = branchPartner.partners
+    if (!partner?.logo_url) return logos
+
+    const url = toPublicStorageUrl('partner-logos', partner.logo_url, {
+      width: 240,
+      quality: 75
+    })
+    if (!url || seen.has(url)) return logos
+
+    seen.add(url)
+    logos.push({
+      id: partner.partner_id ?? `partner-${index}`,
+      name: partner.partner_name || 'Partner',
+      url
+    })
+    return logos
+  }, [])
+}
+
 const HeroPartnersCarousel = ({ branchData }) => {
-  const [partnerLogos, setPartnerLogos] = useState([])
-  const prevRef = useRef(null)
-  const nextRef = useRef(null)
-  const swiperRef = useRef(null)
-
-  useEffect(() => {
-    let isMounted = true
-
-    const loadPartnerLogos = async () => {
-      if (!branchData?.partners || branchData.partners.length === 0) {
-        if (isMounted) setPartnerLogos([])
-        return
-      }
-
-      const seen = new Set()
-      const logos = []
-      const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL || 'https://ljfkmtuxqaznnmmxeydf.supabase.co').replace(/\/$/, '')
-      const storageBase = `${supabaseUrl}/storage/v1/render/image/public/partner-logos`
-      const imgParams = '?width=240&quality=75'
-
-      await Promise.all(
-        branchData.partners.map(async (branchPartner, index) => {
-          const partner = branchPartner.partners
-          if (!partner?.logo_url) return
-
-          const partnerName = partner.partner_name || 'Partner'
-          let storagePath = partner.logo_url.trim()
-          if (!storagePath) return
-
-          storagePath = storagePath.replace(/^\/+/, '')
-
-          let finalUrl = storagePath
-
-          try {
-            if (!/^https?:\/\//i.test(storagePath)) {
-              const normalizedPath = storagePath
-              const { data: imageData } = await supabase.storage
-                .from('partner-logos')
-                .getPublicUrl(normalizedPath)
-
-              if (imageData?.publicUrl) {
-                finalUrl = imageData.publicUrl
-              } else {
-                finalUrl = `${storageBase}/${normalizedPath.replace(/^partner-logos\//i, '')}`
-              }
-            }
-          } catch (error) {
-            console.warn('Failed to resolve partner logo URL, using fallback path:', error)
-            finalUrl = /^https?:\/\//i.test(storagePath)
-              ? storagePath
-              : `${storageBase}/${storagePath.replace(/^partner-logos\//i, '')}`
-          }
-
-          if (!/^https?:\/\//i.test(finalUrl)) {
-            finalUrl = `${storageBase}/${finalUrl.replace(/^partner-logos\//i, '')}`
-          }
-
-          // Append image transform params for optimized delivery
-          if (finalUrl.includes(supabaseUrl) && !finalUrl.includes('?')) {
-            finalUrl = finalUrl + imgParams
-          }
-
-          if (seen.has(finalUrl)) return
-          seen.add(finalUrl)
-
-          logos.push({
-            id: partner.partner_id ?? `partner-${index}`,
-            name: partnerName,
-            url: finalUrl
-          })
-        })
-      )
-
-      if (isMounted) {
-        setPartnerLogos(logos)
-      }
-    }
-
-    loadPartnerLogos()
-
-    return () => {
-      isMounted = false
-    }
-  }, [branchData])
-
-  // Update navigation buttons when swiper is ready
-  useEffect(() => {
-    if (swiperRef.current && prevRef.current && nextRef.current) {
-      const swiper = swiperRef.current
-      if (swiper.params && swiper.params.navigation && typeof swiper.params.navigation !== 'boolean') {
-        swiper.params.navigation.prevEl = prevRef.current
-        swiper.params.navigation.nextEl = nextRef.current
-        if (swiper.navigation) {
-          swiper.navigation.init()
-          swiper.navigation.update()
-        }
-      }
-    }
-  }, [partnerLogos])
-
-  // Add click handlers as fallback for navigation buttons
-  const handlePrevClick = () => {
-    if (swiperRef.current) {
-      swiperRef.current.slidePrev()
-    }
-  }
-
-  const handleNextClick = () => {
-    if (swiperRef.current) {
-      swiperRef.current.slideNext()
-    }
-  }
+  const partnerLogos = useMemo(() => buildPartnerLogos(branchData), [branchData])
+  const marqueeLogos = useMemo(
+    () => (partnerLogos.length > 1 ? [...partnerLogos, ...partnerLogos] : partnerLogos),
+    [partnerLogos]
+  )
 
   if (partnerLogos.length === 0) {
     return null
   }
+
+  const duration = Math.max(partnerLogos.length * 4, 24)
 
   return (
     <section className="hero-partners-section">
@@ -134,112 +67,49 @@ const HeroPartnersCarousel = ({ branchData }) => {
       </div>
 
       <div className="hero-partners-heading">
-        <span className="hero-partners-tag">Trusted by innovators</span>
-        <h3 className="hero-partners-title">Global brands that rely on OrthoHouse</h3>
-        <p className="hero-partners-subtitle">Seamless collaborations with world-class manufacturers and medical pioneers.</p>
+        <span className="hero-partners-tag">
+          <span className="hero-partners-tag-dot" aria-hidden="true"></span>
+          Trusted by innovators
+        </span>
+        <h3 className="hero-partners-title">
+          Global brands that rely on <span className="hero-partners-title-accent">OrthoHouse</span>
+        </h3>
+        <p className="hero-partners-subtitle">
+          Seamless collaborations with world-class manufacturers and medical pioneers.
+        </p>
       </div>
 
-      <Swiper
-        modules={[Autoplay, EffectCoverflow, Navigation]}
-        className="hero-partners-slider"
-        effect="coverflow"
-        centeredSlides
-        loop={partnerLogos.length > 0}
-        loopAdditionalSlides={2}
-        loopPreventsSliding={false}
-        grabCursor
-        speed={600}
-        autoplay={{
-          delay: 1000,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: true,
-          waitForTransition: true,
-          reverseDirection: false
-        }}
-        slidesPerView={1.15}
-        spaceBetween={26}
-        coverflowEffect={{ rotate: 0, stretch: 0, depth: 80, modifier: 1.5, slideShadows: false }}
-        watchSlidesProgress={true}
-        touchEventsTarget="container"
-        allowTouchMove={true}
-        navigation={{
-          prevEl: prevRef.current,
-          nextEl: nextRef.current,
-          disabledClass: 'swiper-button-disabled'
-        }}
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper
-          // Update navigation after swiper is initialized
-          setTimeout(() => {
-            if (swiper && swiper.params && swiper.params.navigation && typeof swiper.params.navigation !== 'boolean') {
-              swiper.params.navigation.prevEl = prevRef.current
-              swiper.params.navigation.nextEl = nextRef.current
-              if (swiper.navigation) {
-                swiper.navigation.init()
-                swiper.navigation.update()
-              }
-            }
-            // Ensure autoplay continues after manual navigation
-            if (swiper && swiper.autoplay) {
-              swiper.autoplay.start()
-            }
-          }, 100)
-        }}
-        onSlideChange={() => {
-          // Ensure autoplay continues after slide change
-          if (swiperRef.current?.autoplay) {
-            swiperRef.current.autoplay.start()
-          }
-        }}
-        onBeforeInit={(swiper) => {
-          if (swiper && swiper.params && swiper.params.navigation && typeof swiper.params.navigation !== 'boolean') {
-            swiper.params.navigation.prevEl = prevRef.current
-            swiper.params.navigation.nextEl = nextRef.current
-          }
-        }}
-        breakpoints={{
-          480: { slidesPerView: 2, spaceBetween: 22 },
-          768: { slidesPerView: 3.15, spaceBetween: 26 },
-          1024: { slidesPerView: 4.35, spaceBetween: 30 }
-        }}
-      >
-        {partnerLogos.map((logo) => (
-          <SwiperSlide key={logo.id}>
-            <div className="hero-partner-slide">
-              <span className="hero-partner-border"></span>
-              <div className="hero-partner-glow"></div>
-              <img
-                src={logo.url}
-                alt={logo.name}
-                loading="lazy"
-                onError={(e) => {
-                  e.currentTarget.onerror = null
-                  e.currentTarget.src = `https://via.placeholder.com/240x160/1f2a44/ffffff?text=${encodeURIComponent(logo.name)}`
-                }}
-              />
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      <div className="hero-partners-controls">
-        <button
-          ref={prevRef}
-          className="hero-partners-nav hero-partners-nav-prev"
-          type="button"
-          aria-label="Previous partner"
-          onClick={handlePrevClick}
+      <div className="hero-partners-carousel-wrap">
+        <div
+          className="hero-partners-marquee"
+          style={{ '--marquee-duration': `${duration}s` }}
         >
-          <i className="fas fa-arrow-left"></i>
-        </button>
-        <button
-          ref={nextRef}
-          className="hero-partners-nav hero-partners-nav-next"
-          type="button"
-          aria-label="Next partner"
-          onClick={handleNextClick}
-        >
-          <i className="fas fa-arrow-right"></i>
-        </button>
+          <div className="hero-partners-marquee-track">
+            {marqueeLogos.map((logo, index) => (
+              <div
+                key={`${logo.id}-${index}`}
+                className="hero-partner-slide"
+                aria-hidden={index >= partnerLogos.length}
+              >
+                <span className="hero-partner-border"></span>
+                <div className="hero-partner-glow"></div>
+                <img
+                  src={logo.url}
+                  alt={index < partnerLogos.length ? logo.name : ''}
+                  loading="lazy"
+                  decoding="async"
+                  width={240}
+                  height={160}
+                  draggable={false}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null
+                    e.currentTarget.src = `https://via.placeholder.com/240x160/1f2a44/ffffff?text=${encodeURIComponent(logo.name)}`
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )

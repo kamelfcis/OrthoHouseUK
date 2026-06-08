@@ -1,9 +1,11 @@
 import { useEffect, Suspense, lazy } from 'react'
-import Hero from '../components/Home/Hero'
 import useBranchData from '../hooks/useBranchData'
+
 import SEO from '../components/SEO/SEO'
 import { generateOrganizationSchema, generateWebsiteSchema, generateLocalBusinessSchema } from '../utils/seoData'
 import './Home.css'
+
+const Hero = lazy(() => import('../components/Home/Hero'))
 
 const HomeGallery = lazy(() => import('../components/Home/HomeGallery'))
 const HeroPartnersCarousel = lazy(() => import('../components/Home/HeroPartnersCarousel'))
@@ -18,7 +20,7 @@ const SectionFallback = ({ height = 260 }) => (
 )
 
 const Home = () => {
-  const { branchData, loading } = useBranchData('UK')
+  const { branchData } = useBranchData('UK')
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -28,17 +30,6 @@ const Home = () => {
       document.documentElement.style.scrollBehavior = previousScrollBehavior
     }
   }, [])
-
-  if (loading) {
-    return (
-      <div className="home-page">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p>Loading...</p>
-        </div>
-      </div>
-    )
-  }
 
   const structuredData = branchData ? {
     '@context': 'https://schema.org',
@@ -57,7 +48,9 @@ const Home = () => {
         keywords="orthohouseuk, orthohouse uk, prosthetics, orthotics, biomedical engineering, prosthetic limbs, orthotic devices, rehabilitation, medical devices, custom prosthetics, patient care, healthcare technology, UK prosthetics"
         structuredData={structuredData}
       />
-      <Hero branchData={branchData} />
+      <Suspense fallback={<SectionFallback height={520} />}>
+        <Hero branchData={branchData} />
+      </Suspense>
       <Suspense fallback={<SectionFallback />}>
         <HeroPartnersCarousel branchData={branchData} />
       </Suspense>

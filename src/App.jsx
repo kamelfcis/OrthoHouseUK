@@ -1,10 +1,11 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout/Layout'
-import AdminLayout from './components/admin/AdminLayout'
-import ProtectedRoute from './components/admin/ProtectedRoute'
 import SplashScreen from './components/Layout/SplashScreen'
 import CookieConsent from './components/Layout/CookieConsent'
+
+const AdminLayout = lazy(() => import('./components/admin/AdminLayout'))
+const ProtectedRoute = lazy(() => import('./components/admin/ProtectedRoute'))
 
 // Lazy load all pages for better code splitting
 const Home = lazy(() => import('./pages/Home'))
@@ -104,9 +105,11 @@ function App() {
         </Suspense>
       } />
       <Route path="/admin" element={
-        <ProtectedRoute>
-          <AdminLayout />
-        </ProtectedRoute>
+        <Suspense fallback={<PageLoader />}>
+          <ProtectedRoute>
+            <AdminLayout />
+          </ProtectedRoute>
+        </Suspense>
       }>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="dashboard" element={

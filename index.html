@@ -35,16 +35,19 @@
   <meta name="twitter:description" content="OrthoHouse UK - Leading provider of prosthetic limbs, orthotic solutions, biomedical devices, and rehabilitation services.">
   <meta name="twitter:image" content="https://www.orthohouseuk.com/assets/images/logo.png">
   
+  <!-- Splash logo — preload for instant first paint -->
+  <link rel="preload" href="/assets/images/Logo_SVG.svg" as="image" type="image/svg+xml" fetchpriority="high">
+
   <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/Logo_SVG.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/Logo_SVG.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/Logo_SVG.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/Logo_SVG.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/Logo_SVG.svg">
   <link rel="manifest" href="/manifest.json">
   
   <!-- Preconnect for Performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://ljfkmtuxqaznnmmxeydf.supabase.co" crossorigin>
   <link rel="dns-prefetch" href="https://ljfkmtuxqaznnmmxeydf.supabase.co">
   
   <!-- Google Fonts - non-blocking load -->
@@ -63,10 +66,35 @@
   <meta name="geo.region" content="GB">
   <meta name="geo.placename" content="United Kingdom">
   
-  <!-- Performance hints -->
-  <link rel="modulepreload" href="/src/main.jsx">
 </head>
 <body>
+  <!-- Instant splash — visible before React hydrates; removed by SplashScreen on mount -->
+  <div id="splash-instant" aria-hidden="true">
+    <style>
+      #splash-instant {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #2dadd5 0%, #2478b5 100%);
+      }
+      #splash-instant img {
+        width: 200px;
+        height: 200px;
+        object-fit: contain;
+      }
+    </style>
+    <img
+      src="/assets/images/Logo_SVG.svg"
+      alt=""
+      width="200"
+      height="200"
+      fetchpriority="high"
+      decoding="sync"
+    >
+  </div>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
   <script>

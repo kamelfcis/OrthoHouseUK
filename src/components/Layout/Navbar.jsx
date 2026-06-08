@@ -60,14 +60,14 @@ const Navbar = () => {
         <div className="container">
           <div className="lte-navbar-logo">
             <Link to="/">
-              <img src="/assets/images/Logo_SVG.png" alt="Cybron Logo" className="logo" />
+              <img src="/assets/images/Logo_SVG.svg" alt="Cybron Logo" className="logo" width={140} height={48} decoding="async" />
             </Link>
           </div>
 
           <div className={`lte-navbar-items navbar-mobile navbar-mobile-black ${isMenuOpen ? 'collapse' : ''}`}>
             <div className="toggle-wrap">
               <Link to="/" className="lte-logo mobile-logo">
-                <img src="/assets/images/Logo_SVG.png" alt="Ortho-House Logo" />
+                <img src="/assets/images/Logo_SVG.svg" alt="Ortho-House Logo" width={120} height={40} decoding="async" />
                 <div className="mobile-logo-text">
                   <span className="logo-text">Ortho-House</span>
                  

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
@@ -9,7 +10,23 @@ const HERO_VIDEO_URL =
   'https://www.youtube.com/embed/ms8gRumejhg?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=ms8gRumejhg&playsinline=1&enablejsapi=1&modestbranding=1'
 
 const Hero = ({ branchData }) => {
-  const heroRef = useParallax(0.5, false)
+  const [parallaxEnabled, setParallaxEnabled] = useState(false)
+  const heroRef = useParallax(0.5, parallaxEnabled)
+
+  useEffect(() => {
+    const enableParallax = () => setParallaxEnabled(true)
+    const idleId = window.requestIdleCallback
+      ? window.requestIdleCallback(enableParallax, { timeout: 3000 })
+      : setTimeout(enableParallax, 2000)
+
+    return () => {
+      if (window.requestIdleCallback) {
+        window.cancelIdleCallback(idleId)
+      } else {
+        clearTimeout(idleId)
+      }
+    }
+  }, [])
 
   // Get hero content from Supabase or use defaults
   const heroContent = branchData?.pageContent?.hero || {}

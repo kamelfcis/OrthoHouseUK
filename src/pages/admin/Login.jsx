@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import toast from 'react-hot-toast'
-import ThreeJSBackground from '../../components/admin/ThreeJSBackground'
 import './Login.css'
+
+const ThreeJSBackground = lazy(() => import('../../components/admin/ThreeJSBackground'))
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -41,13 +42,15 @@ const Login = () => {
 
   return (
     <div className="admin-login-page">
-      <ThreeJSBackground />
+      <Suspense fallback={null}>
+        <ThreeJSBackground />
+      </Suspense>
       <div className="admin-login-overlay"></div>
       <div className="admin-login-container">
         <div className="admin-login-card">
           <div className="admin-login-header">
             <div className="login-logo-container">
-              <img src="/assets/images/Logo_SVG.png" alt="OrthoHouse" className="login-logo" />
+              <img src="/assets/images/Logo_SVG.svg" alt="OrthoHouse" className="login-logo" width={180} height={64} decoding="async" />
             </div>
             <h1 className="text-gradient-brand">Admin Portal</h1>
             <p>Sign in to manage your content</p>

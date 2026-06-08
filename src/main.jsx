@@ -1,39 +1,24 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './contexts/AuthContext'
 import App from './App'
 import './index.css'
+import { prefetchBranchData } from './lib/branchDataCache'
 
-// Prevent page reloads on errors
 if (typeof window !== 'undefined') {
-  // Prevent unhandled errors from causing page reloads
-  window.addEventListener('error', (event) => {
-    console.error('Global error caught:', event.error)
-    event.preventDefault()
-    return false
-  })
-
-  window.addEventListener('unhandledrejection', (event) => {
-    console.error('Unhandled promise rejection:', event.reason)
-    event.preventDefault()
-    return false
-  })
-
-  // Preload critical resources
-  const preloadLink = document.createElement('link')
-  preloadLink.rel = 'preload'
-  preloadLink.as = 'style'
-  preloadLink.href = '/src/index.css'
-  document.head.appendChild(preloadLink)
+  const warmBranchCache = () => prefetchBranchData('UK')
+  if (window.requestIdleCallback) {
+    window.requestIdleCallback(warmBranchCache, { timeout: 800 })
+  } else {
+    setTimeout(warmBranchCache, 100)
+  }
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-    <AuthProvider>
-      <App />
-      <Toaster
+const LazyToaster = lazy(() =>
+  import('react-hot-toast').then((mod) => ({
+    default: () => (
+      <mod.Toaster
         position="top-right"
         toastOptions={{
           duration: 4000,
@@ -57,6 +42,31 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           },
         }}
       />
+    ),
+  }))
+)
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('error', (event) => {
+    console.error('Global error caught:', event.error)
+    event.preventDefault()
+    return false
+  })
+
+  window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled promise rejection:', event.reason)
+    event.preventDefault()
+    return false
+  })
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <BrowserRouter>
+    <AuthProvider>
+      <App />
+      <Suspense fallback={null}>
+        <LazyToaster />
+      </Suspense>
     </AuthProvider>
   </BrowserRouter>
 )
