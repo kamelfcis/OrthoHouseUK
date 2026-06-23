@@ -50,8 +50,9 @@ const Layout = ({ children }) => {
 
   return (
     <div className="layout">
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <Navbar />
-      <main className="main-content">
+      <main id="main-content" className="main-content" tabIndex={-1}>
         {children}
       </main>
       <Footer />

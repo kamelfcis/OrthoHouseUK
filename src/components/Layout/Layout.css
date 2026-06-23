@@ -2,7 +2,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding-top: 100px;
+  /* Offset for fixed nav. Pages with full-bleed heroes set padding-top: 0 themselves. */
+  padding-top: var(--ds-header-height); /* 76px */
 }
 
 .main-content {
@@ -10,15 +11,10 @@
   padding-top: 0;
 }
 
-/* Responsive Layout Padding */
 @media (max-width: 767px) {
-  .layout {
-    padding-top: 80px;
-  }
+  .layout { padding-top: 68px; }
 }
 
 @media (max-width: 479px) {
-  .layout {
-    padding-top: 70px;
-  }
+  .layout { padding-top: 62px; }
 }

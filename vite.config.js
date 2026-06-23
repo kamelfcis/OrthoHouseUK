@@ -82,6 +82,9 @@ export default defineConfig({
             if (id.includes('/components/Home/HomeGallerySlider')) {
               return 'home-gallery-slider'
             }
+            if (id.includes('/components/Home/HeroSlider')) {
+              return 'hero-slider'
+            }
             if (id.includes('/components/admin/ThreeJSBackground')) {
               return 'three-background'
             }

@@ -1,5 +1,8 @@
 /* Google Fonts loaded via index.html <link> for non-blocking performance */
 
+/* Design system tokens — must be first so all components inherit */
+@import './styles/design-system.css';
+
 /* Import component styles */
 @import './styles/icons.css';
 @import './styles/brand-gradients.css';
