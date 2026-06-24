@@ -74,7 +74,10 @@
 .hero-partners-heading {
   position: relative;
   z-index: 1;
+  width: 100%;
+  max-width: 720px;
   margin-bottom: 0;
+  text-align: center;
 }
 
 .hero-partners-eyebrow {
@@ -88,6 +91,7 @@
 .hero-partners-subtitle {
   max-width: 580px;
   margin-inline: auto;
+  text-align: center;
 }
 
 .hero-partners-carousel-wrap {
