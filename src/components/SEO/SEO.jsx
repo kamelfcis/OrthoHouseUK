@@ -14,7 +14,7 @@ const SEO = ({
   structuredData
 }) => {
   const location = useLocation()
-  const siteUrl = typeof window !== 'undefined' ? window.location.origin : ''
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://orthohouseuk.com'
   const currentUrl = url || `${siteUrl}${location.pathname}`
   const defaultImage = `${siteUrl}/assets/images/logo.png`
   const ogImage = image || defaultImage

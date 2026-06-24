@@ -1,7 +1,9 @@
 // SEO data and structured data generators
 
+const PRODUCTION_SITE_URL = 'https://orthohouseuk.com'
+
 export const generateOrganizationSchema = (branchData) => {
-  const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.orthohouseuk.com'
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : PRODUCTION_SITE_URL
   
   return {
     '@context': 'https://schema.org',
@@ -32,7 +34,7 @@ export const generateOrganizationSchema = (branchData) => {
 }
 
 export const generateWebsiteSchema = () => {
-  const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.orthohouseuk.com'
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : PRODUCTION_SITE_URL
   
   return {
     '@context': 'https://schema.org',
@@ -66,7 +68,7 @@ export const generateBreadcrumbSchema = (items) => {
 }
 
 export const generateProductSchema = (product, branchData) => {
-  const siteUrl = typeof window !== 'undefined' ? window.location.origin : ''
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : PRODUCTION_SITE_URL
   
   return {
     '@context': 'https://schema.org',
@@ -90,7 +92,7 @@ export const generateProductSchema = (product, branchData) => {
 }
 
 export const generateArticleSchema = (blog) => {
-  const siteUrl = typeof window !== 'undefined' ? window.location.origin : ''
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : PRODUCTION_SITE_URL
   
   return {
     '@context': 'https://schema.org',
@@ -140,7 +142,7 @@ export const generateServiceSchema = (service) => {
 }
 
 export const generateLocalBusinessSchema = (branchData) => {
-  const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.orthohouseuk.com'
+  const siteUrl = typeof window !== 'undefined' ? window.location.origin : PRODUCTION_SITE_URL
   
   return {
     '@context': 'https://schema.org',
