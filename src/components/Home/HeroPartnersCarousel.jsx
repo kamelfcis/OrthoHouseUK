@@ -66,7 +66,7 @@ const HeroPartnersCarousel = ({ branchData }) => {
       <header className="hero-partners-heading ds-section-head">
         <span className="ds-eyebrow hero-partners-eyebrow">Trusted by innovators</span>
         <h2 id="hero-partners-heading" className="ds-section-title hero-partners-title">
-          Global brands that rely on{' '}
+          Global Brands That Rely On{' '}
           <span className="ds-text-gradient">OrthoHouse</span>
         </h2>
         <p className="ds-section-subtitle hero-partners-subtitle">
