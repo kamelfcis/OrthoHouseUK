@@ -9,7 +9,7 @@ const HERO_VIDEO_URL =
   'https://www.youtube.com/embed/ms8gRumejhg?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=ms8gRumejhg&playsinline=1&enablejsapi=1&modestbranding=1'
 
 const HERO_SUBTITLE_UK =
-  'Leading Orthopedic Solutions in the United Kingdom. Partnering with top medical institutions.'
+  'Leading Orthopedic Solutions in the United Kingdom. Partnering With Top Medical Institutions.'
 
 const HERO_SUBTITLE_DEFAULT =
   'Transforming lives through innovative technology and personalised care. We are committed to excellence in prosthetics and biomedical solutions.'
