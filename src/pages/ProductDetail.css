@@ -80,7 +80,7 @@
   padding: 0.45rem 1.25rem;
   border-radius: 999px;
   background: rgba(100, 217, 185, 0.2);
-  color: var(--white);
+  color: var(--ds-text-on-brand, rgba(255, 255, 255, 0.95));
   font-size: 0.85rem;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -99,13 +99,14 @@
   font-family: var(--font-headers);
   font-size: clamp(2.4rem, 5vw, 3rem);
   margin: 0;
+  color: var(--ds-text-on-brand, var(--white));
   text-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
 }
 
 .product-hero-summary {
   max-width: 720px;
   line-height: 1.8;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--ds-text-on-brand, rgba(255, 255, 255, 0.85));
   font-size: 1.05rem;
 }
 
