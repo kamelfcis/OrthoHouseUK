@@ -1,0 +1,90 @@
+.home-product-card {
+  flex: 0 0 clamp(260px, 28vw, 300px);
+  scroll-snap-align: start;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-product-card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--ds-surface-muted);
+  overflow: hidden;
+}
+
+.home-product-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--ds-duration-slow) var(--ds-ease-out);
+}
+
+.home-product-card:hover .home-product-card__media img {
+  transform: scale(1.04);
+}
+
+.home-product-card__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 2.5rem;
+  color: var(--ds-brand-300);
+}
+
+.home-product-card__badge {
+  position: absolute;
+  top: var(--ds-space-3);
+  left: var(--ds-space-3);
+  padding: 0.35rem 0.75rem;
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-semibold);
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--ds-brand-700);
+  border-radius: var(--ds-radius-pill);
+  border: 1px solid var(--ds-border);
+  max-width: calc(100% - var(--ds-space-6));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-product-card__body {
+  padding: var(--ds-space-5);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2);
+}
+
+.home-product-card__category {
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-semibold);
+  letter-spacing: var(--ds-tracking-wide);
+  text-transform: uppercase;
+  color: var(--ds-brand-600);
+}
+
+.home-product-card__name {
+  font-size: var(--ds-text-lg);
+  font-weight: var(--ds-weight-semibold);
+  line-height: var(--ds-leading-snug);
+  margin: 0;
+  color: var(--ds-text-heading);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-product-card__media img {
+    transition: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .home-product-card {
+    flex-basis: clamp(240px, 78vw, 280px);
+  }
+}

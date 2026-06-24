@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import ProductCard from '../components/common/ProductCard'
 import SEO from '../components/SEO/SEO'
 import './Products.css'
 
@@ -238,69 +238,6 @@ const Products = () => {
     ? products.filter(p => p.categoryId === selectedCategory)
     : products
 
-  const ProductCard = ({ product, index }) => {
-    const [ref, inView] = useInView({
-      triggerOnce: true,
-      threshold: 0.1
-    })
-
-    const [isHovered, setIsHovered] = useState(false)
-
-    return (
-      <motion.li
-        className="product"
-        ref={ref}
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: index * 0.1 }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div className="lte-item">
-          <div className="lte-image">
-            <Link to={`/products/${product.id}`} className="woocommerce-LoopProduct-link">
-              <img
-                src={product.image}
-                alt={product.name}
-                onError={(e) => {
-                  e.target.src = `https://via.placeholder.com/400x400/64d9b9/ffffff?text=${encodeURIComponent(product.name)}`
-                }}
-              />
-            </Link>
-            <div className={`lte-buttons-wrapper ${isHovered ? 'show' : ''}`}>
-              <Link to={`/products/${product.id}`} className="lte-wc-view" title="View Product">
-                <i className="fas fa-eye"></i>
-              </Link>
-            </div>
-          </div>
-
-          <div className="lte-item-descr">
-            <h2 className="woocommerce-loop-product__title">
-              <Link to={`/products/${product.id}`}>{product.name}</Link>
-            </h2>
-
-            {product.description && (
-              <div className="lte-excerpt">
-                {product.description}
-              </div>
-            )}
-
-            {product.partner && (
-              <div className="product-partner">
-                <i className="fas fa-handshake"></i> {product.partner}
-              </div>
-            )}
-
-            <Link to={`/products/${product.id}`} className="lte-btn-more lte-btn">
-              <i className="fas fa-info-circle"></i>
-              More Info
-            </Link>
-          </div>
-        </div>
-      </motion.li>
-    )
-  }
-
   return (
       <div className="products-page">
       <SEO
@@ -410,19 +347,25 @@ const Products = () => {
                 <p>{selectedCategory ? 'No products found in this category.' : 'No products available at this time.'}</p>
               </div>
             ) : (
-              <div className="row centered">
-                <div className="col-xl-12">
-                  {selectedCategory && (
-                    <div className="filter-info">
-                      Showing {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''} in{' '}
-                      <strong>{categories.find(c => c.category_id === selectedCategory)?.category_name}</strong>
-                    </div>
-                  )}
-                  <ul className="products columns-3">
-                    {filteredProducts.map((product, index) => (
-                      <ProductCard key={product.id} product={product} index={index} />
-                    ))}
-                  </ul>
+              <div className="products-section">
+                {selectedCategory && (
+                  <div className="filter-info">
+                    Showing {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''} in{' '}
+                    <strong>{categories.find(c => c.category_id === selectedCategory)?.category_name}</strong>
+                  </div>
+                )}
+                <div className="products-grid" role="list">
+                  {filteredProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      id={product.id}
+                      name={product.name}
+                      category={product.category}
+                      partner={product.partner}
+                      image={product.image}
+                      className="home-product-card--grid"
+                    />
+                  ))}
                 </div>
               </div>
             )}

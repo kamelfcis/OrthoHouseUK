@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useInView } from 'react-intersection-observer'
 import { motion, useReducedMotion } from 'framer-motion'
+import ProductCard from '../common/ProductCard'
 import SectionHeading from '../common/SectionHeading'
 import { toPublicStorageUrl } from '../../lib/storageUrl'
 import './HomeProducts.css'
@@ -136,49 +137,7 @@ const HomeProducts = ({ branchData }) => {
           <motion.div className="home-products-rail-wrap" {...motionProps}>
             <div className="home-products-rail" role="list">
               {featuredProducts.map((product) => (
-                <Link
-                  key={product.id}
-                  to={`/products/${product.id}`}
-                  className="home-product-card ds-card ds-card--interactive"
-                  role="listitem"
-                >
-                  <div className="home-product-card__media">
-                    {product.image && (
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        loading="lazy"
-                        decoding="async"
-                        width={320}
-                        height={240}
-                        onError={(e) => {
-                          e.currentTarget.onerror = null
-                          e.currentTarget.style.display = 'none'
-                          const placeholder = e.currentTarget.parentElement?.querySelector(
-                            '.home-product-card__placeholder'
-                          )
-                          if (placeholder) placeholder.style.display = 'flex'
-                        }}
-                      />
-                    )}
-                    <div
-                      className="home-product-card__placeholder"
-                      aria-hidden="true"
-                      style={{ display: product.image ? 'none' : 'flex' }}
-                    >
-                      <i className="fas fa-box-medical" />
-                    </div>
-                    {product.partner && (
-                      <span className="home-product-card__badge">{product.partner}</span>
-                    )}
-                  </div>
-                  <div className="home-product-card__body">
-                    {product.category && (
-                      <span className="home-product-card__category">{product.category}</span>
-                    )}
-                    <h3 className="home-product-card__name">{product.name}</h3>
-                  </div>
-                </Link>
+                <ProductCard key={product.id} {...product} />
               ))}
             </div>
           </motion.div>
