@@ -6,11 +6,14 @@ import SEO from '../components/SEO/SEO'
 import { generateOrganizationSchema, generateWebsiteSchema, generateLocalBusinessSchema } from '../utils/seoData'
 import './Home.css'
 
-const HomeGallery = lazy(() => import('../components/Home/HomeGallery'))
 const HeroPartnersCarousel = lazy(() => import('../components/Home/HeroPartnersCarousel'))
+const HomeProducts = lazy(() => import('../components/Home/HomeProducts'))
+const HomeMission = lazy(() => import('../components/Home/HomeMission'))
 const Stats = lazy(() => import('../components/Home/Stats'))
-const Capabilities = lazy(() => import('../components/Home/Capabilities'))
-const Newsletter = lazy(() => import('../components/Home/Newsletter'))
+const HomeUkJourney = lazy(() => import('../components/Home/HomeUkJourney'))
+const HomeAccreditations = lazy(() => import('../components/Home/HomeAccreditations'))
+const HomeEvents = lazy(() => import('../components/Home/HomeEvents'))
+const HomeJoinCta = lazy(() => import('../components/Home/HomeJoinCta'))
 
 const SectionFallback = ({ height = 260 }) => (
   <div className="section-fallback" style={{ minHeight: height }}>
@@ -51,17 +54,26 @@ const Home = () => {
       <Suspense fallback={<SectionFallback />}>
         <HeroPartnersCarousel branchData={branchData} />
       </Suspense>
+      <Suspense fallback={<SectionFallback height={320} />}>
+        <HomeProducts branchData={branchData} />
+      </Suspense>
+      <Suspense fallback={<SectionFallback height={240} />}>
+        <HomeMission />
+      </Suspense>
       <Suspense fallback={<SectionFallback />}>
         <Stats branchData={branchData} />
       </Suspense>
-      <Suspense fallback={<SectionFallback />}>
-        <Capabilities branchData={branchData} />
+      <Suspense fallback={<SectionFallback height={300} />}>
+        <HomeUkJourney />
       </Suspense>
       <Suspense fallback={<SectionFallback />}>
-        <HomeGallery branchData={branchData} />
+        <HomeAccreditations />
       </Suspense>
-      <Suspense fallback={<SectionFallback height={220} />}>
-        <Newsletter branchData={branchData} />
+      <Suspense fallback={<SectionFallback />}>
+        <HomeEvents />
+      </Suspense>
+      <Suspense fallback={<SectionFallback height={280} />}>
+        <HomeJoinCta />
       </Suspense>
     </div>
   )

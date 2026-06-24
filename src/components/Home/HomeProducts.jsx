@@ -1,0 +1,197 @@
+import { useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useInView } from 'react-intersection-observer'
+import { motion, useReducedMotion } from 'framer-motion'
+import SectionHeading from '../common/SectionHeading'
+import { toPublicStorageUrl } from '../../lib/storageUrl'
+import './HomeProducts.css'
+
+const FEATURED_COUNT = 8
+
+const buildFeaturedProducts = (branchData, imageMap) => {
+  const branchProducts = branchData?.products || []
+
+  return branchProducts
+    .map((bp) => {
+      const product = bp.products
+      if (!product?.product_id) return null
+
+      const image =
+        imageMap[product.product_id] ||
+        toPublicStorageUrl('product-images', product.primary_image_url)
+
+      return {
+        id: product.product_id,
+        name: product.product_name,
+        category: product.product_categories?.category_name || '',
+        partner: product.partners?.partner_name || '',
+        image
+      }
+    })
+    .filter(Boolean)
+    .slice(0, FEATURED_COUNT)
+}
+
+const HomeProducts = ({ branchData }) => {
+  const [imageMap, setImageMap] = useState({})
+  const [loading, setLoading] = useState(true)
+  const [sectionRef, inView] = useInView({ rootMargin: '200px', triggerOnce: true })
+  const prefersReducedMotion = useReducedMotion()
+
+  const branchId = branchData?.branch?.branch_id
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadImages = async () => {
+      if (!branchId) {
+        if (isMounted) {
+          setImageMap({})
+          setLoading(false)
+        }
+        return
+      }
+
+      setLoading(true)
+
+      try {
+        const { supabase } = await import('../../lib/supabase')
+        const productIds = (branchData.products || [])
+          .map((bp) => bp.products?.product_id)
+          .filter(Boolean)
+
+        if (productIds.length === 0) {
+          if (isMounted) setImageMap({})
+          return
+        }
+
+        const { data, error } = await supabase
+          .from('product_images')
+          .select('product_id, image_url, is_primary, image_order')
+          .eq('branch_id', branchId)
+          .in('product_id', productIds)
+          .order('is_primary', { ascending: false })
+          .order('image_order', { ascending: true })
+
+        if (error) throw error
+
+        const map = {}
+        data?.forEach((img) => {
+          if (!map[img.product_id]) {
+            map[img.product_id] = toPublicStorageUrl('product-images', img.image_url)
+          }
+        })
+
+        if (isMounted) setImageMap(map)
+      } catch (err) {
+        console.error('Failed to load product images:', err)
+        if (isMounted) setImageMap({})
+      } finally {
+        if (isMounted) setLoading(false)
+      }
+    }
+
+    loadImages()
+    return () => { isMounted = false }
+  }, [branchId, branchData?.products])
+
+  const featuredProducts = useMemo(
+    () => buildFeaturedProducts(branchData, imageMap),
+    [branchData, imageMap]
+  )
+
+  const motionProps = prefersReducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 24 },
+        animate: inView ? { opacity: 1, y: 0 } : {},
+        transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
+      }
+
+  if (!loading && featuredProducts.length === 0) {
+    return null
+  }
+
+  return (
+    <section
+      className="home-products ds-section"
+      id="home-products"
+      ref={sectionRef}
+      aria-labelledby="home-products-heading"
+    >
+      <div className="container">
+        <SectionHeading
+          eyebrow="Featured Products"
+          title="Our Products"
+          subtitle="Explore our portfolio of premium orthopaedic solutions from trusted global partners."
+          titleId="home-products-heading"
+        />
+
+        {loading ? (
+          <div className="home-products-loading" aria-busy="true">
+            <div className="home-products-spinner" aria-hidden="true" />
+            <p>Loading products…</p>
+          </div>
+        ) : (
+          <motion.div className="home-products-rail-wrap" {...motionProps}>
+            <div className="home-products-rail" role="list">
+              {featuredProducts.map((product) => (
+                <Link
+                  key={product.id}
+                  to={`/products/${product.id}`}
+                  className="home-product-card ds-card ds-card--interactive"
+                  role="listitem"
+                >
+                  <div className="home-product-card__media">
+                    {product.image && (
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        loading="lazy"
+                        decoding="async"
+                        width={320}
+                        height={240}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null
+                          e.currentTarget.style.display = 'none'
+                          const placeholder = e.currentTarget.parentElement?.querySelector(
+                            '.home-product-card__placeholder'
+                          )
+                          if (placeholder) placeholder.style.display = 'flex'
+                        }}
+                      />
+                    )}
+                    <div
+                      className="home-product-card__placeholder"
+                      aria-hidden="true"
+                      style={{ display: product.image ? 'none' : 'flex' }}
+                    >
+                      <i className="fas fa-box-medical" />
+                    </div>
+                    {product.partner && (
+                      <span className="home-product-card__badge">{product.partner}</span>
+                    )}
+                  </div>
+                  <div className="home-product-card__body">
+                    {product.category && (
+                      <span className="home-product-card__category">{product.category}</span>
+                    )}
+                    <h3 className="home-product-card__name">{product.name}</h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        <div className="home-products-footer">
+          <Link to="/products" className="btn btn-main">
+            View all products
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default HomeProducts

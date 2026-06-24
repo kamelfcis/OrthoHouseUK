@@ -13,6 +13,10 @@
   z-index: 2;
 }
 
+.home-page > section + section {
+  scroll-margin-top: var(--ds-header-height, 76px);
+}
+
 .loading-container {
   display: flex;
   flex-direction: column;
@@ -57,5 +61,12 @@
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-fallback__spinner,
+  .loading-spinner {
+    animation: none;
   }
 }

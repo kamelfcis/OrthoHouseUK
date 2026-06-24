@@ -55,7 +55,7 @@ const HeroPartnersCarousel = ({ branchData }) => {
   const duration = Math.max(partnerLogos.length * 4, 24)
 
   return (
-    <section className="hero-partners-section">
+    <section className="hero-partners-section" aria-labelledby="hero-partners-heading">
       <div className="hero-partners-ambient" aria-hidden="true">
         <span className="ambient-orb orb-left"></span>
         <span className="ambient-orb orb-right"></span>
@@ -63,18 +63,16 @@ const HeroPartnersCarousel = ({ branchData }) => {
         <span className="ambient-line line-bottom"></span>
       </div>
 
-      <div className="hero-partners-heading">
-        <span className="hero-partners-tag">
-          <span className="hero-partners-tag-dot" aria-hidden="true"></span>
-          Trusted by innovators
-        </span>
-        <h3 className="hero-partners-title">
-          Global brands that rely on <span className="hero-partners-title-accent">OrthoHouse</span>
-        </h3>
-        <p className="hero-partners-subtitle">
+      <header className="hero-partners-heading ds-section-head">
+        <span className="ds-eyebrow hero-partners-eyebrow">Trusted by innovators</span>
+        <h2 id="hero-partners-heading" className="ds-section-title hero-partners-title">
+          Global brands that rely on{' '}
+          <span className="ds-text-gradient">OrthoHouse</span>
+        </h2>
+        <p className="ds-section-subtitle hero-partners-subtitle">
           Seamless collaborations with world-class manufacturers and medical pioneers.
         </p>
-      </div>
+      </header>
 
       <div className="hero-partners-carousel-wrap">
         <div

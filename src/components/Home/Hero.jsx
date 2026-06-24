@@ -2,24 +2,21 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { HERO_SLIDES } from '../../data/heroSlides'
-import HeroSlider from './HeroSlider'
 import './Hero.css'
 
 const MotionLink = motion(Link)
+const HERO_VIDEO_URL =
+  'https://www.youtube.com/embed/ms8gRumejhg?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=ms8gRumejhg&playsinline=1&enablejsapi=1&modestbranding=1'
 
 const Hero = ({ branchData }) => {
-  const [activeSlide, setActiveSlide] = useState(0)
   const [scrolled, setScrolled] = useState(false)
 
-  // Fade scroll indicator after first scroll
   useEffect(() => {
     const handler = () => { if (window.scrollY > 80) setScrolled(true) }
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
   }, [])
 
-  // Hero content from Supabase or sensible defaults
   const heroContent = branchData?.pageContent?.hero || {}
   const branchName  = branchData?.branch?.branch_name
   const title = heroContent.content_title
@@ -28,8 +25,6 @@ const Hero = ({ branchData }) => {
     'Transforming lives through innovative technology and personalised care. We are committed to excellence in prosthetics and biomedical solutions.'
 
   const [motionRef, motionInView] = useInView({ triggerOnce: true, threshold: 0.35 })
-
-  // ── Framer Motion variants (unchanged from original) ──────────────────────
 
   const heroContentVariants = {
     hidden: { opacity: 0, y: 40 },
@@ -75,27 +70,27 @@ const Hero = ({ branchData }) => {
       transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } }
   }
 
-  const eyebrowVariants = {
-    initial: { opacity: 0, y: 8 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
-    exit:    { opacity: 0, y: -6, transition: { duration: 0.25 } }
-  }
-
   return (
     <section
-      className="hero-section"
+      className="hero-section elementor-section elementor-section-stretched elementor-section-boxed"
       aria-label="OrthoHouse UK — advanced prosthetics and biomedical engineering"
     >
-      {/* Background image slider */}
-      <HeroSlider onSlideChange={setActiveSlide} />
+      <div className="elementor-background-video-container" aria-hidden="true">
+        <iframe
+          className="elementor-background-video-hosted"
+          src={HERO_VIDEO_URL}
+          title="OrthoHouse UK Hero Video"
+          frameBorder="0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+        />
+      </div>
 
-      {/* Gradient overlay for WCAG AA text contrast */}
       <div className="hero-overlay" aria-hidden="true" />
-
-      {/* Grain texture */}
       <div className="hero-grain" aria-hidden="true" />
 
-      {/* Content layer */}
       <div className="container">
         <div className="hero-content">
           <motion.div
@@ -104,20 +99,6 @@ const Hero = ({ branchData }) => {
             animate={motionInView ? 'visible' : 'hidden'}
             ref={motionRef}
           >
-            {/* Per-slide eyebrow — crossfades on slide change */}
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={`eyebrow-${activeSlide}`}
-                className="hero-eyebrow"
-                variants={eyebrowVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-              >
-                {HERO_SLIDES[activeSlide]?.eyebrow}
-              </motion.span>
-            </AnimatePresence>
-
             <motion.h1 className="hero-title" variants={heroTextVariants} role="presentation">
               {title.split('\n').map((line, index, arr) => (
                 <motion.span key={`hero-line-${index}`} variants={heroTitleLineVariants}>
@@ -141,7 +122,6 @@ const Hero = ({ branchData }) => {
             </motion.div>
           </motion.div>
 
-          {/* Scroll indicator — fades when user scrolls */}
           <AnimatePresence>
             {!scrolled && (
               <motion.div
