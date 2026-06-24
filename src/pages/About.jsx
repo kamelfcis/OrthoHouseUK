@@ -181,21 +181,6 @@ const About = () => {
                           we offer customized solutions tailored to each client. From initial 
                           consultation to ongoing support, we're with you every step of the way.
                         </p>
-                        
-                        <div className="elementor-widget-container">
-                          <div className="e-hosted-video elementor-wrapper elementor-open-inline">
-                            <video 
-                              className="elementor-video" 
-                              src="https://ortho-house.com/wp-content/uploads/2025/07/robotic-brain-utc.mov" 
-                              autoPlay 
-                              loop 
-                              controls 
-                              muted 
-                              playsInline 
-                              controlsList="nodownload"
-                            />
-                          </div>
-                        </div>
                       </div>
                     </motion.div>
 
