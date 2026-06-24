@@ -8,6 +8,28 @@ const MotionLink = motion(Link)
 const HERO_VIDEO_URL =
   'https://www.youtube.com/embed/ms8gRumejhg?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=ms8gRumejhg&playsinline=1&enablejsapi=1&modestbranding=1'
 
+const HERO_SUBTITLE_UK =
+  'Leading Orthopedic Solutions in the United Kingdom. Partnering with top medical institutions.'
+
+const HERO_SUBTITLE_DEFAULT =
+  'Transforming lives through innovative technology and personalised care. We are committed to excellence in prosthetics and biomedical solutions.'
+
+/** Correct known Supabase casing for UK hero subtitle (DB cannot be edited here). */
+const normalizeHeroSubtitle = (text, branchCode) => {
+  const trimmed = text?.trim()
+  if (!trimmed) {
+    return branchCode === 'UK' ? HERO_SUBTITLE_UK : HERO_SUBTITLE_DEFAULT
+  }
+  if (
+    branchCode === 'UK' &&
+    trimmed.toLowerCase() ===
+      'leading orthopedic solutions in the united kingdom. partnering with top medical institutions.'
+  ) {
+    return HERO_SUBTITLE_UK
+  }
+  return text
+}
+
 const Hero = ({ branchData }) => {
   const [scrolled, setScrolled] = useState(false)
 
@@ -18,11 +40,11 @@ const Hero = ({ branchData }) => {
   }, [])
 
   const heroContent = branchData?.pageContent?.hero || {}
+  const branchCode = branchData?.branch?.branch_code
   const branchName  = branchData?.branch?.branch_name
   const title = heroContent.content_title
     || (branchName ? `OrthoHouse ${branchName}` : 'Advanced Prosthetics & Biomedical Engineering')
-  const subtitle = heroContent.content_text ||
-    'Transforming lives through innovative technology and personalised care. We are committed to excellence in prosthetics and biomedical solutions.'
+  const subtitle = normalizeHeroSubtitle(heroContent.content_text, branchCode)
 
   const [motionRef, motionInView] = useInView({ triggerOnce: true, threshold: 0.35 })
 
