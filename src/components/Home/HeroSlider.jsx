@@ -111,8 +111,8 @@ const HeroSlider = ({ onSlideChange }) => {
                   alt={slide.alt}
                   width={1920}
                   height={1080}
-                  loading="eager"
-                  fetchpriority={index === 0 ? 'high' : 'low'}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={index === 0 ? 'high' : 'low'}
                   decoding={index === 0 ? 'auto' : 'async'}
                   draggable={false}
                 />

@@ -1,11 +1,10 @@
 import { useEffect, Suspense, lazy } from 'react'
 import useBranchData from '../hooks/useBranchData'
+import Hero from '../components/Home/Hero'
 
 import SEO from '../components/SEO/SEO'
 import { generateOrganizationSchema, generateWebsiteSchema, generateLocalBusinessSchema } from '../utils/seoData'
 import './Home.css'
-
-const Hero = lazy(() => import('../components/Home/Hero'))
 
 const HomeGallery = lazy(() => import('../components/Home/HomeGallery'))
 const HeroPartnersCarousel = lazy(() => import('../components/Home/HeroPartnersCarousel'))
@@ -48,9 +47,7 @@ const Home = () => {
         keywords="orthohouseuk, orthohouse uk, prosthetics, orthotics, biomedical engineering, prosthetic limbs, orthotic devices, rehabilitation, medical devices, custom prosthetics, patient care, healthcare technology, UK prosthetics"
         structuredData={structuredData}
       />
-      <Suspense fallback={<SectionFallback height={520} />}>
-        <Hero branchData={branchData} />
-      </Suspense>
+      <Hero branchData={branchData} />
       <Suspense fallback={<SectionFallback />}>
         <HeroPartnersCarousel branchData={branchData} />
       </Suspense>
