@@ -10,7 +10,16 @@ import {
 import { readMediaCache, writeMediaCache } from './mediaCache'
 
 const ACCESS_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY
-const HERO_SLIDES_CACHE_KEY = 'unsplash_hero_slides_v3'
+const HERO_SLIDES_CACHE_KEY = 'unsplash_hero_slides_v4'
+const isUnsplashConfigured = () => Boolean(ACCESS_KEY)
+
+/** Warn in all environments — helps diagnose missing VITE_UNSPLASH_ACCESS_KEY in prod bundles. */
+const warnMissingUnsplashKey = (context) => {
+  console.warn(
+    `[OrthoHouse] VITE_UNSPLASH_ACCESS_KEY is not set — using static images for ${context}. ` +
+      'Vite embeds env vars at build time; redeploy after adding the key in Vercel Production.'
+  )
+}
 const DESKTOP_IMAGE_WIDTH = 1200
 const MOBILE_IMAGE_WIDTH = 800
 
@@ -190,10 +199,8 @@ export async function fetchPageHeroImage(
   fallback,
   { perPage = 1 } = {}
 ) {
-  if (!ACCESS_KEY) {
-    if (import.meta.env.DEV) {
-      console.warn(`VITE_UNSPLASH_ACCESS_KEY not set — using static image for "${query}".`)
-    }
+  if (!isUnsplashConfigured()) {
+    warnMissingUnsplashKey(`"${query}"`)
     return fallback
   }
 
@@ -229,10 +236,8 @@ export async function fetchSectionImage(
     ensureHomepageFallbacksReserved()
   }
 
-  if (!ACCESS_KEY) {
-    if (import.meta.env.DEV) {
-      console.warn(`VITE_UNSPLASH_ACCESS_KEY not set — using static image for "${query}".`)
-    }
+  if (!isUnsplashConfigured()) {
+    warnMissingUnsplashKey(`"${query}"`)
     return staticFallback
   }
 
@@ -277,7 +282,10 @@ export async function fetchSectionImages(specs, options = {}) {
     result[id] = image
   }
 
-  writeMediaCache(cacheKey, result)
+  if (isUnsplashConfigured()) {
+    writeMediaCache(cacheKey, result)
+  }
+
   return result
 }
 
@@ -291,10 +299,8 @@ export async function fetchHeroSlides() {
   const cached = readMediaCache(HERO_SLIDES_CACHE_KEY)
   if (cached?.length) return cached
 
-  if (!ACCESS_KEY) {
-    if (import.meta.env.DEV) {
-      console.warn('VITE_UNSPLASH_ACCESS_KEY not set — using static hero slides.')
-    }
+  if (!isUnsplashConfigured()) {
+    warnMissingUnsplashKey('hero slides')
     return FALLBACK_SLIDES
   }
 

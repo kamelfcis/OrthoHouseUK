@@ -12,9 +12,8 @@ export default defineConfig({
     assetsInlineLimit: 4096,
     terserOptions: {
       compress: {
-        drop_console: true,
+        drop_console: ['log', 'info', 'debug'],
         drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug'],
         passes: 2
       },
       format: {
