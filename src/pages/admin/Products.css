@@ -1,3 +1,5 @@
+@import '../../styles/admin-tokens.css';
+
 .admin-products {
   padding: 40px 50px;
   max-width: 1400px;
@@ -165,10 +167,10 @@
 }
 
 .products-table-container {
-  background: var(--white);
-  border-radius: 16px;
+  background: var(--ds-surface, var(--white));
+  border-radius: var(--ds-radius-md, 16px);
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
   overflow-x: auto;
 }
 
@@ -185,15 +187,15 @@
   padding: 16px;
   text-align: left;
   font-weight: 600;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-size: 0.95rem;
-  border-bottom: 2px solid var(--gray-border);
+  border-bottom: 1px solid var(--ds-border-strong, var(--gray-border));
 }
 
 .admin-table td {
   padding: 16px;
   border-bottom: 1px solid var(--gray-border);
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 /* Removed hover styles */
@@ -268,7 +270,7 @@
 .empty-state h3 {
   font-size: 1.8rem;
   margin-bottom: 15px;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-weight: 600;
 }
 
@@ -322,13 +324,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  border-bottom: 2px solid var(--gray-border);
+  border-bottom: 1px solid var(--ds-border-strong, var(--gray-border));
   background: var(--gray);
 }
 
 .products-count {
   font-size: 0.95rem;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .products-count strong {
@@ -353,10 +355,10 @@
 
 .pagination-btn {
   padding: 10px 20px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 8px;
-  background: var(--white);
-  color: var(--black);
+  background: var(--ds-surface, var(--white));
+  color: var(--ds-text-heading, var(--black));
   font-family: var(--font-main);
   font-size: 0.95rem;
   font-weight: 600;
@@ -391,10 +393,10 @@
   min-width: 40px;
   height: 40px;
   padding: 0 12px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 8px;
-  background: var(--white);
-  color: var(--black);
+  background: var(--ds-surface, var(--white));
+  color: var(--ds-text-heading, var(--black));
   font-family: var(--font-main);
   font-size: 0.95rem;
   font-weight: 600;
@@ -440,7 +442,7 @@
 }
 
 .modal-content {
-  background: var(--white);
+  background: var(--ds-surface, var(--white));
   border-radius: 20px;
   width: 100%;
   max-width: 700px;
@@ -454,19 +456,19 @@
   justify-content: space-between;
   align-items: center;
   padding: 24px 30px;
-  border-bottom: 2px solid var(--gray-border);
+  border-bottom: 1px solid var(--ds-border-strong, var(--gray-border));
 }
 
 .modal-header h2 {
   font-size: 1.8rem;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .modal-close {
   background: transparent;
   border: none;
   font-size: 1.5rem;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   cursor: pointer;
   width: 36px;
   height: 36px;
@@ -498,7 +500,7 @@
 
 .form-group label {
   font-weight: 600;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-size: 0.95rem;
 }
 
@@ -506,21 +508,21 @@
 .form-group select,
 .form-group textarea {
   padding: 12px 16px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 10px;
   font-size: 1rem;
   font-family: var(--font-main);
   transition: all 0.3s ease;
-  background: var(--white);
-  color: var(--black);
+  background: var(--ds-surface, var(--white));
+  color: var(--ds-text-heading, var(--black));
 }
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(0, 95, 154, 0.1);
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
 }
 
 .form-group textarea {
@@ -556,7 +558,7 @@
   padding: 80px 20px;
   margin-top: 40px;
   font-size: 1.2rem;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -619,12 +621,12 @@
 
 /* Filters Section */
 .filters-section {
-  background: var(--white);
-  border-radius: 16px;
+  background: var(--ds-surface, var(--white));
+  border-radius: var(--ds-radius-md, 16px);
   padding: 24px;
   margin-top: 20px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
 }
 
 .filters-grid {
@@ -670,14 +672,14 @@
 
 .filter-group label {
   font-weight: 600;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-size: 0.9rem;
 }
 
 .filter-group select,
 .filter-group input {
   padding: 10px 14px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 8px;
   font-size: 0.95rem;
   font-family: var(--font-main);
@@ -689,8 +691,8 @@
 .filter-group select:focus,
 .filter-group input:focus {
   outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(0, 95, 154, 0.1);
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
 }
 
 .search-group {
@@ -765,7 +767,7 @@
   height: 100%;
   object-fit: cover;
   border-radius: 8px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
 }
 
 .no-image-placeholder {
@@ -819,7 +821,7 @@
   aspect-ratio: 1;
   border-radius: 12px;
   overflow: hidden;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   transition: all 0.3s ease;
 }
 
@@ -1138,7 +1140,7 @@
     padding: 20px 16px;
     position: sticky;
     top: 0;
-    background: var(--white);
+    background: var(--ds-surface, var(--white));
     z-index: 10;
   }
 
@@ -1262,7 +1264,7 @@
     margin-top: 20px;
     position: sticky;
     bottom: 0;
-    background: var(--white);
+    background: var(--ds-surface, var(--white));
     padding-bottom: 20px;
     border-top: 2px solid var(--gray-border);
   }

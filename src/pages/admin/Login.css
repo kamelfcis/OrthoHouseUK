@@ -1,3 +1,5 @@
+@import '../../styles/admin-tokens.css';
+
 .admin-login-page {
   min-height: 100vh;
   display: flex;
@@ -90,8 +92,8 @@
 }
 
 .admin-login-header p {
-  color: rgba(29, 41, 57, 0.7);
-  font-size: 1rem;
+  color: var(--ds-text-muted, rgba(29, 41, 57, 0.7));
+  font-size: var(--ds-text-base, 1rem);
 }
 
 .admin-login-form {
@@ -108,25 +110,26 @@
 
 .form-group label {
   font-weight: 600;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-size: 0.95rem;
 }
 
 .form-group input {
-  padding: 14px 18px;
-  border: 2px solid var(--gray-border);
-  border-radius: 10px;
-  font-size: 1rem;
-  font-family: var(--font-main);
-  transition: all 0.3s ease;
-  background: var(--white);
-  color: var(--black);
+  padding: var(--ds-space-3, 14px) var(--ds-space-4, 18px);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
+  border-radius: var(--ds-radius-sm, 10px);
+  font-size: var(--ds-text-base, 1rem);
+  font-family: var(--ds-font-sans, var(--font-main));
+  transition: border-color var(--ds-duration-fast, 0.18s) var(--ds-ease-out, ease),
+    box-shadow var(--ds-duration-fast, 0.18s) var(--ds-ease-out, ease);
+  background: var(--ds-surface, var(--white));
+  color: var(--ds-text, var(--black));
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(0, 95, 154, 0.1);
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
 }
 
 .form-group input:disabled {

@@ -1,0 +1,172 @@
+/* =============================================================================
+   Admin panel — shared design-system token alignment (Phase 5)
+   Scoped under .admin-layout / .admin-login-page so public pages are unaffected.
+   ============================================================================= */
+
+.admin-layout,
+.admin-login-page {
+  font-family: var(--ds-font-sans, inherit);
+  color: var(--ds-text, var(--black));
+}
+
+/* Surfaces — filters, tables, cards */
+.admin-content .filters-section,
+.admin-content .products-table-container,
+.admin-content .blogs-table-container,
+.admin-content .messages-table-container,
+.admin-content .users-table-container,
+.admin-content .categories-table-container,
+.admin-content .partners-table-container,
+.admin-content .branches-table-container,
+.admin-content .content-card,
+.admin-content .dashboard-quick-actions,
+.admin-content .stat-card {
+  background: var(--ds-surface, var(--white));
+  border: 1px solid var(--ds-border, var(--gray-border));
+  border-radius: var(--ds-radius-md, 12px);
+  box-shadow: var(--ds-shadow-sm, 0 1px 3px rgba(13, 23, 38, 0.08));
+}
+
+/* Tables */
+.admin-content .admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-content .admin-table thead {
+  background: var(--ds-surface-muted, var(--gray));
+}
+
+.admin-content .admin-table th {
+  padding: var(--ds-space-4, 16px);
+  text-align: left;
+  font-weight: var(--ds-weight-semibold, 600);
+  font-size: var(--ds-text-sm, 0.9375rem);
+  color: var(--ds-text-heading, var(--black));
+  border-bottom: 1px solid var(--ds-border-strong, var(--gray-border));
+}
+
+.admin-content .admin-table td {
+  padding: var(--ds-space-4, 16px);
+  font-size: var(--ds-text-sm, 0.9375rem);
+  color: var(--ds-text, var(--black));
+  border-bottom: 1px solid var(--ds-border, var(--gray-border));
+}
+
+/* Form fields */
+.admin-content .form-group,
+.admin-login-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2, 8px);
+}
+
+.admin-content .form-group label,
+.admin-login-form .form-group label {
+  font-weight: var(--ds-weight-semibold, 600);
+  font-size: var(--ds-text-sm, 0.9375rem);
+  color: var(--ds-text-heading, var(--black));
+}
+
+.admin-content .form-group input,
+.admin-content .form-group select,
+.admin-content .form-group textarea,
+.admin-login-form .form-group input,
+.admin-content .filter-group input,
+.admin-content .filter-group select {
+  font-family: var(--ds-font-sans, inherit);
+  font-size: var(--ds-text-base, 1rem);
+  color: var(--ds-text, var(--black));
+  background: var(--ds-surface, var(--white));
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
+  border-radius: var(--ds-radius-sm, 8px);
+  padding: var(--ds-space-3, 12px) var(--ds-space-4, 16px);
+  transition:
+    border-color var(--ds-duration-fast, 0.18s) var(--ds-ease-out, ease),
+    box-shadow var(--ds-duration-fast, 0.18s) var(--ds-ease-out, ease);
+}
+
+.admin-content .form-group input:focus,
+.admin-content .form-group select:focus,
+.admin-content .form-group textarea:focus,
+.admin-login-form .form-group input:focus,
+.admin-content .filter-group input:focus,
+.admin-content .filter-group select:focus {
+  outline: none;
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
+}
+
+.admin-content .form-group input:disabled,
+.admin-login-form .form-group input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--ds-surface-muted, var(--gray));
+}
+
+/* Filter chips / groups */
+.admin-content .filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-2, 8px);
+}
+
+.admin-content .filters-grid {
+  gap: var(--ds-space-4, 16px);
+}
+
+/* Empty & loading states */
+.admin-content .empty-state {
+  color: var(--ds-text-muted, rgba(29, 41, 57, 0.7));
+  padding: var(--ds-space-12, 48px) var(--ds-space-6, 24px);
+  text-align: center;
+}
+
+.admin-content .admin-loading {
+  color: var(--ds-text, var(--black));
+}
+
+.admin-content .admin-loading h2 {
+  color: var(--ds-brand-600, var(--brand-primary));
+}
+
+.admin-content .admin-loading p {
+  color: var(--ds-text-muted, rgba(29, 41, 57, 0.7));
+}
+
+/* Modal overlays */
+.admin-content .modal-overlay {
+  background: rgba(13, 23, 38, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.admin-content .modal-content {
+  background: var(--ds-surface, var(--white));
+  border: 1px solid var(--ds-border, var(--gray-border));
+  border-radius: var(--ds-radius-lg, 18px);
+  box-shadow: var(--ds-shadow-xl, 0 30px 64px rgba(13, 23, 38, 0.16));
+}
+
+.admin-content .modal-header {
+  border-bottom: 1px solid var(--ds-border, var(--gray-border));
+}
+
+.admin-content .modal-header h2 {
+  color: var(--ds-text-heading, var(--black));
+  font-size: var(--ds-text-xl, 1.375rem);
+}
+
+/* Status badges */
+.admin-content .status-badge {
+  border-radius: var(--ds-radius-pill, 999px);
+  font-size: var(--ds-text-xs, 0.8125rem);
+  font-weight: var(--ds-weight-semibold, 600);
+  padding: var(--ds-space-1, 4px) var(--ds-space-3, 12px);
+}
+
+/* Admin buttons keep .lte-btn class — token-aligned hover/focus */
+.admin-content .lte-btn:focus-visible,
+.admin-login-form .lte-btn:focus-visible {
+  outline: 2px solid var(--ds-brand-500, var(--brand-primary));
+  outline-offset: 2px;
+}

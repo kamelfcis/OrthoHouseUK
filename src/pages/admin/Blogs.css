@@ -1,3 +1,5 @@
+@import '../../styles/admin-tokens.css';
+
 .admin-blogs {
   padding: 40px 50px;
   max-width: 1400px;
@@ -5,12 +7,12 @@
 }
 
 .filters-section {
-  background: var(--white);
-  border-radius: 16px;
+  background: var(--ds-surface, var(--white));
+  border-radius: var(--ds-radius-md, 16px);
   padding: 24px;
   margin-top: 20px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
 }
 
 .filters-grid {
@@ -27,10 +29,10 @@
 }
 
 .blogs-table-container {
-  background: var(--white);
-  border-radius: 16px;
+  background: var(--ds-surface, var(--white));
+  border-radius: var(--ds-radius-md, 16px);
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
   overflow-x: auto;
 }
 
@@ -46,7 +48,7 @@
 
 .status-badge.archived {
   background: rgba(29, 41, 57, 0.1);
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .filter-group-button {
@@ -118,7 +120,7 @@
 
 .search-group input {
   padding: 12px 15px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 10px;
   font-size: 1rem;
   font-family: var(--font-main);
@@ -129,14 +131,14 @@
 
 .search-group input:focus {
   outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(0, 95, 154, 0.1);
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
 }
 
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .empty-state i {
@@ -148,7 +150,7 @@
 .empty-state h3 {
   font-size: 1.5rem;
   margin-bottom: 10px;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .empty-state p {
@@ -170,7 +172,7 @@
   height: 100%;
   object-fit: cover;
   border-radius: 8px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
 }
 
 .no-image-placeholder {
@@ -181,7 +183,7 @@
   justify-content: center;
   background: var(--gray);
   border-radius: 8px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   color: var(--gray-border);
   font-size: 1.5rem;
 }
@@ -216,7 +218,7 @@
   display: inline-block;
   border-radius: 10px;
   overflow: hidden;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   max-width: 300px;
 }
 

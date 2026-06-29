@@ -1,3 +1,5 @@
+@import '../../styles/admin-tokens.css';
+
 .admin-partners {
   padding: 40px 50px;
   max-width: 1400px;
@@ -5,12 +7,12 @@
 }
 
 .filters-section {
-  background: var(--white);
-  border-radius: 16px;
+  background: var(--ds-surface, var(--white));
+  border-radius: var(--ds-radius-md, 16px);
   padding: 24px;
   margin-top: 20px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
 }
 
 .filters-grid {
@@ -39,14 +41,14 @@
 
 .filter-group label {
   font-weight: 600;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-size: 0.9rem;
 }
 
 .filter-group select,
 .filter-group input {
   padding: 10px 14px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 8px;
   font-size: 0.95rem;
   font-family: var(--font-main);
@@ -56,8 +58,8 @@
 .filter-group select:focus,
 .filter-group input:focus {
   outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(0, 95, 154, 0.1);
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
 }
 
 .search-group {
@@ -95,7 +97,7 @@
 .empty-state h3 {
   font-size: 1.8rem;
   margin-bottom: 15px;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-weight: 600;
 }
 
@@ -120,9 +122,9 @@
   height: 100%;
   object-fit: contain;
   border-radius: 8px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   padding: 4px;
-  background: var(--white);
+  background: var(--ds-surface, var(--white));
 }
 
 .no-logo-placeholder {
@@ -135,7 +137,7 @@
   justify-content: center;
   color: rgba(29, 41, 57, 0.5);
   font-size: 1.5rem;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
 }
 
 .image-upload-section {
@@ -174,7 +176,7 @@
   height: 150px;
   border-radius: 12px;
   overflow: hidden;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   transition: all 0.3s ease;
 }
 
@@ -184,7 +186,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  background: var(--white);
+  background: var(--ds-surface, var(--white));
   padding: 10px;
 }
 
@@ -210,10 +212,10 @@
 /* Removed hover styles */
 
 .partners-table-container {
-  background: var(--white);
-  border-radius: 16px;
+  background: var(--ds-surface, var(--white));
+  border-radius: var(--ds-radius-md, 16px);
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
   overflow-x: auto;
 }
 
@@ -230,15 +232,15 @@
   padding: 16px;
   text-align: left;
   font-weight: 600;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-size: 0.95rem;
-  border-bottom: 2px solid var(--gray-border);
+  border-bottom: 1px solid var(--ds-border-strong, var(--gray-border));
 }
 
 .admin-table td {
   padding: 16px;
   border-bottom: 1px solid var(--gray-border);
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 /* Removed hover styles */
@@ -314,7 +316,7 @@
 }
 
 .modal-content {
-  background: var(--white);
+  background: var(--ds-surface, var(--white));
   border-radius: 20px;
   width: 100%;
   max-width: 700px;
@@ -328,12 +330,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 24px 30px;
-  border-bottom: 2px solid var(--gray-border);
+  border-bottom: 1px solid var(--ds-border-strong, var(--gray-border));
 }
 
 .modal-header h2 {
   font-size: 1.8rem;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .modal-close {
@@ -366,7 +368,7 @@
 
 .form-group label {
   font-weight: 600;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-size: 0.95rem;
 }
 
@@ -374,7 +376,7 @@
 .form-group select,
 .form-group textarea {
   padding: 12px 15px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 10px;
   font-size: 1rem;
   font-family: var(--font-main);
@@ -387,8 +389,8 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(0, 95, 154, 0.1);
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
 }
 
 .form-group textarea {
@@ -402,14 +404,14 @@
   gap: 10px;
   cursor: pointer;
   font-weight: 500;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-size: 1rem;
 }
 
 .checkbox-label input[type="checkbox"] {
   width: 20px;
   height: 20px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 6px;
   appearance: none;
   -webkit-appearance: none;
@@ -422,7 +424,7 @@
 
 .checkbox-label input[type="checkbox"]:checked {
   background: var(--brand-primary);
-  border-color: var(--brand-primary);
+  border-color: var(--ds-brand-500, var(--brand-primary));
 }
 
 .checkbox-label input[type="checkbox"]:checked::before {
@@ -440,7 +442,7 @@
   padding: 16px;
   background: var(--gray);
   border-radius: 10px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   max-height: 200px;
   overflow-y: auto;
 }

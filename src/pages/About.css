@@ -310,35 +310,23 @@
 
 /* Old page-header styles removed */
 
-/* Main Content - Matching Original Template */
-.lte-text-page {
-  color: var(--black);
-  background-color: var(--white);
+/* Main content area */
+.about-page-content {
+  color: var(--ds-text, var(--black));
+  background-color: var(--ds-surface, var(--white));
 }
 
-.lte-text-page.margin-default {
-  padding-top: 100px;
-  padding-bottom: 120px;
-}
-
-@media (max-width: 991px) {
-  .lte-text-page.margin-default {
-    padding-top: 80px;
-    padding-bottom: 90px;
-  }
-}
-
-.lte-text-page .row {
+.about-page-content .row {
   display: flex;
   flex-wrap: wrap;
   margin: 0 -15px;
 }
 
-.lte-text-page .row.centered {
+.about-page-content .row.centered {
   justify-content: center;
 }
 
-.lte-text-page .col-xl-12 {
+.about-page-content .col-xl-12 {
   flex: 0 0 100%;
   max-width: 100%;
   padding: 0 15px;
@@ -576,11 +564,6 @@
 
 /* Responsive */
 @media (max-width: 991px) {
-  .lte-text-page.margin-default {
-    padding-top: 80px;
-    padding-bottom: 90px;
-  }
-
   .about-content-grid {
     grid-template-columns: 1fr;
     gap: 3rem;
@@ -614,11 +597,6 @@
 }
 
 @media (max-width: 767px) {
-  .lte-text-page.margin-default {
-    padding-top: 60px;
-    padding-bottom: 70px;
-  }
-
   .entry-content {
     font-size: 16px;
   }
@@ -683,11 +661,6 @@
 }
 
 @media (max-width: 479px) {
-  .lte-text-page.margin-default {
-    padding-top: 50px;
-    padding-bottom: 60px;
-  }
-
   .entry-content {
     font-size: 15px;
   }

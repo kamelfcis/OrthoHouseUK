@@ -1,3 +1,5 @@
+@import '../../styles/admin-tokens.css';
+
 .admin-messages {
   padding: 40px 50px;
   max-width: 1400px;
@@ -12,7 +14,7 @@
   padding: 80px 20px;
   margin-top: 40px;
   font-size: 1.2rem;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,7 +48,7 @@
   margin-top: 24px;
   margin-bottom: 8px;
   font-size: 1.5rem;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .admin-loading p {
@@ -56,12 +58,12 @@
 
 /* Filters Section */
 .filters-section {
-  background: var(--white);
-  border-radius: 16px;
+  background: var(--ds-surface, var(--white));
+  border-radius: var(--ds-radius-md, 16px);
   padding: 24px;
   margin-top: 20px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
 }
 
 .filters-grid {
@@ -80,14 +82,14 @@
 
 .filter-group label {
   font-weight: 600;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-size: 0.9rem;
 }
 
 .filter-group input,
 .filter-group select {
   padding: 10px 14px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 8px;
   font-size: 0.95rem;
   font-family: var(--font-main);
@@ -99,8 +101,8 @@
 .filter-group select:focus,
 .filter-group input:focus {
   outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(0, 95, 154, 0.1);
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
 }
 
 .search-group {
@@ -178,33 +180,33 @@
 }
 
 .messages-list {
-  background: var(--white);
-  border-radius: 16px;
+  background: var(--ds-surface, var(--white));
+  border-radius: var(--ds-radius-md, 16px);
   padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
   max-height: calc(100vh - 200px);
   overflow-y: auto;
 }
 
 .message-card {
   padding: 20px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 12px;
   margin-bottom: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: var(--white);
+  background: var(--ds-surface, var(--white));
   position: relative;
 }
 
 .message-card.new {
-  border-color: var(--brand-primary);
+  border-color: var(--ds-brand-500, var(--brand-primary));
   background: linear-gradient(135deg, rgba(0, 95, 154, 0.05) 0%, rgba(36, 120, 181, 0.05) 50%, rgba(45, 173, 213, 0.05) 100%);
   border-left: 4px solid var(--brand-primary);
 }
 
 .message-card.active {
-  border-color: var(--brand-primary);
+  border-color: var(--ds-brand-500, var(--brand-primary));
   background: var(--main-gradient);
   color: var(--white);
   box-shadow: 0 4px 12px rgba(0, 95, 154, 0.2);
@@ -259,7 +261,7 @@
   font-size: 1.1rem;
   margin-bottom: 4px;
   font-weight: 600;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .message-header p {
@@ -318,10 +320,10 @@
 }
 
 .message-detail {
-  background: var(--white);
-  border-radius: 16px;
+  background: var(--ds-surface, var(--white));
+  border-radius: var(--ds-radius-md, 16px);
   padding: 30px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
   height: fit-content;
   position: sticky;
   top: 20px;
@@ -348,7 +350,7 @@
 .placeholder-content h3 {
   font-size: 1.5rem;
   margin-bottom: 12px;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .placeholder-content p {
@@ -362,7 +364,7 @@
   align-items: flex-start;
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 2px solid var(--gray-border);
+  border-bottom: 1px solid var(--ds-border-strong, var(--gray-border));
   gap: 20px;
 }
 
@@ -398,20 +400,20 @@
 
 .status-select {
   padding: 10px 16px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 8px;
   font-family: var(--font-main);
   font-size: 0.95rem;
   cursor: pointer;
-  background: var(--white);
+  background: var(--ds-surface, var(--white));
   min-width: 150px;
   transition: all 0.3s ease;
 }
 
 .status-select:focus {
   outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(0, 95, 154, 0.1);
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
 }
 
 .message-detail-content {
@@ -429,7 +431,7 @@
 .detail-section h3 {
   font-size: 1.1rem;
   margin-bottom: 16px;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   display: flex;
   align-items: center;
   gap: 8px;
@@ -460,7 +462,7 @@
 }
 
 .detail-item span {
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-size: 0.95rem;
 }
 
@@ -488,20 +490,20 @@
 .subject-text {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   padding: 12px;
-  background: var(--white);
+  background: var(--ds-surface, var(--white));
   border-radius: 8px;
   border-left: 4px solid var(--brand-primary);
 }
 
 .message-text {
-  background: var(--white);
+  background: var(--ds-surface, var(--white));
   padding: 20px;
   border-radius: 8px;
   line-height: 1.8;
   white-space: pre-wrap;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   border: 1px solid var(--gray-border);
   font-size: 0.95rem;
 }
@@ -510,9 +512,9 @@
   text-align: center;
   padding: 60px 20px;
   color: rgba(29, 41, 57, 0.7);
-  background: var(--white);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: var(--ds-surface, var(--white));
+  border-radius: var(--ds-radius-md, 16px);
+  box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
 }
 
 .empty-state i {
@@ -524,7 +526,7 @@
 .empty-state h3 {
   font-size: 1.5rem;
   margin-bottom: 12px;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .empty-state p {
@@ -558,7 +560,7 @@
 
 .status-badge.closed {
   background: rgba(29, 41, 57, 0.1);
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 @media (max-width: 1024px) {

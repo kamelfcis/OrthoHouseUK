@@ -1,3 +1,5 @@
+@import '../../styles/admin-tokens.css';
+
 /* Token-aligned admin shell — maps legacy vars to design system */
 .admin-layout {
   display: flex;
@@ -35,9 +37,9 @@
 .sidebar-logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--ds-space-3, 12px);
   text-decoration: none;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .sidebar-logo img {
@@ -56,17 +58,17 @@
 }
 
 .sidebar-toggle {
-  background: var(--gray);
+  background: var(--ds-surface-muted, var(--gray));
   border: none;
-  border-radius: 8px;
+  border-radius: var(--ds-radius-sm, 8px);
   width: 32px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #55b8e6;
-  transition: all 0.3s ease;
+  color: var(--ds-brand-400, #55b8e6);
+  transition: all var(--ds-duration-fast, 0.18s) var(--ds-ease-out, ease);
 }
 
 /* Removed hover styles */
@@ -77,29 +79,29 @@
 
 .sidebar-nav {
   flex: 1;
-  padding: 20px 0;
+  padding: var(--ds-space-5, 20px) 0;
   overflow-y: auto;
 }
 
 .sidebar-nav-item {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 20px;
-  margin: 4px 12px;
-  border-radius: 10px;
+  gap: var(--ds-space-4, 16px);
+  padding: var(--ds-space-3, 14px) var(--ds-space-5, 20px);
+  margin: var(--ds-space-1, 4px) var(--ds-space-3, 12px);
+  border-radius: var(--ds-radius-md, 10px);
   text-decoration: none;
-  color: var(--black);
-  transition: all 0.3s ease;
-  font-weight: 500;
-  font-size: 0.95rem;
+  color: var(--ds-text, var(--black));
+  transition: all var(--ds-duration-fast, 0.18s) var(--ds-ease-out, ease);
+  font-weight: var(--ds-weight-medium, 500);
+  font-size: var(--ds-text-sm, 0.95rem);
 }
 
 .sidebar-nav-item i {
   width: 20px;
   text-align: center;
-  font-size: 1.1rem;
-  color: var(--brand-primary);
+  font-size: var(--ds-text-lg, 1.1rem);
+  color: var(--ds-brand-600, var(--brand-primary));
 }
 
 /* Removed hover styles */
@@ -123,18 +125,18 @@
 }
 
 .sidebar-footer {
-  padding: 20px;
-  border-top: 2px solid var(--gray-border);
+  padding: var(--ds-space-5, 20px);
+  border-top: 1px solid var(--ds-border, var(--gray-border));
 }
 
 .sidebar-user {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding: 12px;
-  background: var(--gray);
-  border-radius: 10px;
+  gap: var(--ds-space-3, 12px);
+  margin-bottom: var(--ds-space-4, 16px);
+  padding: var(--ds-space-3, 12px);
+  background: var(--ds-surface-muted, var(--gray));
+  border-radius: var(--ds-radius-md, 10px);
 }
 
 .user-avatar {
@@ -155,17 +157,17 @@
 }
 
 .user-name {
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--black);
+  font-weight: var(--ds-weight-semibold, 600);
+  font-size: var(--ds-text-sm, 0.9rem);
+  color: var(--ds-text-heading, var(--black));
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .user-role {
-  font-size: 0.8rem;
-  color: rgba(29, 41, 57, 0.7);
+  font-size: var(--ds-text-xs, 0.8rem);
+  color: var(--ds-text-muted, rgba(29, 41, 57, 0.7));
 }
 
 .admin-sidebar.closed .user-info {
@@ -174,19 +176,19 @@
 
 .sidebar-logout {
   width: 100%;
-  padding: 12px 20px;
+  padding: var(--ds-space-3, 12px) var(--ds-space-5, 20px);
   background: transparent;
-  border: 2px solid var(--red);
-  border-radius: 10px;
-  color: var(--red);
-  font-weight: 600;
+  border: 1px solid var(--ds-danger, var(--red));
+  border-radius: var(--ds-radius-sm, 10px);
+  color: var(--ds-danger, var(--red));
+  font-weight: var(--ds-weight-semibold, 600);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  transition: all 0.3s ease;
-  font-family: var(--font-headers);
+  gap: var(--ds-space-2, 10px);
+  transition: all var(--ds-duration-fast, 0.18s) var(--ds-ease-out, ease);
+  font-family: var(--ds-font-sans, var(--font-headers));
 }
 
 /* Removed hover styles */
@@ -216,26 +218,25 @@
 .mobile-sidebar-toggle {
   display: none;
   position: fixed;
-  top: 20px;
-  left: 20px;
+  top: var(--ds-space-5, 20px);
+  left: var(--ds-space-5, 20px);
   z-index: 1001;
-  background: var(--main-gradient);
-  color: var(--white);
+  background: var(--ds-gradient-brand, var(--main-gradient));
+  color: var(--ds-text-on-brand, var(--white));
   border: none;
-  border-radius: 10px;
+  border-radius: var(--ds-radius-md, 10px);
   width: 48px;
   height: 48px;
-  display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
+  box-shadow: var(--ds-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.15));
+  transition: all var(--ds-duration-fast, 0.18s) var(--ds-ease-out, ease);
 }
 
 .mobile-sidebar-toggle i {
-  font-size: 1.2rem;
-  color: #55b8e6;
+  font-size: var(--ds-text-lg, 1.2rem);
+  color: var(--ds-brand-300, #55b8e6);
 }
 
 /* Mobile Overlay */

@@ -1,3 +1,5 @@
+@import '../../styles/admin-tokens.css';
+
 .admin-users {
   padding: 40px 50px;
   max-width: 1400px;
@@ -9,7 +11,7 @@
   padding: 80px 20px;
   margin-top: 40px;
   font-size: 1.2rem;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,12 +72,12 @@
 }
 
 .filters-section {
-  background: var(--white);
-  border-radius: 16px;
+  background: var(--ds-surface, var(--white));
+  border-radius: var(--ds-radius-md, 16px);
   padding: 24px;
   margin-top: 20px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
 }
 
 .filters-grid {
@@ -162,7 +164,7 @@
 
 .search-group input {
   padding: 12px 15px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 10px;
   font-size: 1rem;
   font-family: var(--font-main);
@@ -173,22 +175,22 @@
 
 .search-group input:focus {
   outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(0, 95, 154, 0.1);
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
 }
 
 .users-table-container {
-  background: var(--white);
-  border-radius: 16px;
+  background: var(--ds-surface, var(--white));
+  border-radius: var(--ds-radius-md, 16px);
   padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
   overflow-x: auto;
 }
 
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .empty-state i {
@@ -200,7 +202,7 @@
 .empty-state h3 {
   font-size: 1.5rem;
   margin-bottom: 10px;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .empty-state p {
@@ -221,8 +223,8 @@
   padding: 16px;
   text-align: left;
   font-weight: 600;
-  color: var(--black);
-  border-bottom: 2px solid var(--gray-border);
+  color: var(--ds-text-heading, var(--black));
+  border-bottom: 1px solid var(--ds-border-strong, var(--gray-border));
   font-size: 0.95rem;
 }
 
@@ -313,7 +315,7 @@
 }
 
 .modal-content {
-  background: var(--white);
+  background: var(--ds-surface, var(--white));
   border-radius: 20px;
   width: 100%;
   max-width: 700px;
@@ -327,12 +329,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 24px 30px;
-  border-bottom: 2px solid var(--gray-border);
+  border-bottom: 1px solid var(--ds-border-strong, var(--gray-border));
 }
 
 .modal-header h2 {
   font-size: 1.8rem;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
 }
 
 .modal-close {
@@ -363,7 +365,7 @@
 
 .form-group label {
   font-weight: 600;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-size: 0.95rem;
 }
 
@@ -371,7 +373,7 @@
 .form-group select,
 .form-group textarea {
   padding: 12px 15px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 10px;
   font-size: 1rem;
   font-family: var(--font-main);
@@ -384,8 +386,8 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: var(--brand-primary);
-  box-shadow: 0 0 0 3px rgba(0, 95, 154, 0.1);
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
 }
 
 .checkbox-label {
@@ -394,14 +396,14 @@
   gap: 10px;
   cursor: pointer;
   font-weight: 500;
-  color: var(--black);
+  color: var(--ds-text-heading, var(--black));
   font-size: 1rem;
 }
 
 .checkbox-label input[type="checkbox"] {
   width: 20px;
   height: 20px;
-  border: 2px solid var(--gray-border);
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
   border-radius: 6px;
   appearance: none;
   -webkit-appearance: none;
@@ -414,7 +416,7 @@
 
 .checkbox-label input[type="checkbox"]:checked {
   background: var(--brand-primary);
-  border-color: var(--brand-primary);
+  border-color: var(--ds-brand-500, var(--brand-primary));
 }
 
 .checkbox-label input[type="checkbox"]:checked::before {

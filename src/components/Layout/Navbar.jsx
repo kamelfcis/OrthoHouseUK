@@ -50,12 +50,12 @@ const Navbar = () => {
 
   return (
     <div
-      id="lte-nav-wrapper"
-      className={`lte-nav-wrapper ${isScrolled ? 'scrolled' : ''}`}
+      id="site-nav"
+      className={`site-nav ${isScrolled ? 'is-scrolled' : ''}`}
     >
-      <nav className="lte-navbar" aria-label="Main navigation">
+      <nav className="site-navbar" aria-label="Main navigation">
         <div className="container">
-          <div className="lte-navbar-logo">
+          <div className="site-navbar__logo">
             <Link to="/" aria-label={`${nav.logoAlt} — Home`}>
               <img
                 src="/assets/images/Logo_SVG.svg"
@@ -68,9 +68,9 @@ const Navbar = () => {
             </Link>
           </div>
 
-          <div className={`lte-navbar-items navbar-mobile navbar-mobile-black ${isMenuOpen ? 'collapse' : ''}`}>
+          <div className={`site-navbar__panel navbar-mobile navbar-mobile-black ${isMenuOpen ? 'is-open' : ''}`}>
             <div className="toggle-wrap">
-              <Link to="/" className="lte-logo mobile-logo">
+              <Link to="/" className="site-navbar__mobile-logo mobile-logo">
                 <img
                   src="/assets/images/Logo_SVG.svg"
                   alt={nav.logoAlt}
@@ -84,7 +84,7 @@ const Navbar = () => {
               </Link>
               <button
                 type="button"
-                className="lte-navbar-toggle collapsed"
+                className="site-navbar__toggle is-active"
                 onClick={() => setIsMenuOpen(false)}
                 aria-label="Close menu"
               >
@@ -93,7 +93,7 @@ const Navbar = () => {
               <div className="clearfix"></div>
             </div>
 
-            <ul className="navbar-menu lte-ul-nav">
+            <ul className="navbar-menu site-navbar__list">
               {nav.items.map((item) => (
                 <li
                   key={item.path}
@@ -106,8 +106,8 @@ const Navbar = () => {
               ))}
             </ul>
 
-            <div className="lte-mobile-controls">
-              <div className="lte-nav-search">
+            <div className="site-navbar__mobile-controls">
+              <div className="site-navbar__search">
                 <form onSubmit={handleSearch} className="wp-searchform">
                   <input
                     type="search"
@@ -118,7 +118,7 @@ const Navbar = () => {
                   />
                   <button
                     type="submit"
-                    id="lte-top-search-ico-mobile"
+                    id="site-nav-search-submit"
                     className="search-submit"
                     aria-label="Search"
                   >
@@ -133,10 +133,10 @@ const Navbar = () => {
 
           <button
             type="button"
-            className={`lte-navbar-toggle ${isMenuOpen ? 'collapsed' : ''}`}
+            className={`site-navbar__toggle ${isMenuOpen ? 'is-active' : ''}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-expanded={isMenuOpen}
-            aria-controls="lte-nav-wrapper"
+            aria-controls="site-nav"
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           >
             <span className="icon-bar top-bar"></span>

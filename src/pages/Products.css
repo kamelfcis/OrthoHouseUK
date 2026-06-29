@@ -269,12 +269,6 @@
   }
 }
 
-/* WooCommerce Products Wrapper */
-.lte-wc-wrapper {
-  padding-top: 100px;
-  padding-bottom: 120px;
-}
-
 /* Categories Filter Section */
 .categories-filter-section {
   margin-bottom: 80px;
@@ -970,8 +964,4 @@
     font-size: 14px;
   }
 
-  .lte-wc-wrapper {
-    padding-top: 60px;
-    padding-bottom: 80px;
-  }
 }

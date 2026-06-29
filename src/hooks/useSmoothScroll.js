@@ -16,7 +16,7 @@ export const useSmoothScroll = () => {
         const targetId = href.substring(1)
         const targetElement = document.getElementById(targetId)
         if (targetElement) {
-          const navbarHeight = document.querySelector('.lte-nav-wrapper')?.offsetHeight || 0
+          const navbarHeight = document.querySelector('.site-nav')?.offsetHeight || 0
           const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 20
           
           window.scrollTo({
@@ -32,7 +32,7 @@ export const useSmoothScroll = () => {
       setTimeout(() => {
         const element = document.querySelector(location.hash)
         if (element) {
-          const navbarHeight = document.querySelector('.lte-nav-wrapper')?.offsetHeight || 0
+          const navbarHeight = document.querySelector('.site-nav')?.offsetHeight || 0
           const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 20
           
           window.scrollTo({

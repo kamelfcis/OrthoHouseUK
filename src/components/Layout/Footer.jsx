@@ -7,8 +7,8 @@ const Footer = () => {
   const { about, columns, contact, social, copyright } = footer
 
   return (
-    <footer className="lte-footer-wrapper">
-      <div className="lte-footer-widgets">
+    <footer className="site-footer">
+      <div className="site-footer__main">
         <div className="container">
           <div className="row footer-row">
             <div className="col-lg-4 col-md-12">

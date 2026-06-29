@@ -1,7 +1,12 @@
-/* Template Styles Matching Original Cybron Theme */
+/* Template Styles — legacy utilities retained for admin; public shell uses design-system tokens */
 
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
+/* Typography — scoped to legacy content blocks; design-system handles global body type */
+.entry-content h1,
+.entry-content h2,
+.entry-content h3,
+.entry-content h4,
+.entry-content h5,
+.entry-content h6 {
   font-family: var(--font-headers), serif;
   font-weight: 600;
   letter-spacing: var(--font-headers-letterspacing);
@@ -9,31 +14,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
 }
 
-h1 {
-  font-size: 2.5em;
-}
-
-h2 {
-  font-size: 2em;
-}
-
-h3 {
-  font-size: 1.75em;
-}
-
-h4 {
-  font-size: 1.5em;
-}
-
-h5 {
-  font-size: 1.25em;
-}
-
-h6 {
-  font-size: 1em;
-}
-
-/* Section Headers */
+/* Section Headers — legacy blog/admin blocks */
 .section-title {
   font-family: var(--font-headers), serif;
   font-weight: 700;
@@ -46,114 +27,6 @@ h6 {
   font-size: 1.1rem;
   line-height: 1.8;
   color: rgba(29, 41, 57, 0.7);
-}
-
-/* Navbar — heights aligned with design-system --ds-header-height (76px).
-   Navbar.css has the primary rules; these legacy selectors kept for compatibility. */
-#lte-nav-wrapper {
-  width: 100%;
-  min-height: var(--ds-header-height);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background-color: var(--white);
-  transition: background var(--ds-duration) var(--ds-ease-out),
-    box-shadow var(--ds-duration) var(--ds-ease-out);
-}
-
-#lte-nav-wrapper.scrolled {
-  box-shadow: var(--ds-shadow-md);
-}
-
-.lte-navbar {
-  z-index: 3;
-  border-radius: 0;
-  border: 0 none;
-  padding: 0;
-  margin-bottom: 0;
-}
-
-.lte-navbar > .container {
-  position: relative;
-  overflow: visible;
-  padding: 0 15px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: var(--ds-header-height);
-}
-
-.lte-navbar .lte-navbar-logo {
-  margin-right: 30px;
-  min-height: var(--ds-header-height);
-  display: flex;
-  align-items: center;
-}
-
-.lte-navbar .lte-navbar-logo img {
-  height: clamp(44px, 5vw, 56px);
-  width: auto;
-}
-
-/* Page Header Styles */
-.lte-page-header,
-.page-header {
-  color: var(--white);
-  background-color: var(--black);
-  text-align: center;
-  padding: 180px 0;
-  position: relative;
-  background-repeat: no-repeat;
-  background-position: 50% 0;
-  background-size: cover;
-}
-
-.lte-page-header .container,
-.page-header .container {
-  position: relative;
-  z-index: 2;
-}
-
-.lte-page-header h1,
-.page-header h1 {
-  color: var(--white) !important;
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.lte-page-header p,
-.page-header p {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 1.1rem;
-}
-
-@media (max-width: 991px) {
-  .lte-page-header,
-  .page-header {
-    padding: 120px 0;
-  }
-  
-  .lte-page-header h1,
-  .page-header h1 {
-    font-size: 2rem;
-  }
-}
-
-/* Content Sections */
-.inner-page,
-.margin-default {
-  padding-top: 100px;
-  padding-bottom: 120px;
-}
-
-@media (max-width: 991px) {
-  .inner-page,
-  .margin-default {
-    padding-top: 80px;
-    padding-bottom: 90px;
-  }
 }
 
 /* Clearfix */
@@ -184,7 +57,7 @@ h6 {
   color: var(--white);
 }
 
-/* Background Utilities */
+/* Background Utilities — admin / legacy blocks */
 .lte-background-black {
   background-color: var(--black);
   color: var(--white);
@@ -199,3 +72,17 @@ h6 {
   color: var(--white);
 }
 
+/* Admin inner pages still use margin-default in responsive.css */
+.inner-page,
+.margin-default {
+  padding-top: 100px;
+  padding-bottom: 120px;
+}
+
+@media (max-width: 991px) {
+  .inner-page,
+  .margin-default {
+    padding-top: 80px;
+    padding-bottom: 90px;
+  }
+}

@@ -175,7 +175,7 @@ const Services = () => {
         </div>
       </div>
 
-      <div className="lte-wc-wrapper margin-default">
+      <div className="partners-page-main ds-section">
         <div className="container">
           {loading ? (
             <div className="admin-loading">
