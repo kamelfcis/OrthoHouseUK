@@ -11,7 +11,6 @@ import './Home.css'
 const HeroPartnersCarousel = lazy(() => import('../components/Home/HeroPartnersCarousel'))
 const HomeProducts = lazy(() => import('../components/Home/HomeProducts'))
 const HomeMission = lazy(() => import('../components/Home/HomeMission'))
-const Stats = lazy(() => import('../components/Home/Stats'))
 const HomeUkJourney = lazy(() => import('../components/Home/HomeUkJourney'))
 const HomeAccreditations = lazy(() => import('../components/Home/HomeAccreditations'))
 const HomeEvents = lazy(() => import('../components/Home/HomeEvents'))
@@ -55,9 +54,6 @@ const Home = () => {
       </Suspense>
       <Suspense fallback={<SectionSkeleton minHeight={240} />}>
         <HomeMission />
-      </Suspense>
-      <Suspense fallback={<SectionSkeleton minHeight={260} />}>
-        <Stats branchData={branchData} />
       </Suspense>
       <Suspense fallback={<SectionSkeleton minHeight={300} />}>
         <HomeUkJourney />
