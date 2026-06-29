@@ -45,9 +45,13 @@
 }
 
 .site-navbar__logo img {
-  max-height: 52px;
+  display: block;
+  max-height: 48px;
+  max-width: 168px;
   width: auto;
   height: auto;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .site-navbar__panel {
@@ -407,9 +411,12 @@
   }
 
   .mobile-logo img {
-    max-height: 45px;
+    max-height: 40px;
+    max-width: 140px;
     height: auto;
     width: auto;
+    object-fit: contain;
+    object-position: left center;
     filter: drop-shadow(0 2px 8px rgba(85, 184, 230, 0.3));
   }
 
@@ -552,6 +559,7 @@
 
   .site-navbar__logo img {
     max-height: 44px;
+    max-width: 154px;
   }
 
   .site-navbar__panel {
@@ -589,6 +597,7 @@
 
   .site-navbar__logo img {
     max-height: 40px;
+    max-width: 140px;
   }
 
   .site-navbar__panel {

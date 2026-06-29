@@ -9,6 +9,7 @@ export default defineConfig({
   build: {
     target: 'es2018',
     minify: 'terser',
+    assetsInlineLimit: 4096,
     terserOptions: {
       compress: {
         drop_console: true,

@@ -34,7 +34,7 @@
 .about-hero__media {
   position: absolute;
   inset: 0;
-  background: url('/assets/images/ourmission.jpg') center / cover no-repeat;
+  background: center / cover no-repeat;
   transform: scale(1.08);
   transition: transform 22s ease-in-out;
   z-index: 0;
@@ -100,37 +100,6 @@
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
   max-width: 600px;
-}
-
-.about-hero__breadcrumbs {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.about-hero__breadcrumbs li::before {
-  content: '/';
-  margin-right: 0.75rem;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.about-hero__breadcrumbs li:first-child::before {
-  display: none;
-}
-
-.about-hero__breadcrumbs a {
-  color: rgba(255, 255, 255, 0.9);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.about-hero__breadcrumbs a:hover {
-  color: var(--white);
 }
 
 @media (max-width: 768px) {

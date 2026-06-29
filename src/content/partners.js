@@ -10,7 +10,11 @@ export const partnersPage = {
     eyebrow: 'Our Partners',
     title: ['Trusted Global', 'Manufacturing Partners'],
     subtitle:
-      'We represent world-class orthopaedic brands with full regulatory compliance, clinical education, and dedicated UK market support.'
+      'We represent world-class orthopaedic brands with full regulatory compliance, clinical education, and dedicated UK market support.',
+    imageQuery: 'healthcare professional surgeon',
+    imageAlt: 'Healthcare professionals and surgeons in orthopaedic partnership',
+    imageFallback:
+      'https://images.unsplash.com/photo-1537368916624-89d682267b36?w=1920&h=1080&fit=crop&q=80'
   },
   loadMore: 'View more partners',
   empty: 'No partners are currently listed for the UK branch.',
@@ -18,8 +22,6 @@ export const partnersPage = {
 }
 
 export const partnerDetail = {
-  breadcrumbHome: 'Home',
-  breadcrumbPartners: 'Partners',
   productsHeading: 'Partner Products',
   websiteCta: 'Visit website',
   speakCta: 'Speak with Our Team',

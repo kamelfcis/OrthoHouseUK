@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import SEO from '../components/SEO/SEO'
 import { pageSeo } from '../content/seo'
@@ -227,18 +226,6 @@ const Gallery = () => {
     }
   }
 
-  const heroBreadcrumbVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  }
-
   return (
     <div className="gallery-page">
       <SEO
@@ -267,10 +254,6 @@ const Gallery = () => {
             <motion.p className="gallery-hero__subtitle" variants={heroChildVariants}>
               {galleryPage.hero.subtitle}
             </motion.p>
-            <motion.ul className="gallery-hero__breadcrumbs" variants={heroBreadcrumbVariants}>
-              <li><Link to="/">{galleryPage.hero.breadcrumbHome}</Link></li>
-              <li>{galleryPage.hero.breadcrumbCurrent}</li>
-            </motion.ul>
           </motion.div>
         </div>
       </div>

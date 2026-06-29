@@ -5,13 +5,12 @@ export const nav = {
   items: [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
-    { name: 'Partners', path: '/partners' },
+    { name: 'Our Partners', path: '/partners' },
     { name: 'Products', path: '/products' },
-    { name: 'Gallery', path: '/gallery' },
     { name: 'Blog', path: '/blog' },
     { name: 'Contact Us', path: '/contact' }
   ],
-  cta: 'Speak with Our Team',
+  cta: 'Speak with our team',
   searchPlaceholder: 'Search articles…'
 }
 
@@ -67,7 +66,7 @@ export const footer = {
 export const ctas = {
   exploreProducts: 'Explore Our Products',
   viewPartners: 'View Partner Portfolio',
-  speakWithTeam: 'Speak with Our Team',
+  speakWithTeam: 'Speak with our team',
   requestConsultation: 'Request a Consultation',
   contactTeam: 'Contact Our Team',
   requestAssistance: 'Request Assistance',

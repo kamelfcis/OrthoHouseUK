@@ -1,9 +1,10 @@
-import { useEffect, Suspense, lazy } from 'react'
+import { useEffect, Suspense, lazy, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { motion } from 'framer-motion'
 import SEO from '../components/SEO/SEO'
 import { pageSeo } from '../content/seo'
 import { aboutPage } from '../content/about'
+import { fetchPageHeroImage } from '../lib/unsplash'
 import CeoVisionMission from '../components/Home/CeoVisionMission'
 import HomeAboutSection from '../components/Home/About'
 import useBranchData from '../hooks/useBranchData'
@@ -17,9 +18,28 @@ const SectionFallback = ({ height = 260 }) => (
 
 const About = () => {
   const { branchData } = useBranchData('UK')
+  const [heroImage, setHeroImage] = useState({
+    src: aboutPage.hero.imageFallback,
+    alt: aboutPage.hero.imageAlt
+  })
 
   useEffect(() => {
     window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+
+    fetchPageHeroImage(aboutPage.hero.imageQuery, {
+      src: aboutPage.hero.imageFallback,
+      alt: aboutPage.hero.imageAlt
+    }).then((image) => {
+      if (!cancelled) setHeroImage(image)
+    })
+
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   const [ref1, inView1] = useInView({
@@ -81,18 +101,6 @@ const About = () => {
     }
   }
 
-  const heroBreadcrumbVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  }
-
   return (
     <div className="about-page">
       <SEO
@@ -102,7 +110,11 @@ const About = () => {
       />
       {/* Hero Section */}
       <div className="about-hero">
-        <div className="about-hero__media" role="presentation" />
+        <div
+          className="about-hero__media"
+          style={{ backgroundImage: `url(${heroImage.src})` }}
+          role="presentation"
+        />
         <div className="about-hero__overlay" aria-hidden="true" />
         <div className="about-hero__container container">
           <motion.div
@@ -125,10 +137,6 @@ const About = () => {
             <motion.p className="about-hero__subtitle" variants={heroChildVariants}>
               {aboutPage.hero.subtitle}
             </motion.p>
-            <motion.ul className="about-hero__breadcrumbs" variants={heroBreadcrumbVariants}>
-              <li><a href="/">{aboutPage.hero.breadcrumbHome}</a></li>
-              <li>{aboutPage.hero.breadcrumbCurrent}</li>
-            </motion.ul>
           </motion.div>
         </div>
       </div>

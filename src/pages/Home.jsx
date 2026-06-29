@@ -9,11 +9,16 @@ import { generateOrganizationSchema, generateWebsiteSchema, generateLocalBusines
 import './Home.css'
 
 const HeroPartnersCarousel = lazy(() => import('../components/Home/HeroPartnersCarousel'))
-const HomeProducts = lazy(() => import('../components/Home/HomeProducts'))
-const HomeMission = lazy(() => import('../components/Home/HomeMission'))
-const HomeUkJourney = lazy(() => import('../components/Home/HomeUkJourney'))
+const HomeValueProp = lazy(() => import('../components/Home/HomeValueProp'))
+const HomeCapabilities = lazy(() => import('../components/Home/HomeCapabilities'))
+const HomeWhyChooseUs = lazy(() => import('../components/Home/HomeWhyChooseUs'))
+const HomeSpecialties = lazy(() => import('../components/Home/HomeSpecialties'))
+const HomeHowItWorks = lazy(() => import('../components/Home/HomeHowItWorks'))
+const Stats = lazy(() => import('../components/Home/Stats'))
+const HomeTestimonials = lazy(() => import('../components/Home/HomeTestimonials'))
 const HomeAccreditations = lazy(() => import('../components/Home/HomeAccreditations'))
 const HomeEvents = lazy(() => import('../components/Home/HomeEvents'))
+const HomeResources = lazy(() => import('../components/Home/HomeResources'))
 const HomeJoinCta = lazy(() => import('../components/Home/HomeJoinCta'))
 
 const Home = () => {
@@ -45,25 +50,66 @@ const Home = () => {
         keywords={pageSeo.home.keywords}
         structuredData={structuredData}
       />
+
+      {/* 1. Full-width hero */}
       <Hero branchData={branchData} />
-      <Suspense fallback={<SectionSkeleton minHeight={260} />}>
+
+      {/* 2. Primary value proposition */}
+      <Suspense fallback={<SectionSkeleton minHeight={420} />}>
+        <HomeValueProp />
+      </Suspense>
+
+      {/* Partner trust strip */}
+      <Suspense fallback={<SectionSkeleton minHeight={120} />}>
         <HeroPartnersCarousel branchData={branchData} />
       </Suspense>
-      <Suspense fallback={<SectionSkeleton minHeight={320} />}>
-        <HomeProducts branchData={branchData} />
+
+      {/* Service categories */}
+      <Suspense fallback={<SectionSkeleton minHeight={360} />}>
+        <HomeSpecialties />
       </Suspense>
-      <Suspense fallback={<SectionSkeleton minHeight={240} />}>
-        <HomeMission />
+
+      {/* 3. Featured services */}
+      <Suspense fallback={<SectionSkeleton minHeight={400} />}>
+        <HomeCapabilities />
       </Suspense>
+
+      {/* 4. Why choose us */}
+      <Suspense fallback={<SectionSkeleton minHeight={400} />}>
+        <HomeWhyChooseUs />
+      </Suspense>
+
+      {/* 6. How it works */}
+      <Suspense fallback={<SectionSkeleton minHeight={280} />}>
+        <HomeHowItWorks />
+      </Suspense>
+
+      {/* 7. Statistics & measurable outcomes */}
       <Suspense fallback={<SectionSkeleton minHeight={300} />}>
-        <HomeUkJourney />
+        <Stats branchData={branchData} />
       </Suspense>
+
+      {/* 8. Testimonials */}
       <Suspense fallback={<SectionSkeleton minHeight={260} />}>
+        <HomeTestimonials />
+      </Suspense>
+
+      {/* 10. Trust & compliance */}
+      <Suspense fallback={<SectionSkeleton minHeight={240} />}>
         <HomeAccreditations />
       </Suspense>
+
+      {/* 11. Community impact */}
       <Suspense fallback={<SectionSkeleton minHeight={260} />}>
         <HomeEvents />
       </Suspense>
+
+      {/* 12. Latest insights / blog */}
+      <Suspense fallback={<SectionSkeleton minHeight={280} />}>
+        <HomeResources branchData={branchData} />
+      </Suspense>
+
+      {/* 13. Strong call-to-action */}
       <Suspense fallback={<SectionSkeleton minHeight={280} />}>
         <HomeJoinCta />
       </Suspense>

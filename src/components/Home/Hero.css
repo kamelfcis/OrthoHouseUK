@@ -61,13 +61,31 @@
   will-change: transform;
 }
 
-.hero-slide-img {
+.hero-slide-img,
+.hero-slide-video {
   width: 100%;
   height: 100%;
+  min-width: 100%;
+  min-height: 100%;
   object-fit: cover;
   object-position: center;
   display: block;
   filter: saturate(105%);
+}
+
+.hero-slide-img--poster {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-slider--video .hero-slide.is-active .hero-slide-media {
+  animation: none;
+  transform: scale(1.04);
+}
+
+.hero-slider--video .hero-slide-media {
+  transform: scale(1.04);
 }
 
 /* Ken Burns ظ¤ fires only on the currently active slide */
@@ -273,7 +291,47 @@
   gap: var(--ds-space-1);
 }
 
-/* Per-slide eyebrow label */
+/* CSS entrance animations — replaces framer-motion on critical hero path */
+.hero-content-inner .hero-animate-item {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.hero-content-inner.is-visible .hero-animate-item {
+  animation: heroContentIn 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-content-inner.is-visible .hero-eyebrow {
+  animation-delay: 0.08s;
+}
+
+.hero-content-inner.is-visible .hero-title > .hero-animate-item:nth-child(1) {
+  animation-delay: 0.18s;
+}
+
+.hero-content-inner.is-visible .hero-title > .hero-animate-item:nth-child(2) {
+  animation-delay: 0.28s;
+}
+
+.hero-content-inner.is-visible .hero-subtitle {
+  animation-delay: 0.38s;
+}
+
+.hero-content-inner.is-visible .hero-buttons {
+  animation-delay: 0.48s;
+}
+
+@keyframes heroContentIn {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hero-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -289,6 +347,18 @@
   letter-spacing: var(--ds-tracking-wider);
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.96);
+  animation: heroEyebrowSwap 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes heroEyebrowSwap {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-title {
@@ -458,6 +528,13 @@
   font-size: 1.1rem;
   z-index: 3;
   pointer-events: none;
+  animation: heroScrollBounce 1.6s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+@keyframes heroScrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+  50%      { transform: translateX(-50%) translateY(8px); opacity: 0.85; }
 }
 
 /* =============================================================================
@@ -470,10 +547,29 @@
     transition: none;
   }
 
+  .hero-content-inner .hero-animate-item,
+  .hero-content-inner.is-visible .hero-animate-item {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .hero-eyebrow {
+    animation: none !important;
+  }
+
+  .hero-scroll-indicator {
+    animation: none !important;
+  }
+
   .hero-slide.is-active .hero-slide-media,
   .hero-slide-media {
     animation: none !important;
     transform: scale(1.04) !important;
+  }
+
+  .hero-slider--video .hero-slide-video {
+    display: none;
   }
 
   .hero-title::before {

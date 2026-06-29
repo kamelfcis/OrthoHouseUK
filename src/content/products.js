@@ -5,8 +5,6 @@ export const productsPage = {
     titleLine2: 'Orthopaedic Solutions',
     subtitle:
       'Explore our curated range of trauma, arthroplasty, foot & ankle, and regenerative technologies — distributed with full MHRA compliance and clinical support.',
-    breadcrumbHome: 'Home',
-    breadcrumbCurrent: 'Products'
   },
   filterTitle: 'Filter by Category',
   clearFilter: 'Clear filter',
@@ -20,8 +18,6 @@ export const productsPage = {
 }
 
 export const productDetail = {
-  breadcrumbHome: 'Home',
-  breadcrumbProducts: 'Products',
   speakCta: 'Speak with Our Team',
   specsHeading: 'Product Specifications',
   partnerHeading: 'Manufacturing Partner',

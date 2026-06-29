@@ -63,18 +63,6 @@ const Blog = () => {
     }
   }
 
-  const heroBreadcrumbVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  }
-
   const breakpointColumnsObj = {
     default: 3,
     1400: 2,
@@ -243,10 +231,6 @@ const Blog = () => {
             <motion.p className="blog-hero__subtitle" variants={heroChildVariants}>
               {blogPage.hero.subtitle}
             </motion.p>
-            <motion.ul className="blog-hero__breadcrumbs" variants={heroBreadcrumbVariants}>
-              <li><Link to="/">{blogPage.hero.breadcrumbHome}</Link></li>
-              <li>{blogPage.hero.breadcrumbCurrent}</li>
-            </motion.ul>
           </motion.div>
         </div>
       </div>

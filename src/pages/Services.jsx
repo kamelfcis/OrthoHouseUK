@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { fetchPageHeroImage } from '../lib/unsplash'
 import useBranchData from '../hooks/useBranchData'
 import SEO from '../components/SEO/SEO'
 import { pageSeo } from '../content/seo'
@@ -20,9 +21,28 @@ const Services = () => {
   const [partners, setPartners] = useState([])
   const [partnerImages, setPartnerImages] = useState({})
   const [displayedCount, setDisplayedCount] = useState(5) // Show first 5 partners initially
+  const [heroImage, setHeroImage] = useState({
+    src: partnersPage.hero.imageFallback,
+    alt: partnersPage.hero.imageAlt
+  })
 
   useEffect(() => {
     window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+
+    fetchPageHeroImage(partnersPage.hero.imageQuery, {
+      src: partnersPage.hero.imageFallback,
+      alt: partnersPage.hero.imageAlt
+    }).then((image) => {
+      if (!cancelled) setHeroImage(image)
+    })
+
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   useEffect(() => {
@@ -152,7 +172,11 @@ const Services = () => {
         keywords={pageSeo.partners.keywords}
       />
       <div className="partners-hero">
-        <div className="partners-hero__media" role="presentation" />
+        <div
+          className="partners-hero__media"
+          style={{ backgroundImage: `url(${heroImage.src})` }}
+          role="presentation"
+        />
         <div className="partners-hero__overlay" aria-hidden="true" />
         <div className="partners-hero__container container">
           <motion.div
@@ -167,10 +191,6 @@ const Services = () => {
               <span>{partnersPage.hero.titleLine2}</span>
             </h1>
             <p className="partners-hero__subtitle">{partnersPage.hero.subtitle}</p>
-            <ul className="partners-hero__breadcrumbs">
-              <li><a href="/">{partnersPage.hero.breadcrumbHome}</a></li>
-              <li>{partnersPage.hero.breadcrumbCurrent}</li>
-            </ul>
           </motion.div>
         </div>
       </div>

@@ -5,8 +5,10 @@ export const aboutPage = {
     titleLine2: 'Care Across the UK',
     subtitle:
       'We connect surgeons and hospitals with innovative implants and clinical support — built on regulatory excellence and long-term partnerships.',
-    breadcrumbHome: 'Home',
-    breadcrumbCurrent: 'About Us'
+    imageQuery: 'medical team healthcare professional',
+    imageAlt: 'Medical team of healthcare professionals in a modern hospital',
+    imageFallback:
+      'https://images.unsplash.com/photo-1631815582920-54d7714370ab?w=1920&h=1080&fit=crop&q=80'
   },
   philosophy: {
     heading: 'Our Philosophy',
@@ -43,37 +45,31 @@ export const aboutPage = {
 }
 
 export const ceoVisionMission = {
-  companyName: 'OrthoHouse UK',
+  sectionEyebrow: 'Leadership',
   tabs: {
-    ceo: 'CEO Message',
+    ceo: 'CEO message',
     vision: 'Vision',
     mission: 'Mission'
   },
   content: {
     ceo: {
-      title: 'CEO Message',
-      subtitle: 'A message from the CEO',
-      text: 'My purpose is to build an organisation that makes a genuine difference to the healthcare sector. At OrthoHouse, we are committed to developing the medical industry by delivering high-quality orthopaedic solutions. We look forward to continuing our expansion across both the health and educational sectors in the UK.',
-      highlightedWords: ['committed', 'orthopaedic solutions', 'health', 'educational'],
+      title: 'A message from our chief executive',
+      text: 'My aim is to build an organisation that makes a genuine difference across the UK healthcare sector. At OrthoHouse UK, we are dedicated to advancing orthopaedic care by supplying high-quality implants and clinical support to surgeons and hospitals nationwide. We look forward to continuing our growth alongside NHS and private-sector partners, and to strengthening our contribution to clinical education across the United Kingdom.',
       author: {
         name: 'Waleed Emad',
-        title: 'CEO & Founder, OrthoHouse for Medical Supplies'
+        title: 'Chief executive & founder'
       }
     },
     vision: {
-      title: 'Our Vision',
-      subtitle: '',
-      text: 'OrthoHouse UK aims to be a trusted partner in UK healthcare. We bridge the gap between advanced orthopaedic technology and scientific education, empowering clinicians to excel in their practice.',
-      highlightedWords: [],
+      title: 'Our vision',
+      text: 'To be a trusted orthopaedic distributor across the United Kingdom — connecting surgeons and hospitals with proven implant technology, robust regulatory support, and evidence-based clinical education.',
       author: null
     },
     mission: {
-      title: 'Our Mission',
-      subtitle: '',
-      text: 'We are OrthoHouse UK, committed to enhancing orthopaedic care across the United Kingdom. We supply state-of-the-art implant systems backed by scientific research, and collaborate closely with surgeons and hospital teams — empowering them with the latest expertise to deliver outstanding patient results.',
-      highlightedWords: [],
+      title: 'Our mission',
+      text: 'We supply advanced orthopaedic implant systems backed by scientific evidence, working closely with surgeons, theatre teams, and hospital procurement. Through MHRA-compliant distribution and dedicated clinical support, we help deliver outstanding outcomes for patients throughout the UK.',
       author: null
     }
   },
-  ceoImageAlt: 'Waleed Emad — CEO & Founder, OrthoHouse'
+  ceoImageAlt: 'Waleed Emad, chief executive and founder of OrthoHouse UK'
 }

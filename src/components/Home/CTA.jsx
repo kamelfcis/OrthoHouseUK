@@ -1,36 +1,41 @@
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
 import ButtonWithIcon from '../ButtonWithIcon'
-import { ctas } from '../../content/site'
+import { homeCta } from '../../content/home'
 import './CTA.css'
 
 const CTA = () => {
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 })
+  const prefersReducedMotion = useReducedMotion()
+
+  const motionProps = prefersReducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: 24 },
+        animate: inView ? { opacity: 1, y: 0 } : {},
+        transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+      }
+
   return (
-    <section className="cta-section">
-      <div className="cta-overlay"></div>
+    <section className="home-cta ds-section" ref={ref} aria-labelledby="home-cta-heading">
+      <div className="home-cta__overlay" aria-hidden="true" />
       <div className="container">
-        <motion.div
-          className="cta-content"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="cta-title">Ready to Partner with Us?</h2>
-          <p className="cta-text">
-            Speak with our team about orthopaedic product portfolios, clinical support,
-            and partnership opportunities for your hospital or trust.
-          </p>
-          <div className="cta-buttons">
+        <motion.div className="home-cta__content" {...motionProps}>
+          <h2 id="home-cta-heading" className="home-cta__title">
+            {homeCta.title}
+          </h2>
+          <p className="home-cta__text">{homeCta.subtitle}</p>
+          <div className="home-cta__actions">
             <ButtonWithIcon
-              text={ctas.speakWithTeam}
+              text={homeCta.primary.label}
               icon="fas fa-hand-pointer"
-              to="/contact"
+              to={homeCta.primary.path}
               variant="main"
-              iconTeal={true}
+              iconTeal
             />
-            <Link to="/partners" className="btn btn-outline-white">
-              {ctas.viewPartners}
+            <Link to={homeCta.secondary.path} className="btn btn-outline-white">
+              {homeCta.secondary.label}
             </Link>
           </div>
         </motion.div>

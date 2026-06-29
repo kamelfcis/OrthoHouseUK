@@ -21,8 +21,6 @@ export const blogPage = {
 }
 
 export const blogDetail = {
-  breadcrumbHome: 'Home',
-  breadcrumbBlog: 'Blog',
   relatedHeading: 'Related Articles',
   shareHeading: 'Share this article',
   notFound: 'Article not found',

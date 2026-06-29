@@ -61,18 +61,6 @@ const Products = () => {
     }
   }
 
-  const heroBreadcrumbVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  }
-
   useEffect(() => {
     window.scrollTo(0, 0)
     fetchData()
@@ -272,10 +260,6 @@ const Products = () => {
             <motion.p className="products-hero__subtitle" variants={heroChildVariants}>
               {productsPage.hero.subtitle}
             </motion.p>
-            <motion.ul className="products-hero__breadcrumbs" variants={heroBreadcrumbVariants}>
-              <li><a href="/">{productsPage.hero.breadcrumbHome}</a></li>
-              <li>{productsPage.hero.breadcrumbCurrent}</li>
-            </motion.ul>
           </motion.div>
         </div>
       </div>

@@ -58,11 +58,11 @@ const Navbar = () => {
           <div className="site-navbar__logo">
             <Link to="/" aria-label={`${nav.logoAlt} — Home`}>
               <img
-                src="/assets/images/Logo_SVG.svg"
+                src="/assets/images/Logo_SVG.png"
                 alt={nav.logoAlt}
                 className="logo"
-                width={132}
-                height={44}
+                width={168}
+                height={96}
                 decoding="async"
               />
             </Link>
@@ -72,15 +72,12 @@ const Navbar = () => {
             <div className="toggle-wrap">
               <Link to="/" className="site-navbar__mobile-logo mobile-logo">
                 <img
-                  src="/assets/images/Logo_SVG.svg"
+                  src="/assets/images/Logo_SVG.png"
                   alt={nav.logoAlt}
-                  width={120}
-                  height={40}
+                  width={140}
+                  height={80}
                   decoding="async"
                 />
-                <div className="mobile-logo-text">
-                  <span className="logo-text">OrthoHouse UK</span>
-                </div>
               </Link>
               <button
                 type="button"

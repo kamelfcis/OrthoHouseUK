@@ -121,43 +121,6 @@
   text-shadow: 0 18px 36px rgba(7, 41, 68, 0.45);
 }
 
-.products-hero__breadcrumbs {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  list-style: none;
-  padding: 0.8rem 1.4rem;
-  margin: 0;
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(6px);
-}
-
-.products-hero__breadcrumbs li {
-  display: inline-flex;
-  align-items: center;
-  color: var(--ds-text-on-brand, rgba(255, 255, 255, 0.85));
-}
-
-.products-hero__breadcrumbs li:not(:last-child)::after {
-  content: '•';
-  margin: 0 0.75rem;
-  color: rgba(255, 255, 255, 0.45);
-}
-
-.products-hero__breadcrumbs a {
-  color: rgba(255, 255, 255, 0.92);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.products-hero__breadcrumbs a:hover {
-  color: #55b8e6;
-}
-
 @media (max-width: 1024px) {
   .products-hero__container {
     padding: clamp(110px, 24vw, 150px) 0;
@@ -185,12 +148,6 @@
   .products-hero__subtitle {
     max-width: 100%;
   }
-
-  .products-hero__breadcrumbs {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.6rem;
-  }
 }
 
 @media (max-width: 520px) {
@@ -201,10 +158,6 @@
 
   .products-hero__title {
     font-size: clamp(2rem, 8vw, 2.5rem);
-  }
-
-  .products-hero__breadcrumbs {
-    padding: 0.6rem 1.1rem;
   }
 
   /* Extra small mobile - compact design */
@@ -958,10 +911,6 @@
   .products-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--ds-space-4);
-  }
-
-  .products-page .page-header .breadcrumbs li {
-    font-size: 14px;
   }
 
 }

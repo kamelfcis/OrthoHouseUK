@@ -4,140 +4,97 @@ import { useInView } from 'react-intersection-observer'
 import { ceoVisionMission } from '../../content/about'
 import './CeoVisionMission.css'
 
+const TAB_KEYS = ['ceo', 'vision', 'mission']
+
 const CeoVisionMission = () => {
   const [activeTab, setActiveTab] = useState('ceo')
   const [ref, inView] = useInView({
     triggerOnce: true,
-    threshold: 0.2
+    threshold: 0.15
   })
 
-  const { tabs, content, companyName, ceoImageAlt } = ceoVisionMission
+  const { sectionEyebrow, tabs, content, ceoImageAlt } = ceoVisionMission
   const currentContent = content[activeTab]
-
-  const highlightText = (text, highlightedWords) => {
-    if (!highlightedWords || highlightedWords.length === 0) {
-      return text
-    }
-
-    let result = text
-    highlightedWords.forEach(word => {
-      const regex = new RegExp(`(${word})`, 'gi')
-      result = result.replace(regex, '<span class="highlighted-text">$1</span>')
-    })
-    return result
-  }
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.1
-      }
-    }
-  }
-
-  const textVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.5 }
-    }
-  }
-
-  const imageVariants = {
-    hidden: { opacity: 0, x: 20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.5, delay: 0.2 }
-    }
-  }
+  const showPortrait = activeTab === 'ceo'
 
   return (
-    <section className="ceo-vision-mission-section" ref={ref}>
+    <section
+      className="ceo-vision-mission-section ds-section"
+      ref={ref}
+      aria-labelledby="ceo-vision-mission-heading"
+    >
       <div className="container">
         <motion.div
-          className="ceo-vision-mission-wrapper"
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
+          className="ceo-vision-mission-card"
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="ceo-vision-mission-content">
-            <div className="ceo-vision-mission-tabs">
-              <button
-                className={`ceo-tab ${activeTab === 'ceo' ? 'active' : ''}`}
-                onClick={() => setActiveTab('ceo')}
-              >
-                {tabs.ceo}
-              </button>
-              <button
-                className={`ceo-tab ${activeTab === 'vision' ? 'active' : ''}`}
-                onClick={() => setActiveTab('vision')}
-              >
-                {tabs.vision}
-              </button>
-              <button
-                className={`ceo-tab ${activeTab === 'mission' ? 'active' : ''}`}
-                onClick={() => setActiveTab('mission')}
-              >
-                {tabs.mission}
-              </button>
-            </div>
+          <header className="ceo-vision-mission-header">
+            <span className="ceo-vision-mission-eyebrow">{sectionEyebrow}</span>
+            <nav className="ceo-vision-mission-tabs" aria-label="Leadership content">
+              {TAB_KEYS.map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  className={`ceo-tab${activeTab === key ? ' active' : ''}`}
+                  onClick={() => setActiveTab(key)}
+                  aria-selected={activeTab === key}
+                  role="tab"
+                >
+                  {tabs[key]}
+                </button>
+              ))}
+            </nav>
+          </header>
 
-            <motion.div className="ceo-company-name" variants={textVariants}>
-              {companyName}
-            </motion.div>
-
+          <div className={`ceo-vision-mission-body${showPortrait ? ' has-portrait' : ''}`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
                 className="ceo-content-area"
-                initial={{ opacity: 0, y: 20 }}
+                role="tabpanel"
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25 }}
               >
-                <h2 className="ceo-main-heading">{currentContent.title}</h2>
-                {currentContent.subtitle && (
-                  <p className="ceo-subtitle">{currentContent.subtitle}</p>
-                )}
-                <div
-                  className="ceo-text"
-                  dangerouslySetInnerHTML={{
-                    __html: highlightText(currentContent.text, currentContent.highlightedWords)
-                  }}
-                />
+                <h2 id="ceo-vision-mission-heading" className="ceo-main-heading">
+                  {currentContent.title}
+                </h2>
+                <p className="ceo-text">{currentContent.text}</p>
                 {currentContent.author && (
-                  <div className="ceo-author">
+                  <footer className="ceo-author">
                     <div className="ceo-author-name">{currentContent.author.name}</div>
                     <div className="ceo-author-title">{currentContent.author.title}</div>
-                  </div>
+                  </footer>
                 )}
               </motion.div>
             </AnimatePresence>
-          </div>
 
-          <motion.div
-            className="ceo-image-wrapper"
-            variants={imageVariants}
-          >
-            <div className="ceo-image-container">
-              <img
-                src="/assets/images/ceo.jpeg"
-                alt={ceoImageAlt}
-                className="ceo-image"
-                loading="lazy"
-                onError={(e) => {
-                  e.currentTarget.onerror = null
-                  e.currentTarget.src = 'https://via.placeholder.com/600x800/13293d/eff8ff?text=CEO+Photo'
-                }}
-              />
-            </div>
-          </motion.div>
+            <AnimatePresence>
+              {showPortrait && (
+                <motion.figure
+                  className="ceo-portrait"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  <div className="ceo-portrait-frame">
+                    <img
+                      src="/assets/images/ceo.jpeg"
+                      alt={ceoImageAlt}
+                      className="ceo-portrait-image"
+                      loading="lazy"
+                      width={240}
+                      height={300}
+                    />
+                  </div>
+                </motion.figure>
+              )}
+            </AnimatePresence>
+          </div>
         </motion.div>
       </div>
     </section>

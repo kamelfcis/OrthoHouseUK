@@ -144,8 +144,8 @@
      LAYOUT
      --------------------------------------------------------------------------- */
   --ds-header-height:    72px;
-  --ds-container-max:  1200px;
-  --ds-container-wide: 1320px;
+  --ds-container-max:  1280px;
+  --ds-container-wide: 1400px;
 }
 
 /* =============================================================================
@@ -640,36 +640,6 @@ p {
 }
 .ds-btn--ghost:hover {
   background: var(--ds-surface-muted);
-}
-
-/* Page hero breadcrumbs */
-.ds-page-hero__breadcrumbs {
-  margin-top: var(--ds-space-6);
-}
-.ds-page-hero__breadcrumbs ol {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--ds-space-2);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: var(--ds-text-sm);
-}
-.ds-page-hero__breadcrumbs li:not(:last-child)::after {
-  content: '/';
-  margin-left: var(--ds-space-2);
-  opacity: 0.6;
-}
-.ds-page-hero__breadcrumbs a {
-  color: rgba(255, 255, 255, 0.85);
-  text-decoration: none;
-}
-.ds-page-hero__breadcrumbs a:hover {
-  color: #fff;
-  text-decoration: underline;
-}
-.ds-page-hero__breadcrumbs span {
-  color: rgba(255, 255, 255, 0.7);
 }
 
 /* Category filter chips */
