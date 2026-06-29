@@ -1,35 +1,36 @@
 .lte-footer-wrapper {
-  background: var(--black-dark);
-  color: var(--white);
-  margin-top: 4rem;
+  background: var(--ds-surface-inverse, var(--black-dark));
+  color: var(--ds-text-on-brand, var(--white));
+  margin-top: var(--ds-space-16, 4rem);
 }
 
 .lte-footer-widgets {
-  padding: 4rem 0 2rem;
+  padding: var(--ds-space-16, 4rem) 0 var(--ds-space-8, 2rem);
 }
 
 .footer-widget {
-  margin-bottom: 2.5rem;
+  margin-bottom: var(--ds-space-10, 2.5rem);
 }
 
 .footer-widget .footer-logo {
   max-width: 160px;
-  margin-bottom: 1.25rem;
-  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.15));
+  margin-bottom: var(--ds-space-5, 1.25rem);
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.12));
 }
 
 .footer-widget h3 {
-  color: var(--white);
-  font-family: var(--font-headers);
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
+  color: var(--ds-text-on-brand, var(--white));
+  font-family: var(--ds-font-sans, var(--font-headers));
+  font-size: var(--ds-text-lg, 1.125rem);
+  margin-bottom: var(--ds-space-6, 1.5rem);
+  font-weight: var(--ds-weight-semibold, 600);
 }
 
 .footer-widget p {
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.8;
-  margin-bottom: 1.5rem;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: var(--ds-leading-relaxed, 1.8);
+  margin-bottom: var(--ds-space-6, 1.5rem);
+  font-size: var(--ds-text-sm, 0.9375rem);
 }
 
 .footer-widget ul {
@@ -38,74 +39,80 @@
 }
 
 .footer-widget ul li {
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--ds-space-3, 0.75rem);
 }
 
 .footer-widget ul li a {
-  color: rgba(255, 255, 255, 0.8);
-  transition: color 0.3s ease;
+  color: rgba(255, 255, 255, 0.82);
+  transition: color var(--ds-duration-fast, 0.18s) ease;
   display: inline-block;
+  font-size: var(--ds-text-sm, 0.9375rem);
 }
 
 .footer-widget ul li a:hover {
-  color: var(--main);
-  padding-left: 5px;
+  color: var(--ds-brand-300, var(--main));
+  padding-left: var(--ds-space-1, 4px);
 }
 
 .contact-info li {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 0.75rem;
-  line-height: 1.6;
+  gap: var(--ds-space-2, 0.5rem);
+  color: rgba(255, 255, 255, 0.82);
+  margin-bottom: var(--ds-space-3, 0.75rem);
+  line-height: var(--ds-leading-normal, 1.6);
+  font-size: var(--ds-text-sm, 0.9375rem);
 }
 
 .contact-info li i {
-  color: var(--main);
+  color: var(--ds-brand-400, var(--main));
   width: 20px;
   flex-shrink: 0;
   margin-top: 0.2rem;
 }
 
 .contact-info li a {
-  color: rgba(255, 255, 255, 0.8);
-  transition: color 0.3s ease;
+  color: rgba(255, 255, 255, 0.82);
+  transition: color var(--ds-duration-fast, 0.18s) ease;
 }
 
 .contact-info li a:hover {
-  color: var(--main);
+  color: var(--ds-brand-300, var(--main));
 }
 
 .footer-social {
   display: flex;
-  gap: 1rem;
+  gap: var(--ds-space-3, 0.75rem);
   flex-wrap: wrap;
-  margin-top: 1.5rem;
+  margin-top: var(--ds-space-6, 1.5rem);
   justify-content: flex-start;
 }
 
 .footer-social a {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  color: var(--white);
-  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--ds-radius-sm, 8px);
+  color: var(--ds-text-on-brand, var(--white));
+  transition:
+    background var(--ds-duration-fast, 0.18s) ease,
+    transform var(--ds-duration-fast, 0.18s) ease,
+    border-color var(--ds-duration-fast, 0.18s) ease;
 }
 
 .footer-social a:hover {
-  background: var(--main-gradient);
-  transform: translateY(-3px);
-  box-shadow: 0 4px 15px rgba(0, 95, 154, 0.4);
+  background: var(--ds-brand-600, var(--main));
+  border-color: transparent;
+  transform: translateY(-2px);
 }
 
 .copyright-block {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 1.5rem 0;
+  background: rgba(0, 0, 0, 0.24);
+  padding: var(--ds-space-6, 1.5rem) 0;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -114,19 +121,29 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: var(--ds-space-4, 1rem);
 }
 
 .copyright-content p {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.58);
   margin: 0;
-  font-size: 0.9rem;
+  font-size: var(--ds-text-sm, 0.875rem);
+}
+
+.copyright-content a {
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.copyright-content a:hover {
+  color: var(--ds-brand-300, var(--main));
 }
 
 .footer-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem 0;
+  gap: var(--ds-space-8, 2rem) 0;
 }
 
 .footer-row > [class*='col-'] {
@@ -142,7 +159,7 @@
 .footer-columns {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 2rem;
+  gap: var(--ds-space-8, 2rem);
 }
 
 .contact-column {
@@ -151,7 +168,7 @@
 
 @media (max-width: 991px) {
   .footer-row {
-    gap: 1.5rem 0;
+    gap: var(--ds-space-6, 1.5rem) 0;
   }
 
   .footer-columns {
@@ -169,31 +186,26 @@
   }
 
   .footer-social {
-    justify-content: center;
-    gap: 0.75rem;
+    justify-content: flex-start;
   }
 }
 
 @media (max-width: 479px) {
   .lte-footer-widgets {
-    padding: 2.5rem 0 1rem;
+    padding: var(--ds-space-10, 2.5rem) 0 var(--ds-space-4, 1rem);
   }
 
   .footer-widget h3 {
-    font-size: 1rem;
-  }
-
-  .footer-social {
-    gap: 0.6rem;
+    font-size: var(--ds-text-base, 1rem);
   }
 
   .footer-social a {
-    width: 36px;
-    height: 36px;
-    font-size: 0.9rem;
+    width: 40px;
+    height: 40px;
+    font-size: var(--ds-text-sm, 0.9rem);
   }
 
   .copyright-content p {
-    font-size: 0.8125rem;
+    font-size: var(--ds-text-xs, 0.8125rem);
   }
 }

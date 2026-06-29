@@ -3,6 +3,9 @@ import { useInView } from 'react-intersection-observer'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import SEO from '../components/SEO/SEO'
+import { pageSeo } from '../content/seo'
+import { galleryPage } from '../content/gallery'
 import './Gallery.css'
 
 const Gallery = () => {
@@ -238,6 +241,11 @@ const Gallery = () => {
 
   return (
     <div className="gallery-page">
+      <SEO
+        title={pageSeo.gallery.title}
+        description={pageSeo.gallery.description}
+        keywords={pageSeo.gallery.keywords}
+      />
       <div className="gallery-hero">
         <div className="gallery-hero__media" role="presentation" />
         <div className="gallery-hero__overlay" aria-hidden="true" />
@@ -250,19 +258,18 @@ const Gallery = () => {
             animate={heroInView ? 'visible' : 'hidden'}
           >
             <motion.div className="gallery-hero__eyebrow" variants={heroChildVariants}>
-              Visual Collection
+              {galleryPage.hero.eyebrow}
             </motion.div>
             <motion.h1 className="gallery-hero__title" variants={heroChildVariants}>
-              <motion.span variants={heroLineVariants}>Experience OrthoHouse</motion.span>
-              <motion.span variants={heroLineVariants}>Innovation in Motion</motion.span>
+              <motion.span variants={heroLineVariants}>{galleryPage.hero.titleLine1}</motion.span>
+              <motion.span variants={heroLineVariants}>{galleryPage.hero.titleLine2}</motion.span>
             </motion.h1>
             <motion.p className="gallery-hero__subtitle" variants={heroChildVariants}>
-              Discover our world-class laboratory, patient successes, and the technology shaping the
-              future of prosthetics and biomedical engineering.
+              {galleryPage.hero.subtitle}
             </motion.p>
             <motion.ul className="gallery-hero__breadcrumbs" variants={heroBreadcrumbVariants}>
-              <li><Link to="/">Home</Link></li>
-              <li>Gallery</li>
+              <li><Link to="/">{galleryPage.hero.breadcrumbHome}</Link></li>
+              <li>{galleryPage.hero.breadcrumbCurrent}</li>
             </motion.ul>
           </motion.div>
         </div>
@@ -273,7 +280,7 @@ const Gallery = () => {
           {loading ? (
             <div className="gallery-loading">
               <div className="gallery-spinner"></div>
-              <p>Loading gallery images...</p>
+              <p>{galleryPage.loading}</p>
             </div>
           ) : error ? (
             <div className="gallery-error">
@@ -283,7 +290,7 @@ const Gallery = () => {
           ) : galleryImages.length === 0 ? (
             <div className="gallery-empty">
               <i className="fas fa-images"></i>
-              <p>No gallery images available for the UK branch yet.</p>
+              <p>{galleryPage.empty}</p>
             </div>
           ) : (
             <>
@@ -295,7 +302,7 @@ const Gallery = () => {
                   role="tab"
                   aria-selected={activeCategory === 'all'}
                 >
-                  All
+                  {galleryPage.filterAll}
                 </button>
                 {categories.map((category) => (
                   <button

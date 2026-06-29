@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import SEO from '../components/SEO/SEO'
 import { generateArticleSchema, generateBreadcrumbSchema } from '../utils/seoData'
+import { blogPage, blogDetail } from '../content/blog'
 import './BlogDetail.css'
 
 const BlogDetail = () => {
@@ -89,7 +90,7 @@ const BlogDetail = () => {
 
         const authorName = data.authors && data.authors.length > 0
           ? `${data.authors[0].first_name || ''} ${data.authors[0].last_name || ''}`.trim()
-          : 'OrthoHouse Team'
+          : blogPage.defaultAuthor
 
         const featuredImage = toStorageUrl(data.featured_image)
 
@@ -136,7 +137,7 @@ const BlogDetail = () => {
       <div className="blog-detail-page">
         <div className="blog-detail-loading">
           <div className="blog-detail-spinner"></div>
-          <p>Loading article...</p>
+          <p>{blogDetail.loading}</p>
         </div>
       </div>
     )
@@ -147,9 +148,9 @@ const BlogDetail = () => {
       <div className="blog-detail-page">
         <div className="blog-detail-error">
           <i className="fas fa-exclamation-triangle"></i>
-          <p>{error || 'Blog post not found.'}</p>
+          <p>{error || blogDetail.notFound}</p>
           <Link to="/blog" className="blog-detail-back">
-            <i className="fas fa-arrow-left"></i> Back to blog
+            <i className="fas fa-arrow-left"></i> {blogDetail.backToBlog}
           </Link>
         </div>
       </div>
@@ -185,7 +186,7 @@ const BlogDetail = () => {
       <div className="container">
         <div className="blog-detail-header">
           <Link to="/blog" className="blog-detail-back">
-            <i className="fas fa-arrow-left"></i> Back to blog
+            <i className="fas fa-arrow-left"></i> {blogDetail.backToBlog}
           </Link>
           <div className="blog-detail-meta">
             {metaInfo.formattedDate && (

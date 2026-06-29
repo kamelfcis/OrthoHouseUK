@@ -2,7 +2,7 @@ import { useInView } from 'react-intersection-observer'
 import { motion, useReducedMotion } from 'framer-motion'
 import CountUp from 'react-countup'
 import SectionHeading from '../common/SectionHeading'
-import { homeStats } from '../../data/homeContent'
+import { homeStats } from '../../content/home'
 import './Stats.css'
 
 const STAT_TYPE_MAP = {

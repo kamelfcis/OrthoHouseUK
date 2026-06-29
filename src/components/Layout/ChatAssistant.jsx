@@ -1,13 +1,20 @@
 import { useState, useMemo, useRef, useEffect, useId } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { supabase } from '../../lib/supabase'
+import {
+  chatUi,
+  chatContact,
+  chatBlog,
+  chatKnowledgeBase,
+  chatDynamic
+} from '../../content/chat'
 import './ChatAssistant.css'
 
 const initialMessages = [
   {
     id: 'bot-welcome',
     author: 'bot',
-    text: `Hello! I'm the OrthoHouse assistant.\nAsk me about our pages, product categories, specific products, blog posts, or how to contact us.`
+    text: chatUi.welcome
   }
 ]
 
@@ -48,15 +55,9 @@ const STOP_WORDS = new Set([
   'contacts'
 ])
 
-const CONTACT_RESPONSE = `Reach the OrthoHouse UK team here:
-- Address: 2 Kingdom St, London W2 6BD, United Kingdom
-- Phone: +44 20 3368 3036 (Mon–Fri, 9am–5pm)
-- Email: infoUK@ortho-house.com
-- Contact form: /contact`
+const CONTACT_RESPONSE = chatContact
 
-const BLOG_RESPONSE = `Explore clinical insights, updates, and stories on our Blog page:
-- Latest articles: /blog
-- Individual posts: open /blog and select a topic that interests you.`
+const BLOG_RESPONSE = chatBlog
 
 const BotIcon = ({ size = 48, className = '' }) => {
   const gradientId = useId()
@@ -142,52 +143,16 @@ const ChatAssistant = () => {
   const [referenceData, setReferenceData] = useState({ products: [], categories: [] })
   const [isLoadingData, setIsLoadingData] = useState(false)
 
-  const knowledgeBase = useMemo(() => ([
-    {
-      keywords: ['page', 'pages', 'site', 'navigate', 'navigation', 'menu', 'where to find'],
-      response: `You can explore these OrthoHouse pages:\n- **Home** (/): Overview of OrthoHouse and our services\n- **About** (/about): Our story, mission, and values\n- **Products** (/products): Browse our complete product catalog\n- **Partners** (/partners): Meet our innovation partners\n- **Team** (/team): Learn about our specialists\n- **Gallery** (/gallery): Real-world highlights and showcases\n- **Testimonials** (/testimonials): Hear from our clients\n- **Blog** (/blog): Clinical insights and updates\n- **Contact** (/contact): Reach out to our support team`
-    },
-    {
-      keywords: ['category', 'categories', 'filter', 'type', 'types'],
-      response: `Product categories help you focus on what you need. Visit /products and use the category filter cards to browse by:\n- Orthopaedic solutions\n- Diagnostic tools\n- Patient care items\n- And more specialized categories\n\nEach category shows relevant products with detailed information.`
-    },
-    {
-      keywords: ['product', 'products', 'item', 'items', 'catalog', 'catalogue', 'inventory'],
-      response: `Head to /products to browse our complete catalog. You can:\n- Filter by category\n- Search for specific products\n- View detailed product information\n- See partner information\n- Learn about applications and features\n\nWhat type of product are you looking for?`
-    },
-    {
-      keywords: ['blog', 'blogs', 'article', 'news', 'insight', 'post', 'posts', 'stories'],
-      response: `Our Blog page at /blog highlights:\n- Clinical insights and research\n- Product updates and launches\n- Partner success stories\n- Industry news and trends\n\nClick any post to read the full article. Use the search feature to find specific topics.`
-    },
-    {
-      keywords: ['contact', 'contacts', 'support', 'email', 'phone', 'visit', 'location', 'address', 'reach'],
-      response: CONTACT_RESPONSE
-    },
-    {
-      keywords: ['partner', 'partners', 'collaborat', 'manufacturer', 'supplier'],
-      response: `The Partners page at /partners showcases the innovators we collaborate with. Each partner profile includes:\n- Company information\n- Associated products\n- Success stories\n- Contact details\n\nVisit /partners to explore our network of trusted manufacturers and medical pioneers.`
-    },
-    {
-      keywords: ['service', 'services', 'treatment', 'solution', 'solutions', 'what do you offer'],
-      response: `OrthoHouse offers comprehensive solutions including:\n- Prosthetic limbs and devices\n- Orthotic solutions\n- Biomedical devices\n- Rehabilitation services\n- Expert consultations\n- Personalized patient care\n\nVisit /about to learn more about our services, or /contact to discuss your specific needs.`
-    },
-    {
-      keywords: ['appointment', 'book', 'schedule', 'consultation', 'meeting'],
-      response: `Ready to connect? You can:\n- Use the Contact page form at /contact\n- Call us at +44 20 3368 3036 (Mon–Fri, 9am–5pm)\n- Email us at infoUK@ortho-house.com\n- Visit us at 2 Kingdom St, London W2 6BD\n\nOur team will follow up quickly to schedule your consultation.`
-    },
-    {
-      keywords: ['team', 'staff', 'specialist', 'specialists', 'doctor', 'doctors'],
-      response: `Learn about our team of specialists on the Team page at /team. Our experts are dedicated to providing personalized care and innovative solutions for our patients.`
-    },
-    {
-      keywords: ['gallery', 'photos', 'images', 'pictures', 'showcase'],
-      response: `Visit our Gallery at /gallery to see real-world highlights, product showcases, and success stories from our work with patients and partners.`
-    },
-    {
-      keywords: ['testimonial', 'testimonials', 'review', 'reviews', 'feedback', 'patient story'],
-      response: `Read testimonials from our patients at /testimonials. Hear firsthand accounts of how OrthoHouse has helped improve lives through our prosthetic and orthotic solutions.`
-    }
-  ]), [])
+  const knowledgeBase = useMemo(() => (
+    chatKnowledgeBase.map((entry) => ({
+      ...entry,
+      response: entry.response ?? (
+        entry.keywords.some((k) => ['contact', 'contacts', 'support', 'email', 'phone', 'visit', 'location', 'address', 'reach'].includes(k))
+          ? CONTACT_RESPONSE
+          : entry.response
+      )
+    }))
+  ), [])
 
   const suggestions = useMemo(() => ([]), [])
 
@@ -508,9 +473,9 @@ const ChatAssistant = () => {
       // More intelligent product queries
       if (normalized.includes('product') || normalized.includes('item') || normalized.includes('catalog') || normalized.includes('what products') || normalized.includes('show products')) {
         if (isLoadingData) {
-          return `I'm gathering the latest product list right now—please give me a moment and ask again.`
+          return chatDynamic.loadingProducts
         }
-        return `You can explore all our products at /products. You can:\n- Browse by category using the filter cards\n- Search for specific products\n- Click any product to see detailed information\n\nWhat type of product are you looking for?`
+        return chatDynamic.browseProducts
       }
     }
 
@@ -523,30 +488,30 @@ const ChatAssistant = () => {
 
       if (normalized.includes('category') || normalized.includes('categories') || normalized.includes('what categories')) {
         if (isLoadingData) {
-          return `I'm still loading the category catalogue—ask me again in a few seconds.`
+          return chatDynamic.loadingCategories
         }
-        return `Visit /products and tap on any category card to filter the catalogue instantly. You can browse products by type, application, or specialty area.`
+        return chatDynamic.browseCategories
       }
     }
 
     // Handle partner queries
     if (normalized.includes('partner') || normalized.includes('partners') || normalized.includes('collaborat')) {
-      return `The Partners page showcases the innovators we collaborate with. Each partner profile links products and success stories connected to them. Visit /partners to explore our network of trusted manufacturers and medical pioneers.`
+      return chatDynamic.partnersFallback
     }
 
     // Handle service queries
     if (normalized.includes('service') || normalized.includes('services') || normalized.includes('treatment') || normalized.includes('what services')) {
-      return `Visit the Services page to review clinical programs, digital planning, and ongoing support packages tailored for orthodontic teams. You can also learn about our comprehensive solutions at /partners.`
+      return chatDynamic.servicesFallback
     }
 
     // Handle appointment/booking queries
     if (normalized.includes('appointment') || normalized.includes('book') || normalized.includes('schedule') || normalized.includes('consultation')) {
-      return `Ready to connect? Use the Contact page's form to request a call or booking. Our team will follow up quickly. Visit /contact or call us at +44 20 3368 3036 (Mon–Fri, 9am–5pm).`
+      return chatDynamic.appointmentFallback
     }
 
     // Handle "who" or "what is" questions about OrthoHouse
     if ((normalized.includes('who') || normalized.includes('what is')) && (normalized.includes('orthohouse') || normalized.includes('ortho house') || normalized.includes('company'))) {
-      return `OrthoHouse is a leading provider of prosthetic limbs, orthotic solutions, biomedical devices, and rehabilitation services. We offer expert consultations and personalized care for patients worldwide. Learn more about us on the About page at /about.`
+      return `OrthoHouse UK distributes orthopaedic implants, trauma systems, arthroplasty, and bone graft solutions to surgeons and hospitals across the United Kingdom. We offer MHRA-compliant distribution with dedicated clinical support. Learn more on the About page at /about.`
     }
 
     // Check knowledge base with better matching
@@ -562,10 +527,10 @@ const ChatAssistant = () => {
     // Smarter fallback response
     const hasQuestionWords = ['what', 'where', 'how', 'when', 'why', 'who', 'which'].some(word => normalized.includes(word))
     if (hasQuestionWords) {
-      return `I understand you're asking a question. Let me help you better—could you be more specific? For example:\n- "What products do you have for [specific need]?"\n- "How do I contact OrthoHouse?"\n- "Where can I find [specific information]?"\n\nI can help with products, categories, contact info, blog posts, and navigating our website.`
+      return chatDynamic.questionFallback
     }
 
-    return `I can help you with:\n\n🔍 **Finding Information**: Products, categories, blog posts\n📞 **Contact Details**: Phone, email, address\n🧭 **Navigation**: Guide you to any page\n🤝 **Partners**: Learn about our collaborators\n\nTry asking:\n- "Show me products for [specific need]"\n- "How do I contact you?"\n- "What categories are available?"\n- "Tell me about your partners"\n\nWhat would you like to know?`
+    return chatDynamic.generalFallback
   }
 
   const handleSendMessage = (message) => {
@@ -734,15 +699,15 @@ const ChatAssistant = () => {
                   <BotIcon size={46} />
                 </span>
                 <div className="chat-header-text">
-                  <p className="chat-title">OrthoHouse Assistant</p>
-                  <p className="chat-status">{isTyping ? 'Typing...' : 'Online'}</p>
+                  <p className="chat-title">{chatUi.title}</p>
+                  <p className="chat-status">{isTyping ? chatUi.typing : chatUi.online}</p>
                 </div>
               </div>
               <button
                 type="button"
                 className="chat-close"
                 onClick={toggleChat}
-                aria-label="Close chat assistant"
+                aria-label={chatUi.closeAria}
               >
                 ×
               </button>
@@ -778,10 +743,10 @@ const ChatAssistant = () => {
                 type="text"
                 value={inputValue}
                 onChange={(event) => setInputValue(event.target.value)}
-                placeholder="Ask about pages, products, blogs, or contacts..."
-                aria-label="Message to OrthoHouse assistant"
+                placeholder={chatUi.inputPlaceholder}
+                aria-label={chatUi.inputAria}
               />
-              <button type="submit" aria-label="Send message">
+              <button type="submit" aria-label={chatUi.sendAria}>
                 <svg
                   width="22"
                   height="22"
@@ -821,7 +786,7 @@ const ChatAssistant = () => {
         <span className="chat-toggle-icon" aria-hidden>
           <BotIcon size={28} className="chat-toggle-icon-svg" />
         </span>
-        <span className="chat-toggle-text">{isOpen ? 'Close' : 'Ask OrthoHouse'}</span>
+        <span className="chat-toggle-text">{isOpen ? chatUi.toggleClose : chatUi.toggleOpen}</span>
       </motion.button>
     </div>
   )

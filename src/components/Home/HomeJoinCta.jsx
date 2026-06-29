@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { useInView } from 'react-intersection-observer'
 import { motion, useReducedMotion } from 'framer-motion'
 import { validateEmail } from '../../utils/validation'
-import { homeJoinCta } from '../../data/homeContent'
+import { homeJoinCta } from '../../content/home'
+import { ctas } from '../../content/site'
 import './HomeJoinCta.css'
 
 const HomeJoinCta = () => {
@@ -80,7 +81,7 @@ const HomeJoinCta = () => {
 
             <div className="home-join-cta__actions">
               <Link to={homeJoinCta.office.contactLink} className="btn btn-main">
-                Contact Us
+                {homeJoinCta.cta || ctas.contactTeam}
               </Link>
               <Link to="/about" className="btn btn-outline-white">
                 Learn about us

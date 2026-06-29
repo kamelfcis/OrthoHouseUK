@@ -13,28 +13,20 @@
 .chat-window {
   width: clamp(360px, 32vw, 420px);
   max-height: clamp(520px, 70vh, 640px);
-  background: rgba(255, 255, 255, 0.94);
-  border-radius: 26px;
-  box-shadow: 0 35px 80px rgba(0, 95, 154, 0.28), 0 18px 40px rgba(13, 61, 100, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: var(--ds-surface, rgba(255, 255, 255, 0.98));
+  border-radius: var(--ds-radius-lg, 18px);
+  box-shadow: var(--ds-shadow-lg, 0 18px 40px rgba(13, 23, 38, 0.12));
+  border: 1px solid var(--ds-border, #e3e9f0);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   pointer-events: auto;
   position: relative;
-  backdrop-filter: blur(12px);
-  animation: chat-glow 16s ease-in-out infinite alternate;
+  backdrop-filter: blur(8px);
 }
 
 .chat-window::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(140deg, rgba(0, 95, 154, 0.16), rgba(45, 173, 213, 0.22), rgba(0, 95, 154, 0.16));
-  background-size: 220% 220%;
-  opacity: 0.9;
-  pointer-events: none;
-  animation: chat-gradient 18s ease infinite;
+  display: none;
 }
 
 .chat-window::after {
@@ -49,13 +41,13 @@
 .chat-header {
   position: relative;
   z-index: 1;
-  padding: 1.2rem 1.5rem;
+  padding: var(--ds-space-4, 1rem) var(--ds-space-5, 1.25rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, rgba(0, 95, 154, 0.96), rgba(45, 173, 213, 0.92));
-  color: var(--white);
-  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.18);
+  background: var(--ds-gradient-hero, linear-gradient(140deg, #06283d 0%, #024f80 45%, #2478b5 100%));
+  color: var(--ds-text-on-brand, #fff);
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .chat-header-info {
@@ -100,20 +92,19 @@
 }
 
 .chat-close {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.12);
   border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  color: var(--white);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--ds-radius-sm, 8px);
+  color: var(--ds-text-on-brand, #fff);
   font-size: 1.3rem;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition: background var(--ds-duration-fast, 0.18s) ease;
 }
 
 .chat-close:hover {
-  transform: rotate(90deg) scale(1.05);
-  background: rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .chat-messages {
@@ -335,47 +326,42 @@
 .chat-toggle {
   pointer-events: auto;
   border: none;
-  background: var(--main-gradient);
-  color: var(--white);
-  padding: 1rem 1.5rem;
-  border-radius: 999px;
+  background: var(--ds-brand-600, #005f9a);
+  color: var(--ds-text-on-brand, #fff);
+  padding: var(--ds-space-3, 0.75rem) var(--ds-space-5, 1.25rem);
+  border-radius: var(--ds-radius-pill, 999px);
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: var(--ds-space-2, 0.5rem);
   cursor: pointer;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  box-shadow: 0 22px 38px rgba(0, 95, 154, 0.34);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-weight: var(--ds-weight-bold, 700);
+  font-family: var(--ds-font-sans, 'Inter', sans-serif);
+  font-size: var(--ds-text-sm, 0.9375rem);
+  letter-spacing: var(--ds-tracking-snug, -0.01em);
+  box-shadow: var(--ds-shadow-brand, 0 18px 40px rgba(0, 95, 154, 0.28));
+  transition:
+    transform var(--ds-duration-fast, 0.18s) ease,
+    box-shadow var(--ds-duration-fast, 0.18s) ease,
+    background var(--ds-duration-fast, 0.18s) ease;
   position: relative;
   overflow: hidden;
-  animation: toggle-pulse 3.8s ease-in-out infinite;
+  min-height: 44px;
 }
 
 .chat-toggle::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
-  transform: translateX(-100%);
-  transition: transform 0.5s ease;
-}
-
-.chat-toggle:hover::after {
-  transform: translateX(0);
+  display: none;
 }
 
 .chat-toggle:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 26px 46px rgba(0, 95, 154, 0.38);
+  transform: translateY(-2px);
+  background: var(--ds-brand-700, #024f80);
 }
 
 .chat-toggle.open {
-  background: rgba(255, 255, 255, 0.96);
-  color: var(--brand-primary);
-  border: 1px solid rgba(0, 95, 154, 0.24);
-  box-shadow: 0 18px 32px rgba(0, 0, 0, 0.14);
-  animation: none;
+  background: var(--ds-surface, #fff);
+  color: var(--ds-brand-600, #005f9a);
+  border: 1px solid var(--ds-border, #e3e9f0);
+  box-shadow: var(--ds-shadow-md, 0 6px 16px rgba(13, 23, 38, 0.08));
 }
 
 .chat-toggle.open::after {

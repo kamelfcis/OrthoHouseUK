@@ -1,13 +1,14 @@
+/* Token-aligned admin shell — maps legacy vars to design system */
 .admin-layout {
   display: flex;
   min-height: 100vh;
-  background: var(--gray);
+  background: var(--ds-surface-muted, var(--gray));
 }
 
 .admin-sidebar {
   width: 280px;
-  background: var(--white);
-  border-right: 2px solid var(--gray-border);
+  background: var(--ds-surface, var(--white));
+  border-right: 1px solid var(--ds-border, var(--gray-border));
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -24,8 +25,8 @@
 }
 
 .sidebar-header {
-  padding: 24px 20px;
-  border-bottom: 2px solid var(--gray-border);
+  padding: var(--ds-space-6, 24px) var(--ds-space-5, 20px);
+  border-bottom: 1px solid var(--ds-border, var(--gray-border));
   display: flex;
   align-items: center;
   justify-content: space-between;

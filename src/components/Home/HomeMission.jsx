@@ -1,6 +1,6 @@
 import { useInView } from 'react-intersection-observer'
 import { motion, useReducedMotion } from 'framer-motion'
-import { homeMission } from '../../data/homeContent'
+import { homeMission } from '../../content/home'
 import './HomeMission.css'
 
 const HomeMission = () => {

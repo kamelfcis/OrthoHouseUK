@@ -3,24 +3,12 @@ import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { formatPhoneNumber } from '../utils/validation'
 import SEO from '../components/SEO/SEO'
+import { pageSeo } from '../content/seo'
+import { contactPage } from '../content/contact'
 import './Contact.css'
 
 const HERO_IMAGE =
   'https://ortho-house.com/wp-content/uploads/2025/04/Ortho-map-m4v-image.jpg'
-
-const Copy = {
-  headline: 'Get in touch',
-  subHeadline: 'Any question? Let\'s talk!',
-  officeLabel: 'Orthohouse UK Office',
-  email: 'infoUK@ortho-house.com',
-  phoneMain: '+44 20 3368 3036',
-  phoneDial: '+442033683036',
-  addressLines: [
-    '2 Kingdom St, London W2 6BD',
-    'United Kingdom'
-  ],
-  workingHours: ['Working hours: 9 A.M. – 5 P.M.', 'Working days: Monday – Friday']
-}
 
 const initialFormState = {
   name: '',
@@ -58,8 +46,7 @@ const Contact = () => {
       console.error('Contact: failed to resolve UK branch', error)
       setStatus({
         type: 'error',
-        message:
-          'We could not reach our contact service right now. Please try again shortly or email us directly.'
+        message: contactPage.status.branchError
       })
     } finally {
       setIsBranchLoading(false)
@@ -81,14 +68,14 @@ const Contact = () => {
 
   const validate = () => {
     const newErrors = {}
-    if (!formData.name.trim()) newErrors.name = 'Please enter your name.'
+    if (!formData.name.trim()) newErrors.name = contactPage.validation.name
     if (!formData.email.trim()) {
-      newErrors.email = 'Please enter your email address.'
+      newErrors.email = contactPage.validation.emailRequired
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
-      newErrors.email = 'Please enter a valid email address.'
+      newErrors.email = contactPage.validation.emailInvalid
     }
-    if (!formData.subject.trim()) newErrors.subject = 'Please add a subject.'
-    if (!formData.message.trim()) newErrors.message = 'Please enter a message.'
+    if (!formData.subject.trim()) newErrors.subject = contactPage.validation.subject
+    if (!formData.message.trim()) newErrors.message = contactPage.validation.message
     return newErrors
   }
 
@@ -99,7 +86,7 @@ const Contact = () => {
       setErrors(validationErrors)
       setStatus({
         type: 'error',
-        message: 'Please review the highlighted fields.'
+        message: contactPage.validation.reviewFields
       })
       return
     }
@@ -107,8 +94,7 @@ const Contact = () => {
     if (!branchId) {
       setStatus({
         type: 'error',
-        message:
-          'We are experiencing technical issues connecting to our UK office. Please try again later or email infoUK@ortho-house.com.'
+        message: contactPage.status.technicalError
       })
       return
     }
@@ -133,15 +119,13 @@ const Contact = () => {
       setFormData(initialFormState)
       setStatus({
         type: 'success',
-        message:
-          'Thank you! Your message has been delivered to our UK team. We will get back to you shortly.'
+        message: contactPage.status.success
       })
     } catch (error) {
       console.error('Contact: failed to submit message', error)
       setStatus({
         type: 'error',
-        message:
-          'Something went wrong while sending your message. Please try again or email infoUK@ortho-house.com.'
+        message: contactPage.status.sendError
       })
     } finally {
       setIsSubmitting(false)
@@ -151,9 +135,9 @@ const Contact = () => {
   return (
     <div className="contact-page">
       <SEO
-        title="Contact Us - OrthoHouse"
-        description="Get in touch with OrthoHouse. Contact our UK office for consultations, inquiries, or support. Located at 2 Kingdom St, London W2 6BD. Call +44 20 3368 3036 or email infoUK@ortho-house.com"
-        keywords="contact OrthoHouse, prosthetics consultation, orthotic services contact, medical device inquiry, UK prosthetics office"
+        title={pageSeo.contact.title}
+        description={pageSeo.contact.description}
+        keywords={pageSeo.contact.keywords}
       />
       <section className="contact-hero">
         <div className="contact-hero__gradient" />
@@ -165,15 +149,12 @@ const Contact = () => {
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
             <h1>
-              <span className="contact-hero__title-highlight">{Copy.headline}</span>
+              <span className="contact-hero__title-highlight">{contactPage.hero.headline}</span>
             </h1>
-            <h2>{Copy.subHeadline}</h2>
-            <p>
-              We’re here for clinical consultations, partnership discussions, and product support
-              across the United Kingdom.
-            </p>
+            <h2>{contactPage.hero.subHeadline}</h2>
+            <p>{contactPage.hero.intro}</p>
             <div className="contact-hero__badge">
-              <span>OrthoHouse UK</span>
+              <span>{contactPage.hero.badge}</span>
             </div>
           </motion.div>
 
@@ -184,26 +165,26 @@ const Contact = () => {
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
           >
             <div className="contact-card">
-              <div className="contact-card__eyebrow">Orthohouse</div>
-              <h3>{Copy.officeLabel}</h3>
-              <a href={`mailto:${Copy.email}`} className="contact-card__link">
-                {Copy.email}
+              <div className="contact-card__eyebrow">{contactPage.office.eyebrow}</div>
+              <h3>{contactPage.office.label}</h3>
+              <a href={`mailto:${contactPage.office.email}`} className="contact-card__link">
+                {contactPage.office.email}
               </a>
               <div className="contact-card__hours">
-                {Copy.workingHours.map((line) => (
+                {contactPage.office.workingHours.map((line) => (
                   <span key={line}>{line}</span>
                 ))}
               </div>
               <div className="contact-card__address">
-                {Copy.addressLines.map((line) => (
+                {contactPage.office.addressLines.map((line) => (
                   <span key={line}>{line}</span>
                 ))}
               </div>
 
               <div className="contact-card__actions">
-                <a className="contact-card__action" href={`tel:${Copy.phoneDial}`}>
+                <a className="contact-card__action" href={`tel:${contactPage.office.phoneDial}`}>
                   <i className="fas fa-phone" aria-hidden="true" />
-                  Call us
+                  {contactPage.office.callUs}
                 </a>
                 <a
                   className="contact-card__action secondary"
@@ -212,7 +193,7 @@ const Contact = () => {
                   rel="noopener noreferrer"
                 >
                   <i className="fas fa-map-pin" aria-hidden="true" />
-                  Directions
+                  {contactPage.office.directions}
                 </a>
               </div>
             </div>
@@ -228,7 +209,7 @@ const Contact = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
           >
-            <img src={HERO_IMAGE} alt="OrthoHouse UK office map" loading="lazy" />
+            <img src={HERO_IMAGE} alt={contactPage.office.mapAlt} loading="lazy" />
           </motion.div>
 
           <motion.div
@@ -238,10 +219,8 @@ const Contact = () => {
             transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
           >
             <div className="contact-form__header">
-              <h3>Send a message</h3>
-              <p>
-                Fill out the form and the OrthoHouse UK team will respond within one business day.
-              </p>
+              <h3>{contactPage.form.heading}</h3>
+              <p>{contactPage.form.intro}</p>
             </div>
 
             {status.type && (
@@ -259,64 +238,64 @@ const Contact = () => {
             <form onSubmit={handleSubmit} noValidate>
               <div className="contact-form__grid">
                 <label className={errors.name ? 'has-error' : ''}>
-                  Full name *
+                  {contactPage.form.fields.name.label}
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="Jordan Smith"
+                    placeholder={contactPage.form.fields.name.placeholder}
                     autoComplete="name"
                   />
                   {errors.name && <span className="field-error">{errors.name}</span>}
                 </label>
 
                 <label className={errors.email ? 'has-error' : ''}>
-                  Email address *
+                  {contactPage.form.fields.email.label}
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="jordan.smith@example.com"
+                    placeholder={contactPage.form.fields.email.placeholder}
                     autoComplete="email"
                   />
                   {errors.email && <span className="field-error">{errors.email}</span>}
                 </label>
 
                 <label>
-                  Phone number
+                  {contactPage.form.fields.phone.label}
                   <input
                     type="tel"
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="+44 20 3368 3036"
+                    placeholder={contactPage.form.fields.phone.placeholder}
                     autoComplete="tel"
                   />
                 </label>
 
                 <label className={errors.subject ? 'has-error' : ''}>
-                  Subject *
+                  {contactPage.form.fields.subject.label}
                   <input
                     type="text"
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    placeholder="How can we help you?"
+                    placeholder={contactPage.form.fields.subject.placeholder}
                   />
                   {errors.subject && <span className="field-error">{errors.subject}</span>}
                 </label>
               </div>
 
               <label className={`contact-form__message ${errors.message ? 'has-error' : ''}`}>
-                Message *
+                {contactPage.form.fields.message.label}
                 <textarea
                   name="message"
                   rows={6}
                   value={formData.message}
                   onChange={handleChange}
-                  placeholder="Tell us about your enquiry..."
+                  placeholder={contactPage.form.fields.message.placeholder}
                 />
                 {errors.message && <span className="field-error">{errors.message}</span>}
               </label>
@@ -329,19 +308,16 @@ const Contact = () => {
                 {isSubmitting ? (
                   <>
                     <span className="spinner" aria-hidden="true" />
-                    Sending…
+                    {contactPage.form.submitting}
                   </>
                 ) : (
                   <>
                     <i className="fas fa-paper-plane" aria-hidden="true" />
-                    Send message
+                    {contactPage.form.submit}
                   </>
                 )}
               </button>
-              <p className="contact-form__footnote">
-                By submitting this form you agree to be contacted by OrthoHouse UK regarding your
-                enquiry.
-              </p>
+              <p className="contact-form__footnote">{contactPage.form.footnote}</p>
             </form>
           </motion.div>
         </div>

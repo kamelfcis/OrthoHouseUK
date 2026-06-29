@@ -3,7 +3,10 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { supabase } from '../lib/supabase'
 import ProductCard from '../components/common/ProductCard'
+import EmptyState from '../components/common/EmptyState'
 import SEO from '../components/SEO/SEO'
+import { pageSeo } from '../content/seo'
+import { productsPage } from '../content/products'
 import './Products.css'
 
 const Products = () => {
@@ -241,9 +244,9 @@ const Products = () => {
   return (
       <div className="products-page">
       <SEO
-        title="Products - Prosthetics & Orthotic Solutions"
-        description="Browse our comprehensive catalog of prosthetic limbs, orthotic devices, biomedical equipment, and rehabilitation solutions. Quality products from trusted manufacturers."
-        keywords="prosthetic products, orthotic devices, biomedical equipment, prosthetic limbs catalog, orthotic solutions, medical devices, rehabilitation products"
+        title={pageSeo.products.title}
+        description={pageSeo.products.description}
+        keywords={pageSeo.products.keywords}
       />
       <div className="products-hero">
         <div className="products-hero__media" role="presentation" />
@@ -260,98 +263,74 @@ const Products = () => {
               className="products-hero__eyebrow"
               variants={heroChildVariants}
             >
-              Product Portfolio
+              {productsPage.hero.eyebrow}
             </motion.div>
             <motion.h1 className="products-hero__title" variants={heroChildVariants}>
-              <motion.span variants={heroLineVariants}>Precision Engineered</motion.span>
-              <motion.span variants={heroLineVariants}>Prosthetic Solutions</motion.span>
+              <motion.span variants={heroLineVariants}>{productsPage.hero.titleLine1}</motion.span>
+              <motion.span variants={heroLineVariants}>{productsPage.hero.titleLine2}</motion.span>
             </motion.h1>
             <motion.p className="products-hero__subtitle" variants={heroChildVariants}>
-              Explore our curated range of advanced prosthetics and biomedical devices designed to
-              restore movement, confidence, and quality of life.
+              {productsPage.hero.subtitle}
             </motion.p>
             <motion.ul className="products-hero__breadcrumbs" variants={heroBreadcrumbVariants}>
-              <li><a href="/">Home</a></li>
-              <li>Products</li>
+              <li><a href="/">{productsPage.hero.breadcrumbHome}</a></li>
+              <li>{productsPage.hero.breadcrumbCurrent}</li>
             </motion.ul>
           </motion.div>
         </div>
       </div>
 
-      <div className="lte-wc-wrapper margin-default">
+      <div className="products-page-main">
         <div className="container">
-          {/* Categories Filter Section */}
           {categories.length > 0 && (
-            <div className="categories-filter-section">
-              <h3 className="categories-filter-title">Filter by Category</h3>
-              <div className="categories-grid">
-                {categories.map((category, index) => (
-                  <motion.div
+            <div className="categories-filter-section" role="group" aria-label={productsPage.filterTitle}>
+              <h3 className="categories-filter-title">{productsPage.filterTitle}</h3>
+              <div className="category-chips">
+                {categories.map((category) => (
+                  <button
                     key={category.category_id}
-                    className={`category-filter-card ${selectedCategory === category.category_id ? 'active' : ''}`}
+                    type="button"
+                    className={`category-chip${selectedCategory === category.category_id ? ' is-active' : ''}`}
                     onClick={() => handleCategoryClick(category.category_id)}
-                    initial={{ opacity: 0, y: 24, rotateX: -6 }}
-                    whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                    viewport={{ once: true, amount: 0.25 }}
-                    transition={{ duration: 0.65, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    aria-pressed={selectedCategory === category.category_id}
                   >
-                    <div className="category-image-wrapper">
-                      {categoryImages[category.category_id] ? (
-                        <img
-                          src={categoryImages[category.category_id]}
-                          alt={category.category_name}
-                          className="category-filter-image"
-                          onError={(e) => {
-                            e.target.style.display = 'none'
-                            if (e.target.nextSibling) {
-                              e.target.nextSibling.style.display = 'flex'
-                            }
-                          }}
-                        />
-                      ) : null}
-                      <div className="category-icon-fallback" style={{ display: categoryImages[category.category_id] ? 'none' : 'flex' }}>
-                        <i className="fas fa-box"></i>
-                      </div>
-                    </div>
-                    <h4 className="category-filter-name">{category.category_name}</h4>
-                    {selectedCategory === category.category_id && (
-                      <div className="category-active-indicator">
-                        <i className="fas fa-check-circle"></i>
-                      </div>
-                    )}
-                  </motion.div>
+                    {category.category_name}
+                  </button>
                 ))}
               </div>
               {selectedCategory && (
                 <button
-                  className="clear-category-filter"
+                  type="button"
+                  className="ds-btn ds-btn--ghost clear-category-filter"
                   onClick={() => setSelectedCategory(null)}
                 >
-                  <i className="fas fa-times"></i> Clear Filter
+                  <i className="fas fa-times" aria-hidden="true" /> {productsPage.clearFilter}
                 </button>
               )}
             </div>
           )}
 
-          {/* Products Grid */}
           <div ref={productsSectionRef}>
             {loading ? (
-              <div className="admin-loading">
-                <div className="loading-spinner"></div>
-                <h2>Loading Products...</h2>
+              <div className="products-skeleton-grid" aria-busy="true" aria-label={productsPage.loading}>
+                {[1, 2, 3, 4, 5, 6].map((n) => (
+                  <div key={n} className="products-skeleton-card" />
+                ))}
               </div>
             ) : filteredProducts.length === 0 ? (
-              <div className="empty-state">
-                <p>{selectedCategory ? 'No products found in this category.' : 'No products available at this time.'}</p>
-              </div>
+              <EmptyState
+                icon="fa-box-open"
+                title="No products found"
+                message={selectedCategory ? productsPage.emptyCategory : productsPage.emptyAll}
+              />
             ) : (
               <div className="products-section">
                 {selectedCategory && (
                   <div className="filter-info">
-                    Showing {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''} in{' '}
-                    <strong>{categories.find(c => c.category_id === selectedCategory)?.category_name}</strong>
+                    {productsPage.filterInfo(
+                      filteredProducts.length,
+                      categories.find(c => c.category_id === selectedCategory)?.category_name
+                    )}
                   </div>
                 )}
                 <div className="products-grid" role="list">

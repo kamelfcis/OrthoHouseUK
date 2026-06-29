@@ -1,7 +1,7 @@
 import { useInView } from 'react-intersection-observer'
 import { motion, useReducedMotion } from 'framer-motion'
 import SectionHeading from '../common/SectionHeading'
-import { homeEvents } from '../../data/homeContent'
+import { homeEvents } from '../../content/home'
 import './HomeEvents.css'
 
 const HomeEvents = () => {

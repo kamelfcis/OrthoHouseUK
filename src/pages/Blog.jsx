@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import { useInView } from 'react-intersection-observer'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
+import SEO from '../components/SEO/SEO'
+import { pageSeo } from '../content/seo'
+import { blogPage } from '../content/blog'
 import './Blog.css'
 
 const Blog = () => {
@@ -164,7 +167,7 @@ const Blog = () => {
         const firstCategory = categories[0] || 'General'
         const authorName = post.authors && post.authors.length > 0
           ? `${post.authors[0].first_name || ''} ${post.authors[0].last_name || ''}`.trim()
-          : 'OrthoHouse Team'
+          : blogPage.defaultAuthor
 
         let featuredImage = post.featured_image
         if (post.featured_image && /^https?:\/\//i.test(post.featured_image)) {
@@ -180,14 +183,14 @@ const Blog = () => {
         return {
           id: post.blog_id,
           title: post.title,
-          excerpt: post.excerpt || post.content?.slice(0, 160) || 'Discover the latest at OrthoHouse.',
+          excerpt: post.excerpt || post.content?.slice(0, 160) || blogPage.defaultExcerpt,
           content: post.content,
           image: featuredImage || `https://via.placeholder.com/800x500/64d9b9/ffffff?text=${encodeURIComponent(post.title.substring(0, 30))}`,
           date: post.published_at,
           category: firstCategory,
           categories,
           author: authorName,
-          readTime: `${Math.max(3, Math.round((post.content?.split(' ')?.length || 400) / 200))} min read`
+          readTime: blogPage.readTime(Math.max(3, Math.round((post.content?.split(' ')?.length || 400) / 200)))
         }
       })
 
@@ -214,6 +217,11 @@ const Blog = () => {
 
   return (
     <div className="blog-page">
+      <SEO
+        title={pageSeo.blog.title}
+        description={pageSeo.blog.description}
+        keywords={pageSeo.blog.keywords}
+      />
       <div className="blog-hero">
         <div className="blog-hero__media" role="presentation" />
         <div className="blog-hero__overlay" aria-hidden="true" />
@@ -226,19 +234,18 @@ const Blog = () => {
             animate={heroInView ? 'visible' : 'hidden'}
           >
             <motion.div className="blog-hero__eyebrow" variants={heroChildVariants}>
-              Insight Hub
+              {blogPage.hero.eyebrow}
             </motion.div>
             <motion.h1 className="blog-hero__title" variants={heroChildVariants}>
-              <motion.span variants={heroLineVariants}>Stories & Innovation</motion.span>
-              <motion.span variants={heroLineVariants}>From OrthoHouse UK</motion.span>
+              <motion.span variants={heroLineVariants}>{blogPage.hero.titleLine1}</motion.span>
+              <motion.span variants={heroLineVariants}>{blogPage.hero.titleLine2}</motion.span>
             </motion.h1>
             <motion.p className="blog-hero__subtitle" variants={heroChildVariants}>
-              Thought leadership, patient journeys, and breakthroughs in prosthetics and biomedical
-              engineering from our team across the United Kingdom.
+              {blogPage.hero.subtitle}
             </motion.p>
             <motion.ul className="blog-hero__breadcrumbs" variants={heroBreadcrumbVariants}>
-              <li><Link to="/">Home</Link></li>
-              <li>Blog</li>
+              <li><Link to="/">{blogPage.hero.breadcrumbHome}</Link></li>
+              <li>{blogPage.hero.breadcrumbCurrent}</li>
             </motion.ul>
           </motion.div>
         </div>
@@ -249,7 +256,7 @@ const Blog = () => {
           {loading ? (
             <div className="blog-loading">
               <div className="blog-spinner"></div>
-              <p>Loading articles...</p>
+              <p>{blogPage.loading}</p>
             </div>
           ) : error ? (
             <div className="blog-error">
@@ -259,7 +266,7 @@ const Blog = () => {
           ) : posts.length === 0 ? (
             <div className="blog-empty">
               <i className="fas fa-newspaper"></i>
-              <p>No published blog posts for the UK branch yet.</p>
+              <p>{blogPage.empty}</p>
             </div>
           ) : (
             <>
@@ -276,7 +283,7 @@ const Blog = () => {
                       alt={highlightedPost.title}
                       loading="lazy"
                     />
-                    <span className="highlight-category">Featured</span>
+                    <span className="highlight-category">{blogPage.featured}</span>
                   </div>
                   <div className="highlight-content">
                     <span className="highlight-meta">
@@ -287,7 +294,7 @@ const Blog = () => {
                     <p>{highlightedPost.excerpt}</p>
                     <div className="highlight-author">By {highlightedPost.author}</div>
                     <Link to={`/blog/${highlightedPost.id}`} className="highlight-link">
-                      Continue Reading <i className="fas fa-arrow-right"></i>
+                      {blogPage.continueReading} <i className="fas fa-arrow-right"></i>
                     </Link>
                   </div>
                 </motion.section>
@@ -301,7 +308,7 @@ const Blog = () => {
                   role="tab"
                   aria-selected={activeCategory === 'all'}
                 >
-                  All
+                  {blogPage.filterAll}
                 </button>
                 {categories.map((category) => (
                   <button
@@ -357,7 +364,7 @@ const Blog = () => {
                   </p>
                   <p className="blog-excerpt">{post.excerpt}</p>
                   <Link to={`/blog/${post.id}`} className="blog-read-more">
-                    Read More <i className="fas fa-arrow-right"></i>
+                    {blogPage.readMore} <i className="fas fa-arrow-right"></i>
                   </Link>
                 </div>
               </motion.article>

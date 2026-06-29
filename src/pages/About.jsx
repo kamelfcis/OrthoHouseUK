@@ -2,6 +2,8 @@ import { useEffect, Suspense, lazy } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { motion } from 'framer-motion'
 import SEO from '../components/SEO/SEO'
+import { pageSeo } from '../content/seo'
+import { aboutPage } from '../content/about'
 import CeoVisionMission from '../components/Home/CeoVisionMission'
 import HomeAboutSection from '../components/Home/About'
 import useBranchData from '../hooks/useBranchData'
@@ -94,9 +96,9 @@ const About = () => {
   return (
     <div className="about-page">
       <SEO
-        title="About Us - OrthoHouse"
-        description="Learn about OrthoHouse's mission, values, and commitment to providing exceptional prosthetics, orthotics, and biomedical engineering solutions."
-        keywords="about OrthoHouse, prosthetics company, orthotic solutions provider, biomedical engineering, healthcare mission"
+        title={pageSeo.about.title}
+        description={pageSeo.about.description}
+        keywords={pageSeo.about.keywords}
       />
       {/* Hero Section */}
       <div className="about-hero">
@@ -114,19 +116,18 @@ const About = () => {
               className="about-hero__eyebrow"
               variants={heroChildVariants}
             >
-              About OrthoHouse
+              {aboutPage.hero.eyebrow}
             </motion.div>
             <motion.h1 className="about-hero__title" variants={heroChildVariants}>
-              <motion.span variants={heroLineVariants}>Excellence in</motion.span>
-              <motion.span variants={heroLineVariants}>Healthcare Innovation</motion.span>
+              <motion.span variants={heroLineVariants}>{aboutPage.hero.titleLine1}</motion.span>
+              <motion.span variants={heroLineVariants}>{aboutPage.hero.titleLine2}</motion.span>
             </motion.h1>
             <motion.p className="about-hero__subtitle" variants={heroChildVariants}>
-              Discover our mission, vision, and commitment to transforming lives through
-              advanced prosthetics and biomedical engineering solutions.
+              {aboutPage.hero.subtitle}
             </motion.p>
             <motion.ul className="about-hero__breadcrumbs" variants={heroBreadcrumbVariants}>
-              <li><a href="/">Home</a></li>
-              <li>About Us</li>
+              <li><a href="/">{aboutPage.hero.breadcrumbHome}</a></li>
+              <li>{aboutPage.hero.breadcrumbCurrent}</li>
             </motion.ul>
           </motion.div>
         </div>
@@ -143,7 +144,7 @@ const About = () => {
       </div>
 
       {/* Main Content */}
-      <div className="lte-text-page margin-default">
+      <div className="about-page-content ds-section">
         <div className="container">
           <div className="row centered">
             <div className="col-xl-12">
@@ -157,30 +158,10 @@ const About = () => {
                       transition={{ duration: 0.8 }}
                     >
                       <div className="about-intro">
-                        <h2>OrthoHouse Philosophy</h2>
-                        <p>
-                          OrthoHouse for Medical Services and Supplies is a leading regional distributor 
-                          of innovative Orthopaedic and surgical solutions. Established in 2009, we have 
-                          become a trusted partner for top-tier global manufacturers, delivering advanced 
-                          medical technologies across Egypt, the GCC, and selected international markets.
-                        </p>
-                        <p>
-                          Our commitment is to enhance patient outcomes and support healthcare professionals 
-                          with high-quality products, technical expertise, and educational support. We are 
-                          the exclusive agent for several globally renowned brands and are actively expanding 
-                          our international footprint.
-                        </p>
-                        <p>
-                          With years of experience in prosthetics and biomedical engineering, 
-                          we are dedicated to providing cutting-edge solutions that enhance 
-                          mobility and improve quality of life. Our team of experts combines 
-                          advanced technology with personalized care to deliver exceptional results.
-                        </p>
-                        <p>
-                          We understand that every individual has unique needs, which is why 
-                          we offer customized solutions tailored to each client. From initial 
-                          consultation to ongoing support, we're with you every step of the way.
-                        </p>
+                        <h2>{aboutPage.philosophy.heading}</h2>
+                        {aboutPage.philosophy.paragraphs.map((paragraph) => (
+                          <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+                        ))}
                       </div>
                     </motion.div>
 
@@ -192,36 +173,17 @@ const About = () => {
                   animate={inView3 ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.8, delay: 0.4 }}
                 >
-                  <h2 className="text-center">Our Core Values</h2>
+                  <h2 className="text-center">{aboutPage.values.heading}</h2>
                   <div className="values-grid">
-                    <div className="value-item">
-                      <div className="value-icon">
-                        <i className="fas fa-heart"></i>
+                    {aboutPage.values.items.map((value) => (
+                      <div className="value-item" key={value.title}>
+                        <div className="value-icon">
+                          <i className={value.icon}></i>
+                        </div>
+                        <h4>{value.title}</h4>
+                        <p>{value.text}</p>
                       </div>
-                      <h4>Compassion</h4>
-                      <p>We approach every patient with empathy and understanding, recognizing the emotional journey of recovery.</p>
-                    </div>
-                    <div className="value-item">
-                      <div className="value-icon">
-                        <i className="fas fa-flask"></i>
-                      </div>
-                      <h4>Innovation</h4>
-                      <p>We continuously invest in the latest technology and research to provide cutting-edge solutions.</p>
-                    </div>
-                    <div className="value-item">
-                      <div className="value-icon">
-                        <i className="fas fa-star"></i>
-                      </div>
-                      <h4>Excellence</h4>
-                      <p>We maintain the highest standards in every aspect of our work, from design to delivery.</p>
-                    </div>
-                    <div className="value-item">
-                      <div className="value-icon">
-                        <i className="fas fa-handshake"></i>
-                      </div>
-                      <h4>Integrity</h4>
-                      <p>We build trust through transparency, honesty, and ethical practices in all our interactions.</p>
-                    </div>
+                    ))}
                   </div>
                 </motion.div>
               </article>

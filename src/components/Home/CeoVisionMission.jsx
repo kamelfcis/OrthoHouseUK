@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import { ceoVisionMission } from '../../content/about'
 import './CeoVisionMission.css'
 
 const CeoVisionMission = () => {
@@ -10,33 +11,7 @@ const CeoVisionMission = () => {
     threshold: 0.2
   })
 
-  const content = {
-    ceo: {
-      title: 'CEO Word',
-      subtitle: 'A Message from the CEO',
-      text: "My purpose is to build an organisation that makes a genuine difference to the healthcare sector. At OrthoHouse, we are committed to developing the medical industry by delivering high-quality Orthopaedic solutions. We look forward to continuing our expansion across both the health and educational sectors in the UK.",
-      highlightedWords: ['committed', 'orthopaedic solutions', 'health', 'educational'],
-      author: {
-        name: 'Waleed Emad',
-        title: 'CEO & Founder, OrthoHouse for Medical Supplies'
-      }
-    },
-    vision: {
-      title: 'Our Vision',
-      subtitle: '',
-      text: "Orthohouse aims to be a trusted partner in UK healthcare. We bridge the gap between advanced orthopaedic technology and scientific education, empowering professionals to excel in their practice.",
-      highlightedWords: [],
-      author: null
-    },
-    mission: {
-      title: 'our Mission',
-      subtitle: '',
-      text: "We're Orthohouse, and we're committed to enhancing orthopaedic care in the UK. We supply state-of-the-art products backed by scientific research, and we collaborate closely with healthcare professionals, empowering them with the latest expertise to deliver outstanding patient results.",
-      highlightedWords: [],
-      author: null
-    }
-  }
-
+  const { tabs, content, companyName, ceoImageAlt } = ceoVisionMission
   const currentContent = content[activeTab]
 
   const highlightText = (text, highlightedWords) => {
@@ -92,34 +67,31 @@ const CeoVisionMission = () => {
           animate={inView ? 'visible' : 'hidden'}
         >
           <div className="ceo-vision-mission-content">
-            {/* Navigation Tabs */}
             <div className="ceo-vision-mission-tabs">
               <button
                 className={`ceo-tab ${activeTab === 'ceo' ? 'active' : ''}`}
                 onClick={() => setActiveTab('ceo')}
               >
-                CEO Word
+                {tabs.ceo}
               </button>
               <button
                 className={`ceo-tab ${activeTab === 'vision' ? 'active' : ''}`}
                 onClick={() => setActiveTab('vision')}
               >
-                Vision
+                {tabs.vision}
               </button>
               <button
                 className={`ceo-tab ${activeTab === 'mission' ? 'active' : ''}`}
                 onClick={() => setActiveTab('mission')}
               >
-                Mission
+                {tabs.mission}
               </button>
             </div>
 
-            {/* Company Name */}
             <motion.div className="ceo-company-name" variants={textVariants}>
-              OrthoHouse
+              {companyName}
             </motion.div>
 
-            {/* Content Area */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -149,7 +121,6 @@ const CeoVisionMission = () => {
             </AnimatePresence>
           </div>
 
-          {/* Image Section */}
           <motion.div
             className="ceo-image-wrapper"
             variants={imageVariants}
@@ -157,7 +128,7 @@ const CeoVisionMission = () => {
             <div className="ceo-image-container">
               <img
                 src="/assets/images/ceo.jpeg"
-                alt="Waleed Emad - CEO & Founder, OrthoHouse"
+                alt={ceoImageAlt}
                 className="ceo-image"
                 loading="lazy"
                 onError={(e) => {
@@ -174,4 +145,3 @@ const CeoVisionMission = () => {
 }
 
 export default CeoVisionMission
-

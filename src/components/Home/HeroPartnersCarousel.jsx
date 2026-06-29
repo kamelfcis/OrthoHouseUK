@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { toPublicStorageUrl } from '../../lib/storageUrl'
+import { homePartners } from '../../content/home'
 import './HeroPartnersCarousel.css'
 
 const sortPartners = (partners = []) => {
@@ -64,13 +65,13 @@ const HeroPartnersCarousel = ({ branchData }) => {
       </div>
 
       <header className="hero-partners-heading ds-section-head">
-        <span className="ds-eyebrow hero-partners-eyebrow">Trusted by innovators</span>
+        <span className="ds-eyebrow hero-partners-eyebrow">{homePartners.eyebrow}</span>
         <h2 id="hero-partners-heading" className="ds-section-title hero-partners-title">
-          Global Brands That Rely On{' '}
-          <span className="ds-text-gradient">OrthoHouse</span>
+          {homePartners.title}{' '}
+          <span className="ds-text-gradient">{homePartners.titleHighlight}</span>
         </h2>
         <p className="ds-section-subtitle hero-partners-subtitle">
-          Seamless collaborations with world-class manufacturers and medical pioneers.
+          {homePartners.subtitle}
         </p>
       </header>
 

@@ -49,8 +49,7 @@ const Newsletter = () => {
           <div className="newsletter-text">
             <h2 className="newsletter-title">Stay Updated</h2>
             <p className="newsletter-subtitle">
-              Subscribe to our newsletter for the latest news, updates, and insights
-              about prosthetics and biomedical engineering.
+              Subscribe for clinical updates, product news, and orthopaedic industry insights from OrthoHouse UK.
             </p>
           </div>
 

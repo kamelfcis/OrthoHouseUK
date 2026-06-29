@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import ProductCard from '../common/ProductCard'
 import SectionHeading from '../common/SectionHeading'
 import { toPublicStorageUrl } from '../../lib/storageUrl'
+import { homeProducts } from '../../content/home'
 import './HomeProducts.css'
 
 const FEATURED_COUNT = 8
@@ -122,16 +123,16 @@ const HomeProducts = ({ branchData }) => {
     >
       <div className="container">
         <SectionHeading
-          eyebrow="Featured Products"
-          title="Our Products"
-          subtitle="Explore our portfolio of premium orthopaedic solutions from trusted global partners."
+          eyebrow={homeProducts.eyebrow}
+          title={homeProducts.title}
+          subtitle={homeProducts.subtitle}
           titleId="home-products-heading"
         />
 
         {loading ? (
           <div className="home-products-loading" aria-busy="true">
             <div className="home-products-spinner" aria-hidden="true" />
-            <p>Loading products…</p>
+            <p>{homeProducts.loading}</p>
           </div>
         ) : (
           <motion.div className="home-products-rail-wrap" {...motionProps}>
@@ -145,7 +146,7 @@ const HomeProducts = ({ branchData }) => {
 
         <div className="home-products-footer">
           <Link to="/products" className="btn btn-main">
-            View all products
+            {homeProducts.viewAll}
           </Link>
         </div>
       </div>

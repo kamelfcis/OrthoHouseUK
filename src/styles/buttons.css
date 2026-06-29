@@ -1,5 +1,6 @@
-/* Button Styles Matching Original Template */
+/* Button Styles — legacy template (.lte-btn) + design-system (.ds-btn) */
 
+/* Legacy template buttons — preserved for unmigrated pages */
 .lte-btn,
 .btn {
   position: relative;
@@ -200,5 +201,53 @@
     padding: 16px 30px;
     min-width: 200px !important;
   }
+}
+
+/* =============================================================================
+   Design-system button variants — prefer .ds-btn for new work
+   ============================================================================= */
+.ds-btn {
+  min-height: 44px;
+  min-width: 44px;
+  border-radius: var(--ds-radius-sm, 8px);
+  font-family: var(--ds-font-sans, 'Inter', sans-serif);
+  font-weight: var(--ds-weight-semibold, 600);
+  letter-spacing: var(--ds-tracking-snug, -0.01em);
+}
+
+.ds-btn.btn-lg,
+.ds-btn--lg {
+  min-height: 48px;
+  padding: var(--ds-space-3, 0.75rem) var(--ds-space-8, 2rem);
+  font-size: var(--ds-text-base, 1rem);
+}
+
+.ds-btn.btn-xs,
+.ds-btn--xs {
+  min-height: 44px;
+  min-width: auto;
+  padding: var(--ds-space-2, 0.5rem) var(--ds-space-4, 1rem);
+  font-size: var(--ds-text-xs, 0.8125rem);
+}
+
+/* Map legacy variant names to ds tokens where both classes are used */
+.btn-main.ds-btn,
+.lte-btn.btn-main.ds-btn {
+  background: var(--ds-brand-600, var(--main));
+  color: var(--ds-text-on-brand, var(--white));
+}
+
+.btn-outline.ds-btn,
+.lte-btn.btn-outline.ds-btn {
+  background: transparent;
+  border: 2px solid var(--ds-brand-600, var(--main));
+  color: var(--ds-brand-600, var(--main));
+}
+
+.btn-outline-white.ds-btn,
+.lte-btn.btn-outline-white.ds-btn {
+  background: transparent;
+  border: 2px solid var(--ds-text-on-brand, var(--white));
+  color: var(--ds-text-on-brand, var(--white));
 }
 

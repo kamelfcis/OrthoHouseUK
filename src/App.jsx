@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout/Layout'
 import SplashScreen from './components/Layout/SplashScreen'
 import CookieConsent from './components/Layout/CookieConsent'
+import RouteLoader from './components/common/RouteLoader'
 
 const AdminLayout = lazy(() => import('./components/admin/AdminLayout'))
 const ProtectedRoute = lazy(() => import('./components/admin/ProtectedRoute'))
@@ -34,30 +35,6 @@ const AdminCategories = lazy(() => import('./pages/admin/Categories'))
 const AdminUsers = lazy(() => import('./pages/admin/Users'))
 const AdminBranches = lazy(() => import('./pages/admin/Branches'))
 
-// Loading fallback component
-const PageLoader = () => (
-  <div style={{ 
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    minHeight: '50vh' 
-  }}>
-    <div style={{
-      width: '40px',
-      height: '40px',
-      border: '4px solid #f3f3f3',
-      borderTop: '4px solid #005f9a',
-      borderRadius: '50%',
-      animation: 'spin 1s linear infinite'
-    }} />
-    <style>{`
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-    `}</style>
-  </div>
-)
 function App() {
   return (
     <>
@@ -67,7 +44,7 @@ function App() {
       {/* Public Routes */}
       <Route path="/*" element={
         <Layout>
-          <Suspense fallback={<PageLoader />}>
+          <Suspense fallback={<RouteLoader />}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
@@ -89,23 +66,23 @@ function App() {
 
       {/* Admin Routes */}
       <Route path="/admin/login" element={
-        <Suspense fallback={<PageLoader />}>
+        <Suspense fallback={<RouteLoader />}>
           <Login />
         </Suspense>
       } />
       {/* Temporary test routes - bypasses all protection */}
       <Route path="/admin/test" element={
-        <Suspense fallback={<PageLoader />}>
+        <Suspense fallback={<RouteLoader />}>
           <ProductsSimple />
         </Suspense>
       } />
       <Route path="/admin/test-minimal" element={
-        <Suspense fallback={<PageLoader />}>
+        <Suspense fallback={<RouteLoader />}>
           <ProductsMinimal />
         </Suspense>
       } />
       <Route path="/admin" element={
-        <Suspense fallback={<PageLoader />}>
+        <Suspense fallback={<RouteLoader />}>
           <ProtectedRoute>
             <AdminLayout />
           </ProtectedRoute>
@@ -113,52 +90,52 @@ function App() {
       }>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="dashboard" element={
-          <Suspense fallback={<PageLoader />}>
+          <Suspense fallback={<RouteLoader />}>
             <Dashboard />
           </Suspense>
         } />
         <Route path="products" element={
-          <Suspense fallback={<PageLoader />}>
+          <Suspense fallback={<RouteLoader />}>
             <AdminProducts />
           </Suspense>
         } />
         <Route path="products-full" element={
-          <Suspense fallback={<PageLoader />}>
+          <Suspense fallback={<RouteLoader />}>
             <AdminProducts />
           </Suspense>
         } />
         <Route path="blogs" element={
-          <Suspense fallback={<PageLoader />}>
+          <Suspense fallback={<RouteLoader />}>
             <AdminBlogs />
           </Suspense>
         } />
         <Route path="partners" element={
-          <Suspense fallback={<PageLoader />}>
+          <Suspense fallback={<RouteLoader />}>
             <AdminPartners />
           </Suspense>
         } />
         <Route path="categories" element={
-          <Suspense fallback={<PageLoader />}>
+          <Suspense fallback={<RouteLoader />}>
             <AdminCategories />
           </Suspense>
         } />
         <Route path="messages" element={
-          <Suspense fallback={<PageLoader />}>
+          <Suspense fallback={<RouteLoader />}>
             <AdminMessages />
           </Suspense>
         } />
         <Route path="page-content" element={
-          <Suspense fallback={<PageLoader />}>
+          <Suspense fallback={<RouteLoader />}>
             <AdminPageContent />
           </Suspense>
         } />
         <Route path="users" element={
-          <Suspense fallback={<PageLoader />}>
+          <Suspense fallback={<RouteLoader />}>
             <AdminUsers />
           </Suspense>
         } />
         <Route path="branches" element={
-          <Suspense fallback={<PageLoader />}>
+          <Suspense fallback={<RouteLoader />}>
             <AdminBranches />
           </Suspense>
         } />

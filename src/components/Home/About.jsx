@@ -1,6 +1,7 @@
 import { useInView } from 'react-intersection-observer'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { homeMission } from '../../content/home'
 import './About.css'
 
 const About = ({ branchData }) => {
@@ -14,9 +15,8 @@ const About = ({ branchData }) => {
   const mission = branchData?.companyInfo?.mission
   const vision = branchData?.companyInfo?.vision
 
-  const title = aboutContent?.content_title || mission?.title || 'About OrthoHouse'
-  const description = aboutContent?.content_text || mission?.content || 
-    'With years of experience in prosthetics and biomedical engineering, we are dedicated to providing cutting-edge solutions that enhance mobility and improve quality of life.'
+  const title = aboutContent?.content_title || mission?.title || homeMission.title
+  const description = aboutContent?.content_text || mission?.content || homeMission.statement
 
   return (
     <section className="about-section" ref={ref}>
@@ -30,7 +30,7 @@ const About = ({ branchData }) => {
             transition={{ duration: 0.8 }}
           >
             <div className="section-label">
-              <span className="label-text">Our Mission</span>
+              <span className="label-text">{homeMission.eyebrow}</span>
               <div className="label-line"></div>
             </div>
             <h2 className="section-title">{title}</h2>

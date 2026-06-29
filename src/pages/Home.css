@@ -35,27 +35,18 @@
   animation: spin 1s linear infinite;
 }
 
-.section-fallback {
+.section-skeleton {
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 3rem 0;
+  padding: var(--ds-space-8, 2rem) 0;
+  background: var(--ds-surface-muted, #f6f9fc);
 }
 
-.section-fallback__spinner {
-  width: 46px;
-  height: 46px;
-  border-radius: 999px;
-  border: 3px solid rgba(0, 150, 199, 0.12);
-  border-top-color: rgba(0, 150, 199, 0.75);
-  animation: section-fallback-spin 0.8s linear infinite;
-}
-
-@keyframes section-fallback-spin {
-  to {
-    transform: rotate(360deg);
-  }
+.section-skeleton .ds-skeleton-row {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 @keyframes spin {
@@ -65,7 +56,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .section-fallback__spinner,
   .loading-spinner {
     animation: none;
   }

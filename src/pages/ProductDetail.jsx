@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import SEO from '../components/SEO/SEO'
+import { productDetail } from '../content/products'
 import { generateProductSchema, generateBreadcrumbSchema } from '../utils/seoData'
 import './ProductDetail.css'
 
@@ -161,7 +162,7 @@ const ProductDetail = () => {
       <div className="product-detail-page">
         <div className="admin-loading">
           <div className="loading-spinner"></div>
-          <h2>Loading Product Information...</h2>
+          <h2>{productDetail.loading}</h2>
         </div>
       </div>
     )
@@ -171,14 +172,14 @@ const ProductDetail = () => {
     return (
       <div className="product-detail-page">
         <div className="error-state">
-          <h2>Product Not Found</h2>
-          <p>{error || 'The product you are looking for does not exist.'}</p>
+          <h2>{productDetail.notFound}</h2>
+          <p>{error || productDetail.notFoundDefault}</p>
           <p style={{ fontSize: '0.9rem', color: '#666', marginTop: '10px' }}>
             Product ID: {id} | Branch: UK
           </p>
           <Link to="/products" className="lte-btn">
             <span className="lte-btn-inner">
-              <span>Back to Products</span>
+              <span>{productDetail.backToProducts}</span>
             </span>
           </Link>
         </div>
@@ -214,8 +215,8 @@ const ProductDetail = () => {
     <div className="product-detail-page">
       <SEO
         title={product.product_name}
-        description={summaryText || product.description || `Learn more about ${product.product_name} - ${categoryName} from OrthoHouse`}
-        keywords={`${product.product_name}, ${categoryName}, prosthetics, orthotics, ${partnerName || ''}`}
+        description={summaryText || product.description || productDetail.seoFallback(product.product_name, categoryName)}
+        keywords={`${product.product_name}, ${categoryName}, orthopaedic implants, trauma systems, ${partnerName || ''}`}
         image={productImages.length > 0 ? productImages[0] : null}
         url={`${siteUrl}/products/${product.product_id}`}
         structuredData={structuredData}
@@ -230,7 +231,7 @@ const ProductDetail = () => {
           <div className="product-hero-tags">
             {categoryName && <span className="product-tag">{categoryName}</span>}
             {partnerName && <span className="product-tag tag-partner">{partnerName}</span>}
-            {product.product_code && <span className="product-tag tag-code">Code: {product.product_code}</span>}
+            {product.product_code && <span className="product-tag tag-code">{productDetail.labels.code}: {product.product_code}</span>}
           </div>
 
           <h1 className="product-hero-title">{product.product_name}</h1>
@@ -245,19 +246,19 @@ const ProductDetail = () => {
             {ukBranch?.branch_name && (
               <div className="hero-stat">
                 <i className="fas fa-map-marker-alt"></i>
-                <span>Available in {ukBranch.branch_name}</span>
+                <span>{productDetail.stats.availableIn(ukBranch.branch_name)}</span>
               </div>
             )}
             {productImages.length > 0 && (
               <div className="hero-stat">
                 <i className="fas fa-images"></i>
-                <span>{productImages.length} product image{productImages.length > 1 ? 's' : ''}</span>
+                <span>{productDetail.stats.imageCount(productImages.length)}</span>
               </div>
             )}
             {partnerName && (
               <div className="hero-stat">
                 <i className="fas fa-handshake"></i>
-                <span>Partnered with {partnerName}</span>
+                <span>{productDetail.stats.partneredWith(partnerName)}</span>
               </div>
             )}
           </div>
@@ -335,7 +336,7 @@ const ProductDetail = () => {
               ) : (
                 <div className="product-image-placeholder">
                   <i className="fas fa-image"></i>
-                  <p>No image available</p>
+                  <p>{productDetail.noImage}</p>
                 </div>
               )}
             </div>
@@ -346,19 +347,19 @@ const ProductDetail = () => {
                 <div className="product-info-cards">
                   {product.product_code && (
                     <div className="info-card">
-                      <span className="info-card-label">Product Code</span>
+                      <span className="info-card-label">{productDetail.labels.productCode}</span>
                       <span className="info-card-value">{product.product_code}</span>
                     </div>
                   )}
                   {partnerName && (
                     <div className="info-card">
-                      <span className="info-card-label">Partner</span>
+                      <span className="info-card-label">{productDetail.labels.partner}</span>
                       <span className="info-card-value">{partnerName}</span>
                     </div>
                   )}
                   {categoryName && (
                     <div className="info-card">
-                      <span className="info-card-label">Category</span>
+                      <span className="info-card-label">{productDetail.labels.category}</span>
                       <span className="info-card-value">{categoryName}</span>
                     </div>
                   )}
@@ -368,7 +369,7 @@ const ProductDetail = () => {
                   <div className="content-block">
                     <h3 className="content-title">
                       <i className="fas fa-align-left"></i>
-                      Overview
+                      {productDetail.labels.overview}
                     </h3>
                     <p className="product-description-text">
                       {product.branchProduct?.local_description || product.description}
@@ -380,7 +381,7 @@ const ProductDetail = () => {
                   <div className="content-block">
                     <h3 className="content-title">
                       <i className="fas fa-list-ul"></i>
-                      Specifications
+                      {productDetail.labels.specifications}
                     </h3>
                     <ul className="specifications-list">
                       {product.specifications.split('\n').filter(spec => spec.trim()).map((spec, index) => (
@@ -394,7 +395,7 @@ const ProductDetail = () => {
                   <div className="content-block highlight-block">
                     <h3 className="content-title">
                       <i className="fas fa-info-circle"></i>
-                      Special Notes
+                      {productDetail.labels.specialNotes}
                     </h3>
                     <p className="special-notes-text">{product.branchProduct.special_notes}</p>
                   </div>
@@ -404,7 +405,7 @@ const ProductDetail = () => {
               <div className="product-actions">
                 <Link to="/products" className="back-button">
                   <i className="fas fa-arrow-left"></i>
-                  <span>Back to Products</span>
+                  <span>{productDetail.backToProducts}</span>
                 </Link>
               </div>
             </div>

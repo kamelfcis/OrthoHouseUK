@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import useBranchData from '../hooks/useBranchData'
 import SEO from '../components/SEO/SEO'
+import { pageSeo } from '../content/seo'
+import { partnersPage } from '../content/partners'
 import '../components/Home/Capabilities.css'
 import './Services.css'
 
@@ -125,7 +127,7 @@ const Services = () => {
   }
 
   const getShortDescription = (description) => {
-    if (!description) return 'No description available.'
+    if (!description) return partnersPage.noDescription
     // Let CSS handle the truncation, just return the full description
     return description
   }
@@ -145,9 +147,9 @@ const Services = () => {
   return (
     <div className="services-page">
       <SEO
-        title="Partners - Strategic Innovation Partners"
-        description="Discover our network of world-leading manufacturers, researchers, and innovators in prosthetics and biomedical engineering. Collaborative excellence shaping the future of healthcare."
-        keywords="prosthetics partners, biomedical engineering partners, medical device manufacturers, orthotic solutions partners, healthcare innovation"
+        title={pageSeo.partners.title}
+        description={pageSeo.partners.description}
+        keywords={pageSeo.partners.keywords}
       />
       <div className="partners-hero">
         <div className="partners-hero__media" role="presentation" />
@@ -159,18 +161,15 @@ const Services = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="partners-hero__eyebrow">Partner Network</div>
+            <div className="partners-hero__eyebrow">{partnersPage.hero.eyebrow}</div>
             <h1 className="partners-hero__title">
-              <span>Our Strategic</span>
-              <span>Innovation Partners</span>
+              <span>{partnersPage.hero.titleLine1}</span>
+              <span>{partnersPage.hero.titleLine2}</span>
             </h1>
-            <p className="partners-hero__subtitle">
-              Collaborative excellence with world-leading manufacturers, researchers, and innovators
-              shaping the future of prosthetics and biomedical engineering.
-            </p>
+            <p className="partners-hero__subtitle">{partnersPage.hero.subtitle}</p>
             <ul className="partners-hero__breadcrumbs">
-              <li><a href="/">Home</a></li>
-              <li>Partners</li>
+              <li><a href="/">{partnersPage.hero.breadcrumbHome}</a></li>
+              <li>{partnersPage.hero.breadcrumbCurrent}</li>
             </ul>
           </motion.div>
         </div>
@@ -181,11 +180,11 @@ const Services = () => {
           {loading ? (
             <div className="admin-loading">
               <div className="loading-spinner"></div>
-              <h2>Loading Partners...</h2>
+              <h2>{partnersPage.loading}</h2>
             </div>
           ) : partners.length === 0 ? (
             <div className="empty-state">
-              <p>No partners available at this time.</p>
+              <p>{partnersPage.empty}</p>
             </div>
           ) : (
             <motion.div
@@ -255,7 +254,7 @@ const Services = () => {
                           }}
                         >
                           <i className="fas fa-info-circle"></i>
-                          <span>More Info</span>
+                          <span>{partnersPage.moreInfo}</span>
                         </button>
                       </div>
                     </div>
@@ -273,12 +272,12 @@ const Services = () => {
                   <button
                     className="load-more-button"
                     onClick={handleLoadMore}
-                    aria-label="Load more partners"
+                    aria-label={partnersPage.loadMoreAria}
                   >
-                    <span>Load More Partners</span>
+                    <span>{partnersPage.loadMore}</span>
                     <i className="fas fa-chevron-down"></i>
                     <span className="load-more-count">
-                      ({partners.length - displayedCount} more)
+                      {partnersPage.loadMoreCount(partners.length - displayedCount)}
                     </span>
                   </button>
                 </motion.div>

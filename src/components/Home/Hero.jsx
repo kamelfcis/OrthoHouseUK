@@ -4,16 +4,15 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { HERO_SLIDES } from '../../data/heroSlides'
 import { fetchHeroSlides } from '../../lib/unsplash'
+import { homeHero } from '../../content/home'
 import HeroSlider from './HeroSlider'
 import './Hero.css'
 
 const MotionLink = motion(Link)
 
-const HERO_SUBTITLE_UK =
-  'Leading Orthopedic Solutions in the United Kingdom. Partnering With Top Medical Institutions.'
+const HERO_SUBTITLE_UK = homeHero.subtitleUk
 
-const HERO_SUBTITLE_DEFAULT =
-  'Transforming lives through innovative technology and personalised care. We are committed to excellence in prosthetics and biomedical solutions.'
+const HERO_SUBTITLE_DEFAULT = homeHero.subtitleDefault
 
 /** Correct known Supabase casing for UK hero subtitle (DB cannot be edited here). */
 const normalizeHeroSubtitle = (text, branchCode) => {
@@ -54,7 +53,7 @@ const Hero = ({ branchData }) => {
   const branchCode = branchData?.branch?.branch_code
   const branchName  = branchData?.branch?.branch_name
   const title = heroContent.content_title
-    || (branchName ? `OrthoHouse ${branchName}` : 'Advanced Prosthetics & Biomedical Engineering')
+    || (branchName ? `OrthoHouse ${branchName}` : homeHero.titleFallback)
   const subtitle = normalizeHeroSubtitle(heroContent.content_text, branchCode)
 
   const [motionRef, motionInView] = useInView({ triggerOnce: true, threshold: 0.35 })
@@ -112,7 +111,7 @@ const Hero = ({ branchData }) => {
   return (
     <section
       className="hero-section"
-      aria-label="OrthoHouse UK — advanced prosthetics and biomedical engineering"
+      aria-label={homeHero.ariaLabel}
     >
       <HeroSlider slides={slides} onSlideChange={setActiveSlide} />
 
@@ -155,10 +154,10 @@ const Hero = ({ branchData }) => {
 
             <motion.div className="hero-buttons" variants={heroButtonsVariants}>
               <MotionLink to="/partners" className="btn btn-main" variants={heroButtonItemVariants}>
-                Our Partners
+                {homeHero.ctaPartners}
               </MotionLink>
               <MotionLink to="/contact" className="btn btn-outline" variants={heroButtonItemVariants}>
-                Get In Touch
+                {homeHero.ctaContact}
               </MotionLink>
             </motion.div>
           </motion.div>

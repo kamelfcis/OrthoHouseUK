@@ -3,6 +3,8 @@ import useBranchData from '../hooks/useBranchData'
 import Hero from '../components/Home/Hero'
 
 import SEO from '../components/SEO/SEO'
+import SectionSkeleton from '../components/common/SectionSkeleton'
+import { pageSeo } from '../content/seo'
 import { generateOrganizationSchema, generateWebsiteSchema, generateLocalBusinessSchema } from '../utils/seoData'
 import './Home.css'
 
@@ -14,12 +16,6 @@ const HomeUkJourney = lazy(() => import('../components/Home/HomeUkJourney'))
 const HomeAccreditations = lazy(() => import('../components/Home/HomeAccreditations'))
 const HomeEvents = lazy(() => import('../components/Home/HomeEvents'))
 const HomeJoinCta = lazy(() => import('../components/Home/HomeJoinCta'))
-
-const SectionFallback = ({ height = 260 }) => (
-  <div className="section-fallback" style={{ minHeight: height }}>
-    <div className="section-fallback__spinner" />
-  </div>
-)
 
 const Home = () => {
   const { branchData } = useBranchData('UK')
@@ -45,34 +41,34 @@ const Home = () => {
   return (
     <div className="home-page">
       <SEO
-        title="Home"
-        description="OrthoHouse UK - Leading provider of prosthetic limbs, orthotic solutions, biomedical devices, and rehabilitation services. Expert consultations and personalized care for patients worldwide."
-        keywords="orthohouseuk, orthohouse uk, prosthetics, orthotics, biomedical engineering, prosthetic limbs, orthotic devices, rehabilitation, medical devices, custom prosthetics, patient care, healthcare technology, UK prosthetics"
+        title={pageSeo.home.title}
+        description={pageSeo.home.description}
+        keywords={pageSeo.home.keywords}
         structuredData={structuredData}
       />
       <Hero branchData={branchData} />
-      <Suspense fallback={<SectionFallback />}>
+      <Suspense fallback={<SectionSkeleton minHeight={260} />}>
         <HeroPartnersCarousel branchData={branchData} />
       </Suspense>
-      <Suspense fallback={<SectionFallback height={320} />}>
+      <Suspense fallback={<SectionSkeleton minHeight={320} />}>
         <HomeProducts branchData={branchData} />
       </Suspense>
-      <Suspense fallback={<SectionFallback height={240} />}>
+      <Suspense fallback={<SectionSkeleton minHeight={240} />}>
         <HomeMission />
       </Suspense>
-      <Suspense fallback={<SectionFallback />}>
+      <Suspense fallback={<SectionSkeleton minHeight={260} />}>
         <Stats branchData={branchData} />
       </Suspense>
-      <Suspense fallback={<SectionFallback height={300} />}>
+      <Suspense fallback={<SectionSkeleton minHeight={300} />}>
         <HomeUkJourney />
       </Suspense>
-      <Suspense fallback={<SectionFallback />}>
+      <Suspense fallback={<SectionSkeleton minHeight={260} />}>
         <HomeAccreditations />
       </Suspense>
-      <Suspense fallback={<SectionFallback />}>
+      <Suspense fallback={<SectionSkeleton minHeight={260} />}>
         <HomeEvents />
       </Suspense>
-      <Suspense fallback={<SectionFallback height={280} />}>
+      <Suspense fallback={<SectionSkeleton minHeight={280} />}>
         <HomeJoinCta />
       </Suspense>
     </div>

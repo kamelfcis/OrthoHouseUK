@@ -2,7 +2,7 @@ import { useInView } from 'react-intersection-observer'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import SectionHeading from '../common/SectionHeading'
-import { homeSpecialties } from '../../data/homeContent'
+import { homeSpecialties } from '../../content/home'
 import './Capabilities.css'
 
 const Capabilities = () => {

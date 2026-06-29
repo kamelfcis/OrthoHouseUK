@@ -1,4 +1,5 @@
 // SEO data and structured data generators
+import { defaultSeo } from '../content/seo'
 
 const PRODUCTION_SITE_URL = 'https://orthohouseuk.com'
 
@@ -13,7 +14,7 @@ export const generateOrganizationSchema = (branchData) => {
     legalName: 'OrthoHouse UK',
     url: siteUrl,
     logo: `${siteUrl}/assets/images/logo.png`,
-    description: 'OrthoHouse UK - Leading provider of prosthetic limbs, orthotic solutions, biomedical devices, and rehabilitation services.',
+    description: defaultSeo.description,
     address: {
       '@type': 'PostalAddress',
       addressCountry: branchData?.branch?.country || 'UK',
@@ -42,7 +43,7 @@ export const generateWebsiteSchema = () => {
     name: 'OrthoHouse UK',
     alternateName: ['OrthoHouse UK', 'orthohouseuk'],
     url: siteUrl,
-    description: 'OrthoHouse UK - Advanced Prosthetics & Biomedical Engineering Solutions',
+    description: defaultSeo.description.split('.')[0] + '.',
     potentialAction: {
       '@type': 'SearchAction',
       target: {

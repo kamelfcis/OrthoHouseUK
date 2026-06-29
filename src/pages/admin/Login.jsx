@@ -1,6 +1,7 @@
 import { useState, lazy, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { adminLogin } from '../../content/admin'
 import toast from 'react-hot-toast'
 import './Login.css'
 
@@ -21,19 +22,18 @@ const Login = () => {
       const { data, error } = await signIn(email, password)
 
       if (error) {
-        toast.error(error.message || 'Login failed')
+        toast.error(error.message || adminLogin.toastFailed)
         return
       }
 
       if (data?.user) {
-        // Wait a moment for AuthContext to fetch app_user
         setTimeout(() => {
-          toast.success('Login successful!')
+          toast.success(adminLogin.toastSuccess)
           navigate('/admin/dashboard')
         }, 500)
       }
     } catch (error) {
-      toast.error('An unexpected error occurred')
+      toast.error(adminLogin.toastUnexpected)
       console.error('Login error:', error)
     } finally {
       setLoading(false)
@@ -50,34 +50,34 @@ const Login = () => {
         <div className="admin-login-card">
           <div className="admin-login-header">
             <div className="login-logo-container">
-              <img src="/assets/images/Logo_SVG.svg" alt="OrthoHouse" className="login-logo" width={180} height={64} decoding="async" />
+              <img src="/assets/images/Logo_SVG.svg" alt={adminLogin.logoAlt} className="login-logo" width={180} height={64} decoding="async" />
             </div>
-            <h1 className="text-gradient-brand">Admin Portal</h1>
-            <p>Sign in to manage your content</p>
+            <h1 className="text-gradient-brand">{adminLogin.heading}</h1>
+            <p>{adminLogin.subheading}</p>
           </div>
 
           <form onSubmit={handleSubmit} className="admin-login-form">
             <div className="form-group">
-              <label htmlFor="email">Email Address</label>
+              <label htmlFor="email">{adminLogin.emailLabel}</label>
               <input
                 type="email"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                placeholder={adminLogin.emailPlaceholder}
                 required
                 disabled={loading}
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{adminLogin.passwordLabel}</label>
               <input
                 type="password"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder={adminLogin.passwordPlaceholder}
                 required
                 disabled={loading}
               />
@@ -88,7 +88,7 @@ const Login = () => {
               className="lte-btn btn-lg"
               disabled={loading}
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? adminLogin.submitting : adminLogin.submit}
             </button>
           </form>
         </div>
@@ -98,4 +98,3 @@ const Login = () => {
 }
 
 export default Login
-

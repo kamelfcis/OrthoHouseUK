@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import ButtonWithIcon from '../ButtonWithIcon'
+import { ctas } from '../../content/site'
 import './CTA.css'
 
 const CTA = () => {
@@ -15,21 +16,21 @@ const CTA = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="cta-title">Ready to Get Started?</h2>
+          <h2 className="cta-title">Ready to Partner with Us?</h2>
           <p className="cta-text">
-            Contact us today to learn how we can help improve your quality of life
-            with our advanced prosthetics and biomedical engineering solutions.
+            Speak with our team about orthopaedic product portfolios, clinical support,
+            and partnership opportunities for your hospital or trust.
           </p>
           <div className="cta-buttons">
-            <ButtonWithIcon 
-              text="Contact Us"
+            <ButtonWithIcon
+              text={ctas.speakWithTeam}
               icon="fas fa-hand-pointer"
               to="/contact"
               variant="main"
               iconTeal={true}
             />
             <Link to="/partners" className="btn btn-outline-white">
-              View Partners
+              {ctas.viewPartners}
             </Link>
           </div>
         </motion.div>
