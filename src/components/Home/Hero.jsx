@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import { HERO_SLIDES } from '../../data/heroSlides'
+import { fetchHeroSlides } from '../../lib/unsplash'
+import HeroSlider from './HeroSlider'
 import './Hero.css'
 
 const MotionLink = motion(Link)
-const HERO_VIDEO_URL =
-  'https://www.youtube.com/embed/ms8gRumejhg?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&loop=1&playlist=ms8gRumejhg&playsinline=1&enablejsapi=1&modestbranding=1'
 
 const HERO_SUBTITLE_UK =
   'Leading Orthopedic Solutions in the United Kingdom. Partnering With Top Medical Institutions.'
@@ -31,7 +32,17 @@ const normalizeHeroSubtitle = (text, branchCode) => {
 }
 
 const Hero = ({ branchData }) => {
+  const [slides, setSlides] = useState(HERO_SLIDES)
+  const [activeSlide, setActiveSlide] = useState(0)
   const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchHeroSlides().then((fetched) => {
+      if (!cancelled && fetched?.length) setSlides(fetched)
+    })
+    return () => { cancelled = true }
+  }, [])
 
   useEffect(() => {
     const handler = () => { if (window.scrollY > 80) setScrolled(true) }
@@ -92,23 +103,18 @@ const Hero = ({ branchData }) => {
       transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } }
   }
 
+  const eyebrowVariants = {
+    initial: { opacity: 0, y: 8 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
+    exit:    { opacity: 0, y: -6, transition: { duration: 0.25 } }
+  }
+
   return (
     <section
-      className="hero-section elementor-section elementor-section-stretched elementor-section-boxed"
+      className="hero-section"
       aria-label="OrthoHouse UK — advanced prosthetics and biomedical engineering"
     >
-      <div className="elementor-background-video-container" aria-hidden="true">
-        <iframe
-          className="elementor-background-video-hosted"
-          src={HERO_VIDEO_URL}
-          title="OrthoHouse UK Hero Video"
-          frameBorder="0"
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="strict-origin-when-cross-origin"
-        />
-      </div>
+      <HeroSlider slides={slides} onSlideChange={setActiveSlide} />
 
       <div className="hero-overlay" aria-hidden="true" />
       <div className="hero-grain" aria-hidden="true" />
@@ -121,6 +127,19 @@ const Hero = ({ branchData }) => {
             animate={motionInView ? 'visible' : 'hidden'}
             ref={motionRef}
           >
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={`eyebrow-${activeSlide}`}
+                className="hero-eyebrow"
+                variants={eyebrowVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+              >
+                {slides[activeSlide]?.eyebrow}
+              </motion.span>
+            </AnimatePresence>
+
             <motion.h1 className="hero-title" variants={heroTextVariants} role="presentation">
               {title.split('\n').map((line, index, arr) => (
                 <motion.span key={`hero-line-${index}`} variants={heroTitleLineVariants}>

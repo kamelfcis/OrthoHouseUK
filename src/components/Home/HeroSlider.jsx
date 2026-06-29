@@ -1,9 +1,8 @@
-import { useRef, useEffect, useState, useCallback } from 'react'
-import { HERO_SLIDES } from '../../data/heroSlides'
+import { useRef, useEffect, useState, useCallback, useMemo } from 'react'
+import { HERO_SLIDES as FALLBACK_SLIDES } from '../../data/heroSlides'
 
 const AUTOPLAY_DELAY_MS = 5500
 const FADE_MS = 1200
-const SLIDE_COUNT = HERO_SLIDES.length
 
 /** Reactively tracks `prefers-reduced-motion`. */
 const usePrefersReducedMotion = () => {
@@ -26,19 +25,31 @@ const usePrefersReducedMotion = () => {
  * Pure React crossfade — avoids Swiper fade + absolute-position slide bugs.
  * Calls onSlideChange(index) so the parent can sync the eyebrow label.
  */
-const HeroSlider = ({ onSlideChange }) => {
+const HeroSlider = ({ slides, onSlideChange }) => {
+  const slideList = useMemo(
+    () => (slides?.length ? slides : FALLBACK_SLIDES),
+    [slides]
+  )
+  const slideCount = slideList.length
+
   const reduced = usePrefersReducedMotion()
   const [activeIdx, setActiveIdx] = useState(0)
   const [paused, setPaused] = useState(false)
   const activeIdxRef = useRef(0)
 
+  useEffect(() => {
+    activeIdxRef.current = 0
+    setActiveIdx(0)
+    onSlideChange?.(0)
+  }, [slideList, onSlideChange])
+
   const goTo = useCallback((index) => {
-    const next = ((index % SLIDE_COUNT) + SLIDE_COUNT) % SLIDE_COUNT
+    const next = ((index % slideCount) + slideCount) % slideCount
     if (next === activeIdxRef.current) return
     activeIdxRef.current = next
     setActiveIdx(next)
     onSlideChange?.(next)
-  }, [onSlideChange])
+  }, [slideCount, onSlideChange])
 
   const goNext = useCallback(() => {
     goTo(activeIdxRef.current + 1)
@@ -90,7 +101,7 @@ const HeroSlider = ({ onSlideChange }) => {
         aria-roledescription="carousel"
         aria-label="Hero imagery — OrthoHouse UK"
       >
-        {HERO_SLIDES.map((slide, index) => {
+        {slideList.map((slide, index) => {
           const isActive = index === activeIdx
           return (
             <div
@@ -98,7 +109,7 @@ const HeroSlider = ({ onSlideChange }) => {
               className={`hero-slide${isActive ? ' is-active' : ''}`}
               role="group"
               aria-roledescription="slide"
-              aria-label={`Slide ${index + 1} of ${SLIDE_COUNT}: ${slide.eyebrow}`}
+              aria-label={`Slide ${index + 1} of ${slideCount}: ${slide.eyebrow}`}
               aria-hidden={!isActive}
               style={{ transitionDuration: `${fadeDuration}ms` }}
             >
@@ -147,7 +158,7 @@ const HeroSlider = ({ onSlideChange }) => {
         role="tablist"
         aria-label="Choose a slide"
       >
-        {HERO_SLIDES.map((slide, i) => (
+        {slideList.map((slide, i) => (
           <button
             key={slide.id}
             type="button"
@@ -169,15 +180,15 @@ const HeroSlider = ({ onSlideChange }) => {
         ))}
       </div>
 
-      {HERO_SLIDES[activeIdx]?.credit && (
+      {slideList[activeIdx]?.credit && (
         <a
-          href={HERO_SLIDES[activeIdx].credit.url}
+          href={slideList[activeIdx].credit.url}
           target="_blank"
           rel="noopener noreferrer"
           className="hero-slide-credit"
-          aria-label={`Photo by ${HERO_SLIDES[activeIdx].credit.name} on Unsplash`}
+          aria-label={`Photo by ${slideList[activeIdx].credit.name} on Unsplash`}
         >
-          Photo by {HERO_SLIDES[activeIdx].credit.name} on Unsplash
+          Photo by {slideList[activeIdx].credit.name} on Unsplash
         </a>
       )}
     </>
