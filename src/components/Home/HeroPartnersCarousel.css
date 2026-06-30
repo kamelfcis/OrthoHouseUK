@@ -144,6 +144,7 @@
 .hero-partner-slide {
   flex: 0 0 clamp(220px, 22vw, 260px);
   position: relative;
+  display: block;
   width: 100%;
   max-width: clamp(220px, 22vw, 260px);
   height: clamp(140px, 18vw, 180px);
@@ -154,10 +155,24 @@
   box-shadow: var(--ds-shadow-md);
   overflow: hidden;
   backface-visibility: hidden;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
   transition:
     transform var(--ds-duration) var(--ds-ease-out),
     box-shadow var(--ds-duration) var(--ds-ease-out),
     border-color var(--ds-duration) var(--ds-ease-out);
+}
+
+.hero-partner-slide:focus {
+  outline: none;
+}
+
+.hero-partner-slide:focus-visible {
+  outline: 2px solid var(--ds-brand-500, #005f9a);
+  outline-offset: 3px;
+  border-color: var(--ds-brand-200);
+  box-shadow: var(--ds-shadow-lg), 0 0 0 4px rgba(45, 173, 213, 0.2);
 }
 
 .hero-partner-slide:hover {

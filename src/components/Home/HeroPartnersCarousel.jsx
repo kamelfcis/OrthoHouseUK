@@ -1,7 +1,16 @@
 import { useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { toPublicStorageUrl } from '../../lib/storageUrl'
 import { homePartners } from '../../content/home'
 import './HeroPartnersCarousel.css'
+
+const getPartnerDetailPath = (partnerId) => {
+  const id = Number(partnerId)
+  if (Number.isFinite(id) && id > 0) {
+    return `/partners/${id}`
+  }
+  return '/partners'
+}
 
 const sortPartners = (partners = []) => {
   return [...partners].sort((a, b) => {
@@ -35,6 +44,7 @@ const buildPartnerLogos = (branchData) => {
     seen.add(url)
     logos.push({
       id: partner.partner_id ?? `partner-${index}`,
+      partnerId: partner.partner_id,
       name: partner.partner_name || 'Partner',
       url
     })
@@ -81,29 +91,37 @@ const HeroPartnersCarousel = ({ branchData }) => {
           style={{ '--marquee-duration': `${duration}s` }}
         >
           <div className="hero-partners-marquee-track">
-            {marqueeLogos.map((logo, index) => (
-              <div
-                key={`${logo.id}-${index}`}
-                className="hero-partner-slide"
-                aria-hidden={index >= partnerLogos.length}
-              >
-                <span className="hero-partner-border"></span>
-                <div className="hero-partner-glow"></div>
-                <img
-                  src={logo.url}
-                  alt={index < partnerLogos.length ? logo.name : ''}
-                  loading="lazy"
-                  decoding="async"
-                  width={240}
-                  height={160}
-                  draggable={false}
-                  onError={(e) => {
-                    e.currentTarget.onerror = null
-                    e.currentTarget.src = `https://via.placeholder.com/240x160/1f2a44/ffffff?text=${encodeURIComponent(logo.name)}`
-                  }}
-                />
-              </div>
-            ))}
+            {marqueeLogos.map((logo, index) => {
+              const isDuplicate = index >= partnerLogos.length
+              const detailPath = getPartnerDetailPath(logo.partnerId)
+
+              return (
+                <Link
+                  key={`${logo.id}-${index}`}
+                  to={detailPath}
+                  className="hero-partner-slide"
+                  aria-label={isDuplicate ? undefined : `View ${logo.name} details`}
+                  aria-hidden={isDuplicate || undefined}
+                  tabIndex={isDuplicate ? -1 : undefined}
+                >
+                  <span className="hero-partner-border" aria-hidden="true"></span>
+                  <div className="hero-partner-glow" aria-hidden="true"></div>
+                  <img
+                    src={logo.url}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    width={240}
+                    height={160}
+                    draggable={false}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null
+                      e.currentTarget.src = `https://via.placeholder.com/240x160/1f2a44/ffffff?text=${encodeURIComponent(logo.name)}`
+                    }}
+                  />
+                </Link>
+              )
+            })}
           </div>
         </div>
       </div>
