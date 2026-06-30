@@ -22,13 +22,33 @@ export const partnersPage = {
 }
 
 export const partnerDetail = {
-  productsHeading: 'Partner Products',
+  loading: 'Loading partner profile…',
+  notFound: 'Partner not found',
+  notFoundDefault: 'This partner profile may no longer be available.',
+  notFoundMessage: 'This partner profile may no longer be available.',
+  backToPartners: 'Back to partners',
+  browseAll: 'Browse all partners',
+  trustedPartner: 'Trusted partner',
+  officialWebsite: 'Official website',
+  visitWebsite: 'Visit website',
   websiteCta: 'Visit website',
+  emailPartner: 'Email partner',
+  callPartner: 'Call partner',
+  keyDetails: 'Key details',
+  connectWith: (name) => `Connect with ${name}`,
+  about: (name) => `About ${name}`,
+  productsHeading: 'Partner Products',
   speakCta: 'Speak with Our Team',
+  labels: {
+    website: 'Website',
+    email: 'Email',
+    phone: 'Phone',
+    partnerCode: 'Partner code',
+    partnershipType: 'Partnership type',
+    type: 'Type'
+  },
   stats: {
     products: 'Products',
     categories: 'Specialities'
-  },
-  notFound: 'Partner not found',
-  notFoundMessage: 'This partner profile may no longer be available.'
+  }
 }

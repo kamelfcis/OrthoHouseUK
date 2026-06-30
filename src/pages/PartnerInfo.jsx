@@ -109,7 +109,7 @@ const PartnerInfo = () => {
       <div className="partner-detail-page">
         <div className="admin-loading">
           <div className="loading-spinner"></div>
-          <h2>{partnerDetail.loading}</h2>
+          <h2>{partnerDetail.loading ?? 'Loading partner profile…'}</h2>
         </div>
       </div>
     )
@@ -120,10 +120,10 @@ const PartnerInfo = () => {
       <div className="partner-detail-page">
         <div className="error-state">
           <h2>{partnerDetail.notFound}</h2>
-          <p>{error || partnerDetail.notFoundDefault}</p>
+          <p>{error || partnerDetail.notFoundDefault || partnerDetail.notFoundMessage}</p>
           <Link to="/partners" className="lte-btn">
             <span className="lte-btn-inner">
-              <span>{partnerDetail.backToPartners}</span>
+              <span>{partnerDetail.backToPartners ?? 'Back to partners'}</span>
             </span>
           </Link>
         </div>
@@ -138,43 +138,45 @@ const PartnerInfo = () => {
   const partnerName = partner.partner_name?.trim() || 'Partner'
   const partnerShortName = partnerName.split(' ')[0] || partnerName
 
+  const labels = partnerDetail.labels ?? {}
+
   const contactItems = [
-    partner.website_url
+    partner?.website_url
       ? {
           icon: 'fas fa-globe',
-          label: partnerDetail.labels.website,
+          label: labels.website ?? 'Website',
           value: partner.website_url,
           href: partner.website_url,
           external: true
         }
       : null,
-    partner.contact_email
+    partner?.contact_email
       ? {
           icon: 'fas fa-envelope',
-          label: partnerDetail.labels.email,
+          label: labels.email ?? 'Email',
           value: partner.contact_email,
           href: `mailto:${partner.contact_email}`
         }
       : null,
-    partner.contact_phone
+    partner?.contact_phone
       ? {
           icon: 'fas fa-phone',
-          label: partnerDetail.labels.phone,
+          label: labels.phone ?? 'Phone',
           value: partner.contact_phone,
           href: `tel:${partner.contact_phone}`
         }
       : null,
-    partner.partner_code
+    partner?.partner_code
       ? {
           icon: 'fas fa-qrcode',
-          label: partnerDetail.labels.partnerCode,
+          label: labels.partnerCode ?? 'Partner code',
           value: partner.partner_code
         }
       : null,
-    partner.partnership_type
+    partner?.partnership_type
       ? {
           icon: 'fas fa-handshake',
-          label: partnerDetail.labels.partnershipType,
+          label: labels.partnershipType ?? 'Partnership type',
           value: partner.partnership_type
         }
       : null
@@ -186,13 +188,13 @@ const PartnerInfo = () => {
         <div className="container">
           <Link to="/partners" className="partner-back-link">
             <i className="fas fa-arrow-left"></i>
-            <span>{partnerDetail.backToPartners}</span>
+            <span>{partnerDetail.backToPartners ?? 'Back to partners'}</span>
           </Link>
 
           <div className="partner-hero-tags">
             {partner.partnership_type && <span className="partner-tag">{partner.partnership_type}</span>}
             {partner.partner_code && <span className="partner-tag tag-code">Code: {partner.partner_code}</span>}
-            {partner.website_url && <span className="partner-tag tag-online">{partnerDetail.trustedPartner}</span>}
+            {partner.website_url && <span className="partner-tag tag-online">{partnerDetail.trustedPartner ?? 'Trusted partner'}</span>}
           </div>
 
           <h1 className="partner-hero-title">{partnerName}</h1>
@@ -205,7 +207,7 @@ const PartnerInfo = () => {
             {partner.website_url && (
               <div className="hero-stat">
                 <i className="fas fa-globe"></i>
-                <span>{partnerDetail.officialWebsite}</span>
+                <span>{partnerDetail.officialWebsite ?? 'Official website'}</span>
               </div>
             )}
             {partner.contact_email && (
@@ -252,13 +254,13 @@ const PartnerInfo = () => {
                 <div className="partner-sidebar-meta">
                   {partner.partner_code && (
                     <div className="sidebar-meta-item">
-                      <span className="sidebar-meta-label">{partnerDetail.labels.partnerCode}</span>
+                      <span className="sidebar-meta-label">{labels.partnerCode ?? 'Partner code'}</span>
                       <span className="sidebar-meta-value">{partner.partner_code}</span>
                     </div>
                   )}
                   {partner.partnership_type && (
                     <div className="sidebar-meta-item">
-                      <span className="sidebar-meta-label">{partnerDetail.labels.type}</span>
+                      <span className="sidebar-meta-label">{labels.type ?? 'Type'}</span>
                       <span className="sidebar-meta-value">{partner.partnership_type}</span>
                     </div>
                   )}
@@ -267,13 +269,13 @@ const PartnerInfo = () => {
 
               {(partner.website_url || partner.contact_email || partner.contact_phone) && (
                 <div className="partner-contact-card">
-                  <h3>{partnerDetail.connectWith(partnerShortName)}</h3>
+                  <h3>{partnerDetail.connectWith?.(partnerShortName) ?? `Connect with ${partnerShortName}`}</h3>
                   <ul className="partner-contact-list">
                     {partner.website_url && (
                       <li>
                         <a href={partner.website_url} target="_blank" rel="noopener noreferrer">
                           <i className="fas fa-globe"></i>
-                          <span>{partnerDetail.visitWebsite}</span>
+                          <span>{partnerDetail.visitWebsite ?? partnerDetail.websiteCta ?? 'Visit website'}</span>
                         </a>
                       </li>
                     )}
@@ -281,7 +283,7 @@ const PartnerInfo = () => {
                       <li>
                         <a href={`mailto:${partner.contact_email}`}>
                           <i className="fas fa-envelope"></i>
-                          <span>{partnerDetail.emailPartner}</span>
+                          <span>{partnerDetail.emailPartner ?? 'Email partner'}</span>
                         </a>
                       </li>
                     )}
@@ -289,7 +291,7 @@ const PartnerInfo = () => {
                       <li>
                         <a href={`tel:${partner.contact_phone}`}>
                           <i className="fas fa-phone-alt"></i>
-                          <span>{partnerDetail.callPartner}</span>
+                          <span>{partnerDetail.callPartner ?? 'Call partner'}</span>
                         </a>
                       </li>
                     )}
@@ -299,7 +301,7 @@ const PartnerInfo = () => {
 
               <Link to="/partners" className="partner-sidebar-back">
                 <i className="fas fa-arrow-left"></i>
-                <span>{partnerDetail.browseAll}</span>
+                <span>{partnerDetail.browseAll ?? 'Browse all partners'}</span>
               </Link>
             </aside>
 
@@ -308,7 +310,7 @@ const PartnerInfo = () => {
                 <section className="partner-content-block">
                   <h2 className="partner-content-title">
                     <i className="fas fa-info-circle"></i>
-                    {partnerDetail.about(partner.partner_name)}
+                    {partnerDetail.about?.(partnerName) ?? `About ${partnerName}`}
                   </h2>
                   <p className="partner-content-text">{partner.description}</p>
                 </section>
@@ -318,7 +320,7 @@ const PartnerInfo = () => {
                 <section className="partner-content-block">
                   <h2 className="partner-content-title">
                     <i className="fas fa-address-card"></i>
-                    {partnerDetail.keyDetails}
+                    {partnerDetail.keyDetails ?? 'Key details'}
                   </h2>
                   <div className="partner-info-grid">
                     {contactItems.map((item, index) => (
