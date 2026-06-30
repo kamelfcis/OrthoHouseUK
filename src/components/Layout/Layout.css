@@ -16,9 +16,9 @@
 }
 
 @media (max-width: 767px) {
-  .layout { padding-top: 64px; }
+  .layout { padding-top: calc(64px + var(--ds-space-3, 12px)); }
 }
 
 @media (max-width: 479px) {
-  .layout { padding-top: 56px; }
+  .layout { padding-top: calc(56px + var(--ds-space-3, 12px)); }
 }
