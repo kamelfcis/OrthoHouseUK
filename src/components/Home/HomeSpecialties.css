@@ -1,44 +1,72 @@
-.home-specialties__list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ds-space-6);
+/* —— Clinical specialties — four-column row with corner accent ——————————————— */
+
+.home-specialties {
+  --spec-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --spec-duration: 250ms;
+  --spec-accent: var(--ds-brand-600);
 }
 
 .home-specialties__row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.875rem, 1.5vw, 1.25rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+/* —— Card ——————————————————————————————————————————————————————————————————— */
+
+.home-specialties__card {
+  position: relative;
   border-radius: var(--ds-radius-xl);
-  overflow: hidden;
   background: var(--ds-surface);
   border: 1px solid var(--ds-border);
+  overflow: hidden;
   transition:
-    box-shadow var(--ds-duration) var(--ds-ease-out),
-    border-color var(--ds-duration) var(--ds-ease-out);
+    border-color var(--spec-duration) var(--spec-ease),
+    box-shadow var(--spec-duration) var(--spec-ease),
+    transform var(--spec-duration) var(--spec-ease);
 }
 
-.home-specialties__row:hover {
-  box-shadow: var(--ds-shadow-md);
+.home-specialties__card:hover {
   border-color: var(--ds-brand-200);
+  box-shadow: 0 12px 32px rgba(0, 95, 154, 0.1);
+  transform: translateY(-3px);
 }
 
-.home-specialties__link-wrap {
-  display: grid;
-  grid-template-columns: 2fr 3fr;
+.home-specialties__card-link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   text-decoration: none;
   color: inherit;
-  min-height: 200px;
 }
 
-.home-specialties__row.is-reverse .home-specialties__link-wrap {
-  grid-template-columns: 3fr 2fr;
+/* Curved corner bracket — ortho brand blue */
+.home-specialties__corner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 52px;
+  height: 52px;
+  color: var(--spec-accent);
+  pointer-events: none;
+  transition: color var(--spec-duration) var(--spec-ease);
 }
 
-.home-specialties__row.is-reverse .home-specialties__media {
-  order: 2;
+.home-specialties__card:hover .home-specialties__corner {
+  color: var(--ds-brand-500);
 }
+
+/* —— Media —————————————————————————————————————————————————————————————————— */
 
 .home-specialties__media {
   position: relative;
-  min-height: 200px;
+  aspect-ratio: 4 / 3;
+  margin: 0;
   overflow: hidden;
+  border-radius: var(--ds-radius-xl) var(--ds-radius-xl) 0 0;
 }
 
 .home-specialties__media img,
@@ -47,79 +75,129 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform var(--ds-duration-slow) var(--ds-ease-out);
+  transition: transform 450ms var(--spec-ease);
 }
 
-.home-specialties__row:hover .home-specialties__media img,
-.home-specialties__row:hover .home-specialties__media video {
-  transform: scale(1.04);
+.home-specialties__card:hover .home-specialties__media img,
+.home-specialties__card:hover .home-specialties__media video {
+  transform: scale(1.03);
 }
 
-.home-specialties__overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent 60%, rgba(13, 23, 38, 0.04) 100%);
-  pointer-events: none;
-}
+/* —— Body ——————————————————————————————————————————————————————————————————— */
 
 .home-specialties__body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: var(--ds-space-3);
-  padding: clamp(var(--ds-space-6), 3vw, var(--ds-space-10));
+  flex: 1;
+  gap: 0.4rem;
+  padding: clamp(1rem, 1.5vw, 1.25rem) clamp(1rem, 1.5vw, 1.25rem) clamp(1.125rem, 1.5vw, 1.375rem);
+}
+
+.home-specialties__badge {
+  font-size: 0.6875rem;
+  font-weight: var(--ds-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ds-brand-600);
+  margin-bottom: 0.15rem;
 }
 
 .home-specialties__title {
-  font-size: var(--ds-text-xl);
-  font-weight: var(--ds-weight-bold);
-  color: var(--ds-text-heading);
   margin: 0;
-  line-height: var(--ds-leading-snug);
+  font-size: clamp(0.9375rem, 1vw, 1.0625rem);
+  font-weight: var(--ds-weight-bold);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--ds-text-heading);
 }
 
 .home-specialties__desc {
-  font-size: var(--ds-text-base);
-  line-height: var(--ds-leading-relaxed);
-  color: var(--ds-text-muted);
   margin: 0;
-  max-width: 42ch;
+  flex: 1;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--ds-text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
+
+/* —— CTA ———————————————————————————————————————————————————————————————————— */
 
 .home-specialties__cta {
   display: inline-flex;
   align-items: center;
-  gap: var(--ds-space-2);
-  font-size: var(--ds-text-sm);
+  gap: 0.35rem;
+  margin-top: 0.625rem;
+  font-size: 0.8125rem;
   font-weight: var(--ds-weight-semibold);
   color: var(--ds-brand-600);
-  margin-top: var(--ds-space-2);
-  transition: gap var(--ds-duration) var(--ds-ease-out);
+  transition: gap var(--spec-duration) var(--spec-ease);
 }
 
-.home-specialties__row:hover .home-specialties__cta {
-  gap: var(--ds-space-3);
+.home-specialties__card:hover .home-specialties__cta {
+  gap: 0.55rem;
 }
+
+.home-specialties__cta-icon {
+  flex-shrink: 0;
+  transition: transform var(--spec-duration) var(--spec-ease);
+}
+
+.home-specialties__card:hover .home-specialties__cta-icon {
+  transform: translateX(3px);
+}
+
+/* —— Tablet ————————————————————————————————————————————————————————————————— */
+
+@media (max-width: 1023px) {
+  .home-specialties__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* —— Mobile ————————————————————————————————————————————————————————————————— */
 
 @media (max-width: 767px) {
-  .home-specialties__link-wrap,
-  .home-specialties__row.is-reverse .home-specialties__link-wrap {
+  .home-specialties__row {
     grid-template-columns: 1fr;
-  }
-
-  .home-specialties__row.is-reverse .home-specialties__media {
-    order: -1;
+    max-width: 400px;
+    margin-inline: auto;
   }
 
   .home-specialties__media {
-    aspect-ratio: 16 / 9;
-    min-height: auto;
+    aspect-ratio: 16 / 10;
+  }
+
+  .home-specialties__cta {
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .home-specialties__corner {
+    width: 44px;
+    height: 44px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .home-specialties__card,
   .home-specialties__media img,
-  .home-specialties__media video {
+  .home-specialties__media video,
+  .home-specialties__cta,
+  .home-specialties__cta-icon,
+  .home-specialties__corner {
     transition: none;
+  }
+
+  .home-specialties__card:hover {
+    transform: none;
+  }
+
+  .home-specialties__card:hover .home-specialties__media img,
+  .home-specialties__card:hover .home-specialties__media video {
+    transform: none;
   }
 }

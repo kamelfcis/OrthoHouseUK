@@ -165,10 +165,12 @@
 }
 
 .home-editorial-stack__media img,
-.home-editorial-stack__media video {
+.home-editorial-stack__media video,
+.home-editorial-stack__media .section-media__image,
+.home-editorial-stack__media .section-media__video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: fill;
   display: block;
 }
 

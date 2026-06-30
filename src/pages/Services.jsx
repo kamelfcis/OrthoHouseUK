@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
-import { fetchPageHeroImage } from '../lib/unsplash'
+import HeroBackground from '../components/common/HeroBackground'
 import useBranchData from '../hooks/useBranchData'
 import SEO from '../components/SEO/SEO'
 import { pageSeo } from '../content/seo'
@@ -21,28 +21,9 @@ const Services = () => {
   const [partners, setPartners] = useState([])
   const [partnerImages, setPartnerImages] = useState({})
   const [displayedCount, setDisplayedCount] = useState(5) // Show first 5 partners initially
-  const [heroImage, setHeroImage] = useState({
-    src: partnersPage.hero.imageFallback,
-    alt: partnersPage.hero.imageAlt
-  })
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [])
-
-  useEffect(() => {
-    let cancelled = false
-
-    fetchPageHeroImage(partnersPage.hero.imageQuery, {
-      src: partnersPage.hero.imageFallback,
-      alt: partnersPage.hero.imageAlt
-    }).then((image) => {
-      if (!cancelled) setHeroImage(image)
-    })
-
-    return () => {
-      cancelled = true
-    }
   }, [])
 
   useEffect(() => {
@@ -172,10 +153,11 @@ const Services = () => {
         keywords={pageSeo.partners.keywords}
       />
       <div className="partners-hero">
-        <div
+        <HeroBackground
           className="partners-hero__media"
-          style={{ backgroundImage: `url(${heroImage.src})` }}
-          role="presentation"
+          image={partnersPage.hero.localImage}
+          fallbackSrc={partnersPage.hero.imageFallback}
+          alt={partnersPage.hero.imageAlt}
         />
         <div className="partners-hero__overlay" aria-hidden="true" />
         <div className="partners-hero__container container">
@@ -187,8 +169,9 @@ const Services = () => {
           >
             <div className="partners-hero__eyebrow">{partnersPage.hero.eyebrow}</div>
             <h1 className="partners-hero__title">
-              <span>{partnersPage.hero.titleLine1}</span>
-              <span>{partnersPage.hero.titleLine2}</span>
+              {partnersPage.hero.title.map((line) => (
+                <span key={line}>{line}</span>
+              ))}
             </h1>
             <p className="partners-hero__subtitle">{partnersPage.hero.subtitle}</p>
           </motion.div>

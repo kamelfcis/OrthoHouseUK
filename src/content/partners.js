@@ -1,3 +1,5 @@
+import { partnersHeroImage } from '../data/localAssets'
+
 export const partnersPage = {
   seo: {
     title: 'Partners — Global Orthopaedic Manufacturers',
@@ -11,10 +13,13 @@ export const partnersPage = {
     title: ['Trusted Global', 'Manufacturing Partners'],
     subtitle:
       'We represent world-class orthopaedic brands with full regulatory compliance, clinical education, and dedicated UK market support.',
+    // Local: legacy partners-hero — Unsplash as remote fallback only
+    localImage: partnersHeroImage,
     imageQuery: 'healthcare professional surgeon',
-    imageAlt: 'Healthcare professionals and surgeons in orthopaedic partnership',
+    imageAlt: partnersHeroImage.alt,
     imageFallback:
-      'https://images.unsplash.com/photo-1537368916624-89d682267b36?w=1920&h=1080&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1537368916624-89d682267b36?w=1920&h=1080&fit=crop&q=80',
+    useLocalOnly: true
   },
   loadMore: 'View more partners',
   empty: 'No partners are currently listed for the UK branch.',

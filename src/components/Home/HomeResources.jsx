@@ -1,9 +1,8 @@
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { useInView } from 'react-intersection-observer'
-import { motion, useReducedMotion } from 'framer-motion'
+import useNearViewport from '../../hooks/useNearViewport'
 import SectionHeading from '../common/SectionHeading'
-import { toPublicStorageUrl } from '../../lib/storageUrl'
+import { resolveBlogFeaturedImage } from '../../utils/blogPosts'
 import { homeResources } from '../../content/home'
 import './HomeResources.css'
 
@@ -25,8 +24,8 @@ const formatDate = (dateStr) => {
 const buildPosts = (blogs = []) =>
   blogs.slice(0, FEATURED_COUNT).map((post) => {
     let image = post.featured_image
-    if (image && !/^https?:\/\//i.test(image)) {
-      image = toPublicStorageUrl('blog-images', image)
+    if (image) {
+      image = resolveBlogFeaturedImage(image)
     }
 
     return {
@@ -39,24 +38,12 @@ const buildPosts = (blogs = []) =>
   })
 
 const HomeResources = ({ branchData }) => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 })
-  const prefersReducedMotion = useReducedMotion()
+  const [ref, inView] = useNearViewport()
 
   const posts = useMemo(
     () => buildPosts(branchData?.blogs),
     [branchData?.blogs]
   )
-
-  const itemVariants = prefersReducedMotion
-    ? {}
-    : {
-        hidden: { opacity: 0, y: 20 },
-        visible: (i) => ({
-          opacity: 1,
-          y: 0,
-          transition: { delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }
-        })
-      }
 
   if (posts.length === 0) {
     return (
@@ -97,15 +84,12 @@ const HomeResources = ({ branchData }) => {
           titleId="home-resources-heading"
         />
 
-        <div className="home-resources__grid">
+        <div className={`home-resources__grid reveal-stagger${inView ? ' is-visible' : ''}`}>
           {posts.map((post, index) => (
-            <motion.article
+            <article
               key={post.id}
-              className="home-resources__card"
-              custom={index}
-              variants={itemVariants}
-              initial="hidden"
-              animate={inView ? 'visible' : 'hidden'}
+              className="home-resources__card reveal-item"
+              style={{ '--reveal-delay': `${index * 0.1}s` }}
             >
               <Link to={`/blog/${post.id}`} className="home-resources__link">
                 {post.image && (
@@ -115,6 +99,7 @@ const HomeResources = ({ branchData }) => {
                       alt=""
                       loading="lazy"
                       decoding="async"
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       width={480}
                       height={300}
                     />
@@ -136,7 +121,7 @@ const HomeResources = ({ branchData }) => {
                   </span>
                 </div>
               </Link>
-            </motion.article>
+            </article>
           ))}
         </div>
 

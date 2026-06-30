@@ -18,10 +18,30 @@ export const productsPage = {
 }
 
 export const productDetail = {
+  loading: 'Loading product details…',
+  notFound: 'Product not found',
+  notFoundDefault: 'This product may no longer be available in our UK catalogue.',
+  notFoundMessage: 'This product may no longer be available in our UK catalogue.',
+  backToProducts: 'Back to Products',
+  noImage: 'No product image available',
   speakCta: 'Speak with Our Team',
   specsHeading: 'Product Specifications',
   partnerHeading: 'Manufacturing Partner',
   descriptionHeading: 'Overview',
-  notFound: 'Product not found',
-  notFoundMessage: 'This product may no longer be available in our UK catalogue.'
+  seoFallback: (name, category) =>
+    `${name} — ${category} orthopaedic solution from OrthoHouse UK.`,
+  labels: {
+    code: 'Code',
+    productCode: 'Product code',
+    partner: 'Partner',
+    category: 'Category',
+    overview: 'Overview',
+    specifications: 'Specifications',
+    specialNotes: 'Special notes'
+  },
+  stats: {
+    availableIn: (branch) => `Available in ${branch}`,
+    imageCount: (count) => `${count} image${count !== 1 ? 's' : ''}`,
+    partneredWith: (name) => `Partnered with ${name}`
+  }
 }

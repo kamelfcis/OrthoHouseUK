@@ -505,27 +505,7 @@ const Blogs = () => {
                 />
               </div>
 
-              {/* Branch Selection for Admin - Only when creating new blog */}
-              {isAdmin && !editingBlog && (
-                <div className="form-group">
-                  <label>Branch *</label>
-                  <select
-                    value={formData.branch_id || ''}
-                    onChange={(e) => setFormData({ ...formData, branch_id: e.target.value })}
-                    required
-                  >
-                    <option value="">Select Branch</option>
-                    {branches.map((branch) => (
-                      <option key={branch.branch_id} value={branch.branch_id}>
-                        {branch.branch_name} ({branch.branch_code})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
-              {/* Branch Selection for Admin when editing - can change branch */}
-              {isAdmin && editingBlog && (
+              {isAdmin && (
                 <div className="form-group">
                   <label>Branch *</label>
                   <select
@@ -551,14 +531,6 @@ const Blogs = () => {
                     type="text"
                     value={branches.find(b => b.branch_id === appUser?.branch_id)?.branch_name || 'N/A'}
                     disabled
-                    style={{
-                      padding: '12px 15px',
-                      border: '2px solid var(--gray-border)',
-                      borderRadius: '10px',
-                      background: 'var(--gray)',
-                      color: 'var(--black)',
-                      cursor: 'not-allowed'
-                    }}
                   />
                 </div>
               )}
@@ -593,7 +565,7 @@ const Blogs = () => {
                   </label>
 
                   {formData.featured_image && (
-                    <div className="featured-image-preview" style={{ marginTop: '16px' }}>
+                    <div className="featured-image-preview">
                       <div className="image-preview-card">
                         <img
                           src={getImageUrl(formData.featured_image)}

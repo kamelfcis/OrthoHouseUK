@@ -257,6 +257,270 @@
   margin-top: 16px;
 }
 
+/* Table */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table thead {
+  background: var(--gray);
+}
+
+.admin-table th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--ds-text-heading, var(--black));
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--ds-border-strong, var(--gray-border));
+}
+
+.admin-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--gray-border);
+  color: var(--ds-text-heading, var(--black));
+}
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.action-btn.edit {
+  background: rgba(0, 95, 154, 0.1);
+  color: var(--brand-primary);
+}
+
+.action-btn.delete {
+  background: rgba(195, 22, 27, 0.1);
+  color: var(--red);
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: var(--ds-text-heading, var(--black));
+  font-size: 0.9rem;
+}
+
+.filter-group select {
+  padding: 10px 14px;
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: var(--font-main);
+  transition: all 0.3s ease;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: var(--ds-surface, var(--white));
+  border-radius: 20px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 30px;
+  border-bottom: 1px solid var(--ds-border-strong, var(--gray-border));
+}
+
+.modal-header h2 {
+  font-size: 1.8rem;
+  color: var(--ds-text-heading, var(--black));
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: rgba(29, 41, 57, 0.5);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.modal-form {
+  padding: 30px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-row .form-group {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--ds-text-heading, var(--black));
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 12px 15px;
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: var(--font-main);
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--ds-surface, var(--white));
+  color: var(--ds-text-heading, var(--black));
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--ds-brand-500, var(--brand-primary));
+  box-shadow: var(--ds-ring, 0 0 0 3px rgba(36, 120, 181, 0.45));
+}
+
+.form-group input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--ds-surface-muted, var(--gray));
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--ds-text-heading, var(--black));
+  font-size: 1rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--ds-border-strong, var(--gray-border));
+  border-radius: 6px;
+  appearance: none;
+  -webkit-appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+  background: var(--brand-primary);
+  border-color: var(--ds-brand-500, var(--brand-primary));
+}
+
+.checkbox-label input[type="checkbox"]:checked::before {
+  content: '\f00c';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: 0.9rem;
+  color: var(--white);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid var(--gray-border);
+}
+
+.modal-actions .lte-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--main-gradient);
+  color: var(--white);
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  font-family: var(--font-main);
+  font-size: 1rem;
+}
+
+.modal-actions .lte-btn.btn-outline {
+  background: transparent !important;
+  border: 2px solid var(--brand-primary) !important;
+  color: var(--brand-primary) !important;
+}
+
+.modal-actions .lte-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
   * {
     box-sizing: border-box;
@@ -369,18 +633,71 @@
   }
 
   .modal-content {
-    max-width: 95vw;
-    margin: 10px;
-    max-height: 95vh;
+    max-width: 100%;
+    width: 100%;
+    margin: 0;
+    max-height: 100vh;
+    border-radius: 16px 16px 0 0;
+    margin-top: auto;
+  }
+
+  .modal-overlay {
+    padding: 10px;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    padding: 20px 16px;
+    position: sticky;
+    top: 0;
+    background: var(--ds-surface, var(--white));
+    z-index: 10;
+  }
+
+  .modal-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .modal-close {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .modal-form {
-    padding: 20px;
+    padding: 20px 16px;
   }
 
   .form-row {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 14px 12px;
+    font-size: 1rem;
+    min-height: 48px;
+  }
+
+  .form-group textarea {
+    min-height: 120px;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+    gap: 12px;
+  }
+
+  .modal-actions .lte-btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
   }
 }
 

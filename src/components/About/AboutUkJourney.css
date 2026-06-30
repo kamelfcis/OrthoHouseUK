@@ -1,0 +1,275 @@
+.about-uk-journey {
+  position: relative;
+  overflow: hidden;
+  background: var(--ds-gradient-hero);
+  color: var(--ds-text-on-brand);
+  padding-block: clamp(4rem, 8vw, 6.5rem);
+}
+
+.about-uk-journey__backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.about-uk-journey__grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(45, 173, 213, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 173, 213, 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+}
+
+.about-uk-journey__glow {
+  position: absolute;
+  width: clamp(280px, 40vw, 520px);
+  height: clamp(280px, 40vw, 520px);
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.45;
+}
+
+.about-uk-journey__glow--left {
+  top: 10%;
+  left: -8%;
+  background: radial-gradient(circle, rgba(45, 173, 213, 0.55) 0%, transparent 70%);
+}
+
+.about-uk-journey__glow--right {
+  bottom: 5%;
+  right: -6%;
+  background: radial-gradient(circle, rgba(0, 95, 154, 0.6) 0%, transparent 70%);
+}
+
+.about-uk-journey__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.about-uk-journey__head .ds-eyebrow {
+  color: rgba(174, 216, 239, 0.95);
+  border-color: rgba(174, 216, 239, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.about-uk-journey__head .ds-section-title {
+  color: var(--ds-text-on-brand);
+}
+
+.about-uk-journey__head .ds-section-subtitle {
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 52ch;
+  margin-inline: auto;
+}
+
+.about-uk-journey__timeline-wrap {
+  position: relative;
+  margin-top: var(--ds-space-10);
+}
+
+.about-uk-journey__spine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.about-uk-journey__spine-glow {
+  position: absolute;
+  inset: -4px -8px;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(45, 173, 213, 0.45) 20%,
+    rgba(36, 120, 181, 0.65) 50%,
+    rgba(45, 173, 213, 0.45) 80%,
+    transparent 100%
+  );
+  filter: blur(6px);
+  opacity: 0.7;
+}
+
+.about-uk-journey__spine-line {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--ds-gradient-brand);
+  transform-origin: top center;
+  transform: scaleY(0);
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-uk-journey__spine.is-active .about-uk-journey__spine-line {
+  transform: scaleY(1);
+}
+
+.about-uk-journey__timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-8);
+  position: relative;
+  z-index: 1;
+}
+
+.about-uk-journey__step {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--ds-space-5);
+}
+
+.about-uk-journey__step .about-uk-journey__card {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  width: min(100%, 420px);
+}
+
+.about-uk-journey__step .about-uk-journey__node {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.about-uk-journey__step.is-alt .about-uk-journey__card {
+  grid-column: 3;
+  justify-self: start;
+}
+
+.about-uk-journey__node {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.about-uk-journey__node-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(174, 216, 239, 0.55);
+  background: rgba(255, 255, 255, 0.04);
+  animation: about-journey-pulse 3s ease-in-out infinite;
+  animation-delay: calc(var(--step-index, 0) * 0.35s);
+}
+
+.about-uk-journey__node-core {
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: var(--ds-gradient-brand);
+  box-shadow:
+    0 0 12px rgba(45, 173, 213, 0.65),
+    0 0 24px rgba(0, 95, 154, 0.35);
+}
+
+@keyframes about-journey-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+.about-uk-journey__card {
+  padding: var(--ds-space-6);
+  border-radius: var(--ds-radius-lg, 12px);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 8px 32px rgba(6, 40, 61, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.about-uk-journey__card:hover {
+  border-color: rgba(174, 216, 239, 0.45);
+  box-shadow:
+    0 12px 40px rgba(6, 40, 61, 0.45),
+    0 0 24px rgba(45, 173, 213, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+.about-uk-journey__date {
+  display: inline-block;
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-bold);
+  letter-spacing: var(--ds-tracking-wider);
+  text-transform: uppercase;
+  color: var(--ds-brand-300);
+  margin-bottom: var(--ds-space-2);
+}
+
+.about-uk-journey__step-title {
+  font-size: var(--ds-text-lg);
+  font-weight: var(--ds-weight-semibold);
+  margin: 0 0 var(--ds-space-3);
+  color: var(--ds-text-on-brand);
+  text-wrap: balance;
+}
+
+.about-uk-journey__step-desc {
+  font-size: var(--ds-text-sm);
+  line-height: var(--ds-leading-relaxed);
+  color: rgba(255, 255, 255, 0.78);
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  .about-uk-journey__spine {
+    left: 10px;
+    transform: none;
+  }
+
+  .about-uk-journey__step {
+    grid-template-columns: auto 1fr;
+    gap: var(--ds-space-4);
+    padding-left: var(--ds-space-2);
+  }
+
+  .about-uk-journey__step .about-uk-journey__node {
+    grid-column: 1;
+  }
+
+  .about-uk-journey__step .about-uk-journey__card,
+  .about-uk-journey__step.is-alt .about-uk-journey__card {
+    grid-column: 2;
+    justify-self: stretch;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-uk-journey__spine-line {
+    transform: scaleY(1);
+    transition: none;
+  }
+
+  .about-uk-journey__node-ring {
+    animation: none;
+  }
+
+  .about-uk-journey__card:hover {
+    transform: none;
+  }
+}

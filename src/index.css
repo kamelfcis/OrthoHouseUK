@@ -9,6 +9,7 @@
 @import './styles/buttons.css';
 @import './styles/template.css';
 @import './styles/responsive.css';
+@import './components/common/Reveal.css';
 
 * {
   margin: 0;

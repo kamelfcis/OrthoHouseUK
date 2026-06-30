@@ -1,10 +1,11 @@
-import { useEffect, Suspense, lazy, useState } from 'react'
+import { useEffect, Suspense, lazy } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { motion } from 'framer-motion'
 import SEO from '../components/SEO/SEO'
+import HeroBackground from '../components/common/HeroBackground'
 import { pageSeo } from '../content/seo'
 import { aboutPage } from '../content/about'
-import { fetchPageHeroImage } from '../lib/unsplash'
+import AboutUkJourney from '../components/About/AboutUkJourney'
 import CeoVisionMission from '../components/Home/CeoVisionMission'
 import HomeAboutSection from '../components/Home/About'
 import useBranchData from '../hooks/useBranchData'
@@ -18,28 +19,9 @@ const SectionFallback = ({ height = 260 }) => (
 
 const About = () => {
   const { branchData } = useBranchData('UK')
-  const [heroImage, setHeroImage] = useState({
-    src: aboutPage.hero.imageFallback,
-    alt: aboutPage.hero.imageAlt
-  })
 
   useEffect(() => {
     window.scrollTo(0, 0)
-  }, [])
-
-  useEffect(() => {
-    let cancelled = false
-
-    fetchPageHeroImage(aboutPage.hero.imageQuery, {
-      src: aboutPage.hero.imageFallback,
-      alt: aboutPage.hero.imageAlt
-    }).then((image) => {
-      if (!cancelled) setHeroImage(image)
-    })
-
-    return () => {
-      cancelled = true
-    }
   }, [])
 
   const [ref1, inView1] = useInView({
@@ -110,10 +92,11 @@ const About = () => {
       />
       {/* Hero Section */}
       <div className="about-hero">
-        <div
+        <HeroBackground
           className="about-hero__media"
-          style={{ backgroundImage: `url(${heroImage.src})` }}
-          role="presentation"
+          image={aboutPage.hero.localImage}
+          fallbackSrc={aboutPage.hero.imageFallback}
+          alt={aboutPage.hero.imageAlt}
         />
         <div className="about-hero__overlay" aria-hidden="true" />
         <div className="about-hero__container container">
@@ -140,6 +123,8 @@ const About = () => {
           </motion.div>
         </div>
       </div>
+
+      <AboutUkJourney />
 
       {/* CEO, Vision & Mission Section */}
       <Suspense fallback={<SectionFallback />}>

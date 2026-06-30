@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import { ceoPortraitImage } from '../../data/localAssets'
 import { ceoVisionMission } from '../../content/about'
 import './CeoVisionMission.css'
 
@@ -83,12 +84,13 @@ const CeoVisionMission = () => {
                 >
                   <div className="ceo-portrait-frame">
                     <img
-                      src="/assets/images/ceo.jpeg"
+                      src={ceoPortraitImage.src}
+                      srcSet={ceoPortraitImage.srcSet}
                       alt={ceoImageAlt}
                       className="ceo-portrait-image"
                       loading="lazy"
-                      width={240}
-                      height={300}
+                      width={ceoPortraitImage.width}
+                      height={ceoPortraitImage.height}
                     />
                   </div>
                 </motion.figure>

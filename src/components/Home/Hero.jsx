@@ -61,17 +61,24 @@ const Hero = ({ branchData }) => {
 
   useEffect(() => {
     let cancelled = false
+    let cancelIdle = () => {}
 
-    fetchHeroVideos({
-      onProgress: (partial) => {
-        if (!cancelled && partial.length) setVideoSlides(partial)
-      }
-    }).then((fetched) => {
-      if (!cancelled && fetched?.length) setVideoSlides(fetched)
-    })
+    const loadVideos = () => {
+      fetchHeroVideos({
+        onProgress: (partial) => {
+          if (!cancelled && partial.length) setVideoSlides(partial)
+        }
+      }).then((fetched) => {
+        if (!cancelled && fetched?.length) setVideoSlides(fetched)
+      })
+    }
+
+    // Defer Pexels until after first paint — poster/static slides cover LCP.
+    cancelIdle = runWhenIdle(loadVideos, { timeout: 2500 })
 
     return () => {
       cancelled = true
+      cancelIdle()
     }
   }, [])
 

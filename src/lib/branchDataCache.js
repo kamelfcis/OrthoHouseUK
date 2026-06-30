@@ -1,3 +1,5 @@
+import { marketEngagementBlogsForCache } from '../utils/blogPosts'
+
 const CACHE_TTL_MS = 5 * 60 * 1000
 const STALE_TTL_MS = 30 * 60 * 1000
 
@@ -144,6 +146,14 @@ const fetchBranchDataFromApi = async (branchCode) => {
     statsByType[stat.stat_type].push(stat)
   })
 
+  const dbBlogs = blogsResult.data || []
+  const staticBlogs = branch.branch_code === 'UK' ? marketEngagementBlogsForCache() : []
+  const dbTitles = new Set(dbBlogs.map((b) => b.title?.toLowerCase()))
+  const mergedBlogs = [
+    ...dbBlogs,
+    ...staticBlogs.filter((b) => !dbTitles.has(b.title?.toLowerCase()))
+  ].sort((a, b) => new Date(b.published_at) - new Date(a.published_at))
+
   return {
     branch,
     pageContent: contentBySection,
@@ -151,7 +161,7 @@ const fetchBranchDataFromApi = async (branchCode) => {
     statistics: statsByType,
     products: productsResult.data || [],
     partners: partnersResult.data || [],
-    blogs: blogsResult.data || []
+    blogs: mergedBlogs.slice(0, 6)
   }
 }
 

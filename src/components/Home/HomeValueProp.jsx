@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useInView } from 'react-intersection-observer'
-import { motion, useReducedMotion } from 'framer-motion'
+import useNearViewport from '../../hooks/useNearViewport'
 import SectionMedia from '../common/SectionMedia'
 import useSectionImages from '../../hooks/useSectionImages'
 import { homeValueProp } from '../../content/home'
@@ -11,22 +10,15 @@ const VALUE_PROP_IMAGE_SPEC = [{
   id: 'main',
   imageQuery: homeValueProp.imageQuery,
   imageFallback: homeValueProp.imageFallback,
-  imageAlt: homeValueProp.imageAlt
+  imageAlt: homeValueProp.imageAlt,
+  localImage: homeValueProp.localImage,
+  useLocalOnly: homeValueProp.useLocalOnly
 }]
 
 const HomeValueProp = () => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 })
-  const prefersReducedMotion = useReducedMotion()
-  const images = useSectionImages(VALUE_PROP_IMAGE_SPEC)
+  const [ref, inView] = useNearViewport()
+  const images = useSectionImages(VALUE_PROP_IMAGE_SPEC, { enabled: inView })
   const image = images.main
-
-  const motionProps = prefersReducedMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 28 },
-        animate: inView ? { opacity: 1, y: 0 } : {},
-        transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
-      }
 
   return (
     <section
@@ -35,7 +27,7 @@ const HomeValueProp = () => {
       aria-labelledby="home-value-prop-heading"
     >
       <div className="container">
-        <motion.div className="home-editorial" {...motionProps}>
+        <div className={`home-editorial reveal${inView ? ' is-visible' : ''}`}>
           <div className="home-editorial__content">
             <span className="ds-eyebrow">{homeValueProp.eyebrow}</span>
             <h2 id="home-value-prop-heading" className="home-editorial__title">
@@ -67,7 +59,7 @@ const HomeValueProp = () => {
               showCredit
             />
           </figure>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

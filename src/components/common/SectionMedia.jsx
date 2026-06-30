@@ -4,6 +4,7 @@ import {
   useSectionVideoMode,
   useResponsiveVideoSrc
 } from '../../hooks/useHeroVideoMode'
+import ResponsiveImage from './ResponsiveImage'
 import './SectionMedia.css'
 
 /**
@@ -93,20 +94,15 @@ const SectionMedia = ({
   }
 
   return (
-    <img
+    <ResponsiveImage
       className="section-media__image"
-      src={image?.src ?? fallbackSrc}
-      srcSet={
-        image?.srcMobile
-          ? `${image.srcMobile} 640w, ${image.src} ${width}w`
-          : undefined
-      }
-      sizes={sizes}
+      image={image}
+      fallbackSrc={fallbackSrc}
       alt={imageAlt}
-      loading={loading}
-      decoding="async"
+      sizes={sizes}
       width={width}
       height={height}
+      loading={loading}
     />
   )
 }

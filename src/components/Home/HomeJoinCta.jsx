@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useInView } from 'react-intersection-observer'
-import { motion, useReducedMotion } from 'framer-motion'
+import useNearViewport from '../../hooks/useNearViewport'
 import useSectionImages from '../../hooks/useSectionImages'
 import { homeJoinCta } from '../../content/home'
 import './HomeJoinCta.css'
@@ -9,22 +8,15 @@ const JOIN_CTA_IMAGE_SPEC = [{
   id: 'bg',
   imageQuery: homeJoinCta.imageQuery,
   imageFallback: homeJoinCta.imageFallback,
-  imageAlt: homeJoinCta.imageAlt
+  imageAlt: homeJoinCta.imageAlt,
+  localImage: homeJoinCta.localImage,
+  useLocalOnly: homeJoinCta.useLocalOnly
 }]
 
 const HomeJoinCta = () => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 })
-  const prefersReducedMotion = useReducedMotion()
-  const images = useSectionImages(JOIN_CTA_IMAGE_SPEC)
+  const [ref, inView] = useNearViewport()
+  const images = useSectionImages(JOIN_CTA_IMAGE_SPEC, { enabled: inView })
   const bgSrc = images.bg?.src ?? homeJoinCta.imageFallback
-
-  const motionProps = prefersReducedMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 30 },
-        animate: inView ? { opacity: 1, y: 0 } : {},
-        transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
-      }
 
   return (
     <section
@@ -33,7 +25,7 @@ const HomeJoinCta = () => {
       aria-labelledby="home-join-heading"
     >
       <div className="container">
-        <motion.div className="home-join-cta__panel" {...motionProps}>
+        <div className={`home-join-cta__panel reveal${inView ? ' is-visible' : ''}`}>
           <div
             className="home-join-cta__bg"
             aria-hidden="true"
@@ -71,7 +63,7 @@ const HomeJoinCta = () => {
               </Link>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

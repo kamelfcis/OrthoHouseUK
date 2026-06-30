@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useInView } from 'react-intersection-observer'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import useNearViewport from '../../hooks/useNearViewport'
 import SectionHeading from '../common/SectionHeading'
 import { homeTestimonials } from '../../content/home'
 import { testimonialsPage } from '../../content/testimonials'
@@ -8,21 +7,25 @@ import './HomeTestimonials.css'
 
 const DISPLAY_COUNT = 3
 
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 const HomeTestimonials = () => {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 })
-  const prefersReducedMotion = useReducedMotion()
+  const [ref, inView] = useNearViewport()
   const testimonials = testimonialsPage.items.slice(0, DISPLAY_COUNT)
+  const reduced = prefersReducedMotion()
 
   useEffect(() => {
-    if (prefersReducedMotion) return undefined
+    if (reduced) return undefined
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % testimonials.length)
     }, 7000)
 
     return () => clearInterval(interval)
-  }, [testimonials.length, prefersReducedMotion])
+  }, [testimonials.length, reduced])
 
   if (!testimonials.length) return null
 
@@ -42,28 +45,22 @@ const HomeTestimonials = () => {
           titleId="home-testimonials-heading"
         />
 
-        <div className="home-testimonials__panel">
-          <AnimatePresence mode="wait">
-            <motion.blockquote
-              key={currentIndex}
-              className="home-testimonials__quote"
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={prefersReducedMotion ? undefined : { opacity: 0, y: -12 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className="home-testimonials__rating" aria-label={`${current.rating} out of 5 stars`}>
-                {Array.from({ length: current.rating }).map((_, i) => (
-                  <i key={i} className="fas fa-star" aria-hidden="true" />
-                ))}
-              </div>
-              <p>&ldquo;{current.text}&rdquo;</p>
-              <footer className="home-testimonials__author">
-                <cite className="home-testimonials__name">{current.name}</cite>
-                <span className="home-testimonials__role">{current.role}</span>
-              </footer>
-            </motion.blockquote>
-          </AnimatePresence>
+        <div className={`home-testimonials__panel reveal${inView ? ' is-visible' : ''}`}>
+          <blockquote
+            key={currentIndex}
+            className={`home-testimonials__quote${reduced ? '' : ' reveal-crossfade'}`}
+          >
+            <div className="home-testimonials__rating" aria-label={`${current.rating} out of 5 stars`}>
+              {Array.from({ length: current.rating }).map((_, i) => (
+                <i key={i} className="fas fa-star" aria-hidden="true" />
+              ))}
+            </div>
+            <p>&ldquo;{current.text}&rdquo;</p>
+            <footer className="home-testimonials__author">
+              <cite className="home-testimonials__name">{current.name}</cite>
+              <span className="home-testimonials__role">{current.role}</span>
+            </footer>
+          </blockquote>
 
           <nav className="home-testimonials__nav" aria-label="Testimonial navigation">
             {testimonials.map((item, index) => (

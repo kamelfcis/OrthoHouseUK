@@ -1,5 +1,4 @@
-import { useInView } from 'react-intersection-observer'
-import { motion, useReducedMotion } from 'framer-motion'
+import useNearViewport from '../../hooks/useNearViewport'
 import CountUp from 'react-countup'
 import SectionHeading from '../common/SectionHeading'
 import { homeStats } from '../../content/home'
@@ -14,9 +13,12 @@ const STAT_TYPE_MAP = {
   events: 'events'
 }
 
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 const Stats = ({ branchData }) => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.25 })
-  const prefersReducedMotion = useReducedMotion()
+  const [ref, inView] = useNearViewport()
 
   const statistics = branchData?.statistics || {}
 
@@ -31,19 +33,7 @@ const Stats = ({ branchData }) => {
     number: resolveStatValue(item.key, item.number)
   }))
 
-  const containerVariants = prefersReducedMotion
-    ? {}
-    : {
-        hidden: {},
-        visible: { transition: { staggerChildren: 0.1 } }
-      }
-
-  const itemVariants = prefersReducedMotion
-    ? {}
-    : {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }
-      }
+  const reduced = prefersReducedMotion()
 
   return (
     <section className="stats-section ds-section" ref={ref} aria-labelledby="stats-heading">
@@ -56,28 +46,27 @@ const Stats = ({ branchData }) => {
           className="stats-section__head"
         />
 
-        <motion.div
-          className="stats-grid"
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-        >
-          {stats.map((stat) => (
-            <motion.div key={stat.key} className="stat-item" variants={itemVariants}>
+        <div className={`stats-grid reveal-stagger${inView ? ' is-visible' : ''}`}>
+          {stats.map((stat, index) => (
+            <div
+              key={stat.key}
+              className="stat-item reveal-item"
+              style={{ '--reveal-delay': `${index * 0.1}s` }}
+            >
               <span className="stat-icon" aria-hidden="true">
                 <i className={`fas ${stat.icon}`} />
               </span>
               <div className="stat-number" aria-label={`${stat.number}${stat.suffix} ${stat.label}`}>
-                {inView && !prefersReducedMotion ? (
+                {inView && !reduced ? (
                   <CountUp start={0} end={stat.number} duration={2.5} suffix={stat.suffix} />
                 ) : (
                   <span>{stat.number}{stat.suffix}</span>
                 )}
               </div>
               <div className="stat-label">{stat.label}</div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

@@ -215,7 +215,7 @@ export async function fetchPageHeroImage(
 }
 
 export function fetchContactHeroImage() {
-  return fetchPageHeroImage(CONTACT_HERO_QUERY, CONTACT_HERO_FALLBACK)
+  return Promise.resolve(CONTACT_HERO_FALLBACK)
 }
 
 /**

@@ -6,7 +6,7 @@
 import { readMediaCache, writeMediaCache } from './mediaCache'
 
 const API_KEY = import.meta.env.VITE_PEXELS_API_KEY
-const HERO_VIDEOS_CACHE_KEY = 'pexels_hero_videos_v3'
+const HERO_VIDEOS_CACHE_KEY = 'pexels_hero_videos_v5'
 
 /** Session-wide registry — hero + future sections share this set. */
 const sessionUsedVideoIds = new Set()
@@ -25,11 +25,13 @@ const PEXELS_HEADERS = () => ({
   Authorization: API_KEY
 })
 
-/** Orthopaedic joint-pain keywords mapped to hero eyebrow labels (max 3 for bandwidth). */
+/** Curated hero carousel — first clip loads ASAP; rest staggered for bandwidth. */
 export const HERO_VIDEO_QUERIES = [
   { query: 'orthopaedic joint pain', eyebrow: 'Joint pain' },
   { query: 'knee joint pain rehabilitation', eyebrow: 'Knee rehabilitation' },
-  { query: 'joint replacement orthopaedic', eyebrow: 'Joint replacement' }
+  { query: 'joint replacement orthopaedic', eyebrow: 'Joint replacement' },
+  { query: 'orthopaedic surgery operating theatre', eyebrow: 'Clinical excellence' },
+  { query: 'physiotherapy rehabilitation exercise', eyebrow: 'Patient pathways' }
 ]
 
 const VIDEOS_PER_QUERY = 4

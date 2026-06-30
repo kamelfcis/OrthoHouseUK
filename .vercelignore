@@ -1,5 +1,14 @@
-OrthoHouseUK.rar
+# Large archives and local assets — not needed for deploy
+*.rar
+*.zip
+
+# Documentation and temp extraction output
+Docs/
 scripts/tmp/
-Docs/*.pdf
-Docs/*.docx
+
+# Supabase CLI temp state
 supabase/.temp/
+
+# Local env overrides (secrets belong in Vercel dashboard)
+.env.vercel.production
+.env.local

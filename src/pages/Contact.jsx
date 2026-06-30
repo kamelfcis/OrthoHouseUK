@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
-import { fetchContactHeroImage } from '../lib/unsplash'
 import { CONTACT_HERO_FALLBACK } from '../data/contactHero'
+import HeroBackground from '../components/common/HeroBackground'
 import { formatPhoneNumber } from '../utils/validation'
 import SEO from '../components/SEO/SEO'
 import { pageSeo } from '../content/seo'
@@ -19,7 +19,6 @@ const initialFormState = {
 
 const Contact = () => {
   const [branchId, setBranchId] = useState(null)
-  const [heroImage, setHeroImage] = useState(CONTACT_HERO_FALLBACK)
   const [formData, setFormData] = useState(initialFormState)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [status, setStatus] = useState({ type: null, message: '' })
@@ -29,18 +28,6 @@ const Contact = () => {
   useEffect(() => {
     window.scrollTo(0, 0)
     fetchUkBranch()
-  }, [])
-
-  useEffect(() => {
-    let cancelled = false
-
-    fetchContactHeroImage().then((image) => {
-      if (!cancelled) setHeroImage(image)
-    })
-
-    return () => {
-      cancelled = true
-    }
   }, [])
 
   const fetchUkBranch = async () => {
@@ -193,10 +180,10 @@ const Contact = () => {
       />
 
       <header className="contact-hero" aria-labelledby="contact-hero-heading">
-        <div
+        <HeroBackground
           className="contact-hero__media"
-          style={{ backgroundImage: `url(${heroImage.src})` }}
-          role="presentation"
+          image={CONTACT_HERO_FALLBACK}
+          alt={CONTACT_HERO_FALLBACK.alt}
         />
         <div className="contact-hero__overlay" />
         <div className="container contact-hero__content">

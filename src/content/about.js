@@ -1,3 +1,5 @@
+import { aboutHeroImage } from '../data/localAssets'
+
 export const aboutPage = {
   hero: {
     eyebrow: 'About OrthoHouse UK',
@@ -5,16 +7,74 @@ export const aboutPage = {
     titleLine2: 'Care Across the UK',
     subtitle:
       'We connect surgeons and hospitals with innovative implants and clinical support — built on regulatory excellence and long-term partnerships.',
+    // Local: presentation PDF p07 — Unsplash retained only as remote fallback
+    localImage: aboutHeroImage,
     imageQuery: 'medical team healthcare professional',
-    imageAlt: 'Medical team of healthcare professionals in a modern hospital',
+    imageAlt: aboutHeroImage.alt,
     imageFallback:
-      'https://images.unsplash.com/photo-1631815582920-54d7714370ab?w=1920&h=1080&fit=crop&q=80'
+      'https://images.unsplash.com/photo-1631815582920-54d7714370ab?w=1920&h=1080&fit=crop&q=80',
+    useLocalOnly: true
   },
   philosophy: {
     heading: 'Our Philosophy',
     paragraphs: [
       'OrthoHouse UK was established to bring world-class orthopaedic innovation to British surgeons and hospitals. We specialise in trauma fixation, arthroplasty, foot & ankle, and bone graft solutions — distributed with full MHRA compliance.',
       'We combine advanced orthopaedic technology with dedicated clinical support to deliver exceptional outcomes for surgeons and patients across the United Kingdom.'
+    ]
+  },
+  ukJourney: {
+    eyebrow: 'Our expansion',
+    title: 'Ortho House UK journey',
+    subtitle:
+      'From establishment in London to NHS Scotland framework approval — a measured path rooted in clinical partnership and regulatory excellence.',
+    milestones: [
+      {
+        date: 'Jul 2022',
+        dateTime: '2022-07',
+        title: 'UK establishment',
+        description:
+          'OrthoHouse Solutions LTD UK was established to serve the British orthopaedic market.'
+      },
+      {
+        date: 'Oct 2022',
+        dateTime: '2022-10',
+        title: 'London headquarters',
+        description: 'Opened our first office in London at 2 Kingdom Street, Paddington.'
+      },
+      {
+        date: 'Jun 2023',
+        dateTime: '2023-06',
+        title: 'Foot & ankle business unit',
+        description:
+          'Launched the foot & ankle business unit through a strategic partnership with Episcan SRL in the UK.'
+      },
+      {
+        date: 'Dec 2023',
+        dateTime: '2023-12',
+        title: 'Trauma business unit',
+        description: 'Partnered with Astrolabe to establish the trauma business unit.'
+      },
+      {
+        date: 'Feb 2024',
+        dateTime: '2024-02',
+        title: 'Eincobio bone graft',
+        description:
+          'Partnered with Eincobio, introducing an advanced portfolio of bone graft solutions.'
+      },
+      {
+        date: '2024',
+        dateTime: '2024',
+        title: 'Permedica arthroplasty',
+        description:
+          'Entered a strategic partnership with Permedica to strengthen our arthroplasty portfolio.'
+      },
+      {
+        date: 'Oct 2025',
+        dateTime: '2025-10',
+        title: 'NHS Scotland framework',
+        description:
+          'Successfully appointed as a trusted supplier within the Scottish framework for orthopaedic trauma & extremity.'
+      }
     ]
   },
   values: {

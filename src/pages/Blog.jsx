@@ -1,14 +1,21 @@
 import { useState, useEffect, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useInView } from 'react-intersection-observer'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import SEO from '../components/SEO/SEO'
 import { pageSeo } from '../content/seo'
 import { blogPage } from '../content/blog'
+import {
+  mergeBlogPosts,
+  filterBlogPostsBySearch
+} from '../utils/blogPosts'
+import { MARKET_ENGAGEMENT_CATEGORY } from '../data/marketEngagementBlogs'
 import './Blog.css'
 
 const Blog = () => {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const searchQuery = searchParams.get('search') || ''
   const [posts, setPosts] = useState([])
   const [categories, setCategories] = useState([])
   const [activeCategory, setActiveCategory] = useState('all')
@@ -120,71 +127,24 @@ const Blog = () => {
       if (blogsRes.error) throw blogsRes.error
       if (categoriesRes.error) throw categoriesRes.error
 
-      const toStorageUrl = (path) => {
-        if (!path) return null
-        if (/^https?:\/\//i.test(path)) return path
+      const mergedPosts = mergeBlogPosts(blogsRes.data || [])
+      const dbCategories = categoriesRes.data || []
+      const hasMarketCategory = dbCategories.some(
+        (c) => c.category_name === MARKET_ENGAGEMENT_CATEGORY
+      )
+      const allCategories = hasMarketCategory
+        ? dbCategories
+        : [
+            ...dbCategories,
+            {
+              blog_category_id: 'market-engagement',
+              category_name: MARKET_ENGAGEMENT_CATEGORY
+            }
+          ]
 
-        const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL || 'https://ljfkmtuxqaznnmmxeydf.supabase.co').replace(/\/$/, '')
-
-        const normalized = path.trim().replace(/^\/+/, '')
-        const withoutStoragePrefix = normalized.replace(/^storage\/v1\/object\/public\//i, '')
-        const withoutBucketPrefix = withoutStoragePrefix.replace(/^blog-images\//i, '')
-
-        const candidates = Array.from(new Set([
-          normalized,
-          withoutStoragePrefix,
-          withoutBucketPrefix,
-          `blog-images/${withoutBucketPrefix}`
-        ])).filter(Boolean)
-
-        for (const candidate of candidates) {
-          const { data } = supabase.storage
-            .from('blog-images')
-            .getPublicUrl(candidate)
-
-          if (data?.publicUrl) {
-            return data.publicUrl
-          }
-        }
-
-        return `${supabaseUrl}/storage/v1/object/public/blog-images/${withoutBucketPrefix}`
-      }
-
-      const formattedPosts = (blogsRes.data || []).map((post) => {
-        const categories = post.blog_categories?.map((item) => item.blog_categories?.category_name).filter(Boolean) || []
-        const firstCategory = categories[0] || 'General'
-        const authorName = post.authors && post.authors.length > 0
-          ? `${post.authors[0].first_name || ''} ${post.authors[0].last_name || ''}`.trim()
-          : blogPage.defaultAuthor
-
-        let featuredImage = post.featured_image
-        if (post.featured_image && /^https?:\/\//i.test(post.featured_image)) {
-          featuredImage = post.featured_image
-        } else if (post.featured_image) {
-          featuredImage = toStorageUrl(post.featured_image)
-        }
-
-        if (!featuredImage) {
-          console.warn('Missing featured image for blog', post.blog_id, post.title)
-        }
-
-        return {
-          id: post.blog_id,
-          title: post.title,
-          excerpt: post.excerpt || post.content?.slice(0, 160) || blogPage.defaultExcerpt,
-          content: post.content,
-          image: featuredImage || `https://via.placeholder.com/800x500/64d9b9/ffffff?text=${encodeURIComponent(post.title.substring(0, 30))}`,
-          date: post.published_at,
-          category: firstCategory,
-          categories,
-          author: authorName,
-          readTime: blogPage.readTime(Math.max(3, Math.round((post.content?.split(' ')?.length || 400) / 200)))
-        }
-      })
-
-      setPosts(formattedPosts)
-      setCategories(categoriesRes.data || [])
-      setHighlightedPost(formattedPosts[0] || null)
+      setPosts(mergedPosts)
+      setCategories(allCategories)
+      setHighlightedPost(mergedPosts[0] || null)
     } catch (err) {
       console.error('Error fetching blogs:', err)
       setError(err.message || 'Failed to load blog posts')
@@ -193,15 +153,39 @@ const Blog = () => {
     }
   }
 
-  const filteredPosts = useMemo(() => {
-    const data = activeCategory === 'all'
-      ? posts
-      : posts.filter((post) => post.categories.includes(activeCategory))
+  const categoryFilteredPosts = useMemo(() => {
+    if (activeCategory === 'all') return posts
+    return posts.filter((post) => post.categories.includes(activeCategory))
+  }, [activeCategory, posts])
 
-    return highlightedPost
-      ? data.filter((post) => post.id !== highlightedPost.id)
+  const searchedPosts = useMemo(
+    () => filterBlogPostsBySearch(categoryFilteredPosts, searchQuery),
+    [categoryFilteredPosts, searchQuery]
+  )
+
+  const visibleHighlight = searchQuery.trim() ? null : highlightedPost
+
+  const gridPosts = useMemo(() => {
+    const data = searchedPosts
+    return visibleHighlight
+      ? data.filter((post) => post.id !== visibleHighlight.id)
       : data
-  }, [activeCategory, posts, highlightedPost])
+  }, [searchedPosts, visibleHighlight])
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    const value = String(formData.get('search') || '').trim()
+    if (value) {
+      setSearchParams({ search: value })
+    } else {
+      setSearchParams({})
+    }
+  }
+
+  const clearSearch = () => {
+    setSearchParams({})
+  }
 
   return (
     <div className="blog-page">
@@ -252,9 +236,17 @@ const Blog = () => {
               <i className="fas fa-newspaper"></i>
               <p>{blogPage.empty}</p>
             </div>
+          ) : gridPosts.length === 0 && searchQuery.trim() ? (
+            <div className="blog-empty">
+              <i className="fas fa-search"></i>
+              <p>{blogPage.empty}</p>
+              <button type="button" className="blog-search-clear" onClick={clearSearch}>
+                Clear search
+              </button>
+            </div>
           ) : (
             <>
-              {highlightedPost && (
+              {visibleHighlight && (
                 <motion.section
                   className="blog-highlight"
                   initial={{ opacity: 0, y: 30 }}
@@ -263,26 +255,50 @@ const Blog = () => {
                 >
                   <div className="highlight-image">
                     <img
-                      src={highlightedPost.image}
-                      alt={highlightedPost.title}
+                      src={visibleHighlight.image}
+                      alt={visibleHighlight.title}
                       loading="lazy"
                     />
                     <span className="highlight-category">{blogPage.featured}</span>
                   </div>
                   <div className="highlight-content">
                     <span className="highlight-meta">
-                      {new Date(highlightedPost.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}
-                      &nbsp;•&nbsp;{highlightedPost.readTime}
+                      {new Date(visibleHighlight.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}
+                      &nbsp;•&nbsp;{visibleHighlight.readTime}
                     </span>
-                    <h2>{highlightedPost.title}</h2>
-                    <p>{highlightedPost.excerpt}</p>
-                    <div className="highlight-author">By {highlightedPost.author}</div>
-                    <Link to={`/blog/${highlightedPost.id}`} className="highlight-link">
+                    <h2>{visibleHighlight.title}</h2>
+                    <p>{visibleHighlight.excerpt}</p>
+                    <div className="highlight-author">By {visibleHighlight.author}</div>
+                    <Link to={`/blog/${visibleHighlight.id}`} className="highlight-link">
                       {blogPage.continueReading} <i className="fas fa-arrow-right"></i>
                     </Link>
                   </div>
                 </motion.section>
               )}
+
+              <form className="blog-search" onSubmit={handleSearchSubmit} role="search">
+                <label htmlFor="blog-search-input" className="visually-hidden">
+                  {blogPage.searchPlaceholder}
+                </label>
+                <input
+                  id="blog-search-input"
+                  name="search"
+                  type="search"
+                  defaultValue={searchQuery}
+                  key={searchQuery}
+                  placeholder={blogPage.searchPlaceholder}
+                  aria-label={blogPage.searchPlaceholder}
+                />
+                <button type="submit" className="blog-search-submit">
+                  <i className="fas fa-search" aria-hidden="true"></i>
+                  <span className="visually-hidden">Search</span>
+                </button>
+                {searchQuery.trim() && (
+                  <p className="blog-search-summary" aria-live="polite">
+                    {blogPage.searchResults(searchedPosts.length, searchQuery)}
+                  </p>
+                )}
+              </form>
 
               <div className="blog-filters" role="tablist" aria-label="Blog categories">
                 <button
@@ -310,7 +326,7 @@ const Blog = () => {
 
               <div className="blog-grid" ref={ref}>
                 <AnimatePresence>
-                  {filteredPosts.map((post, index) => (
+                  {gridPosts.map((post, index) => (
               <motion.article
                 key={post.id}
                 className="blog-card"

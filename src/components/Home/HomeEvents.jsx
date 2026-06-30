@@ -1,26 +1,11 @@
-import { useInView } from 'react-intersection-observer'
-import { motion, useReducedMotion } from 'framer-motion'
+import useNearViewport from '../../hooks/useNearViewport'
 import SectionHeading from '../common/SectionHeading'
+import ResponsiveImage from '../common/ResponsiveImage'
 import { homeEvents } from '../../content/home'
 import './HomeEvents.css'
 
 const HomeEvents = () => {
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.15 })
-  const prefersReducedMotion = useReducedMotion()
-
-  const containerVariants = prefersReducedMotion
-    ? {}
-    : {
-        hidden: {},
-        visible: { transition: { staggerChildren: 0.1 } }
-      }
-
-  const itemVariants = prefersReducedMotion
-    ? {}
-    : {
-        hidden: { opacity: 0, y: 24 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }
-      }
+  const [ref, inView] = useNearViewport()
 
   return (
     <section
@@ -36,18 +21,26 @@ const HomeEvents = () => {
           titleId="home-events-heading"
         />
 
-        <motion.ul
-          className="home-events__grid"
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-        >
-          {homeEvents.items.map((event) => (
-            <motion.li
+        <ul className={`home-events__grid reveal-stagger${inView ? ' is-visible' : ''}`}>
+          {homeEvents.items.map((event, index) => (
+            <li
               key={event.id}
-              className="home-events__card ds-card ds-card--interactive"
-              variants={itemVariants}
+              className="home-events__card ds-card ds-card--interactive reveal-item"
+              style={{ '--reveal-delay': `${index * 0.1}s` }}
             >
+              {event.localImage && (
+                <figure className="home-events__media">
+                  <ResponsiveImage
+                    image={event.localImage}
+                    alt={event.imageAlt}
+                    className="home-events__img"
+                    sizes="(max-width: 768px) 100vw, 280px"
+                    width={400}
+                    height={260}
+                    loading="lazy"
+                  />
+                </figure>
+              )}
               <div className="home-events__card-head">
                 <time className="home-events__date" dateTime={event.date}>
                   {event.date}
@@ -56,9 +49,9 @@ const HomeEvents = () => {
               </div>
               <h3 className="home-events__title">{event.title}</h3>
               <p className="home-events__desc">{event.description}</p>
-            </motion.li>
+            </li>
           ))}
-        </motion.ul>
+        </ul>
       </div>
     </section>
   )

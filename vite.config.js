@@ -1,8 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import viteCompression from 'vite-plugin-compression'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    viteCompression({
+      algorithm: 'gzip',
+      ext: '.gz',
+      threshold: 1024
+    }),
+    viteCompression({
+      algorithm: 'brotliCompress',
+      ext: '.br',
+      threshold: 1024
+    })
+  ],
   define: {
     'process.env': {}
   },
@@ -82,6 +95,17 @@ export default defineConfig({
             if (id.includes('/components/admin/ThreeJSBackground')) {
               return 'three-background'
             }
+            // Home: keep hero shell eager; lazy sections get their own async chunks
+            if (id.includes('/components/Home/')) {
+              if (/\/components\/Home\/(Hero|HeroSlider|HeroPartnersCarousel)\./.test(id)) {
+                return 'component-Home-core'
+              }
+              if (/\/components\/Home\/(About|CeoVisionMission)\./.test(id)) {
+                return 'component-About-sections'
+              }
+              const homeFile = id.split('/components/Home/')[1].split('.')[0]
+              return `home-${homeFile}`
+            }
             const componentType = id.split('/components/')[1].split('/')[0]
             return `component-${componentType}`
           }
@@ -113,7 +137,9 @@ export default defineConfig({
             !dep.includes('swiper-vendor') &&
             !dep.includes('supabase-vendor') &&
             !dep.includes('chat-assistant') &&
-            !dep.includes('admin-pages')
+            !dep.includes('admin-pages') &&
+            !dep.includes('component-About-sections') &&
+            !dep.startsWith('home-')
         )
     }
   },

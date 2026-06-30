@@ -1,7 +1,30 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { nav } from '../../content/site'
+import { brandLogos, ukFlagIcon } from '../../data/localAssets'
 import './Navbar.css'
+
+const LogoMark = ({ width = 168, height = 96, imgClassName = 'logo' }) => (
+  <span className="site-navbar__logo-mark">
+    <img
+      src={brandLogos.nav}
+      alt={nav.logoAlt}
+      className={imgClassName}
+      width={width}
+      height={height}
+      decoding="async"
+    />
+    <img
+      className="site-navbar__uk-flag"
+      src={ukFlagIcon}
+      alt=""
+      width={60}
+      height={72}
+      decoding="async"
+      aria-hidden="true"
+    />
+  </span>
+)
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -57,27 +80,14 @@ const Navbar = () => {
         <div className="container">
           <div className="site-navbar__logo">
             <Link to="/" aria-label={`${nav.logoAlt} — Home`}>
-              <img
-                src="/assets/images/Logo_SVG.png"
-                alt={nav.logoAlt}
-                className="logo"
-                width={168}
-                height={96}
-                decoding="async"
-              />
+              <LogoMark />
             </Link>
           </div>
 
           <div className={`site-navbar__panel navbar-mobile navbar-mobile-black ${isMenuOpen ? 'is-open' : ''}`}>
             <div className="toggle-wrap">
               <Link to="/" className="site-navbar__mobile-logo mobile-logo">
-                <img
-                  src="/assets/images/Logo_SVG.png"
-                  alt={nav.logoAlt}
-                  width={140}
-                  height={80}
-                  decoding="async"
-                />
+                <LogoMark width={140} height={80} />
               </Link>
               <button
                 type="button"

@@ -1,9 +1,11 @@
-import { Suspense, lazy } from 'react'
+import { useEffect, Suspense, lazy, useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout/Layout'
 import SplashScreen from './components/Layout/SplashScreen'
-import CookieConsent from './components/Layout/CookieConsent'
 import RouteLoader from './components/common/RouteLoader'
+import { runWhenIdle } from './lib/idle'
+
+const CookieConsent = lazy(() => import('./components/Layout/CookieConsent'))
 
 const AdminLayout = lazy(() => import('./components/admin/AdminLayout'))
 const ProtectedRoute = lazy(() => import('./components/admin/ProtectedRoute'))
@@ -36,10 +38,22 @@ const AdminUsers = lazy(() => import('./pages/admin/Users'))
 const AdminBranches = lazy(() => import('./pages/admin/Branches'))
 
 function App() {
+  const [showCookieConsent, setShowCookieConsent] = useState(false)
+
+  useEffect(() => {
+    const show = () => setShowCookieConsent(true)
+    const cancelIdle = runWhenIdle(show, { timeout: 5000 })
+    return cancelIdle
+  }, [])
+
   return (
     <>
       <SplashScreen />
-      <CookieConsent />
+      {showCookieConsent && (
+        <Suspense fallback={null}>
+          <CookieConsent />
+        </Suspense>
+      )}
       <Routes>
       {/* Public Routes */}
       <Route path="/*" element={
