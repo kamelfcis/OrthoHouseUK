@@ -79,6 +79,26 @@ export default defineConfig({
             // Other small node_modules
             return 'vendor-misc'
           }
+          // Shared hooks — must not live only inside component-Home-core (SectionMedia
+          // in component-common imports these; Home-core → About → common → Home-core TDZ).
+          if (id.includes('/hooks/useHeroVideoMode')) {
+            return 'hooks-hero-video'
+          }
+          // Home hero data/libs — keep out of About-sections to avoid cross-chunk init bugs
+          if (
+            id.includes('/content/') ||
+            id.includes('/data/heroSlides') ||
+            id.includes('/data/homeImageRegistry') ||
+            id.includes('/data/contactHero') ||
+            id.includes('/data/localAssets') ||
+            id.includes('/lib/mediaCache') ||
+            id.includes('/lib/idle') ||
+            id.includes('/lib/unsplash') ||
+            id.includes('/lib/pexels') ||
+            id.includes('/lib/storageUrl')
+          ) {
+            return 'shared-home-data'
+          }
           // Page chunks
           if (id.includes('/pages/')) {
             const pageName = id.split('/pages/')[1].split('/')[0]
