@@ -11,6 +11,7 @@ import './Home.css'
 const HeroPartnersCarousel = lazy(() => import('../components/Home/HeroPartnersCarousel'))
 const HomeValueProp = lazy(() => import('../components/Home/HomeValueProp'))
 const HomeCapabilities = lazy(() => import('../components/Home/HomeCapabilities'))
+const HomeFeaturedProducts = lazy(() => import('../components/Home/HomeFeaturedProducts'))
 const HomeWhyChooseUs = lazy(() => import('../components/Home/HomeWhyChooseUs'))
 const HomeSpecialties = lazy(() => import('../components/Home/HomeSpecialties'))
 const HomeHowItWorks = lazy(() => import('../components/Home/HomeHowItWorks'))
@@ -72,6 +73,11 @@ const Home = () => {
       {/* 3. Featured services */}
       <Suspense fallback={<SectionSkeleton minHeight={400} />}>
         <HomeCapabilities />
+      </Suspense>
+
+      {/* Featured products carousel */}
+      <Suspense fallback={<SectionSkeleton minHeight={420} blocks={3} />}>
+        <HomeFeaturedProducts branchData={branchData} />
       </Suspense>
 
       {/* 4. Why choose us */}

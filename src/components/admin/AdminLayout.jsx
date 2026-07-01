@@ -82,6 +82,12 @@ const AdminLayout = () => {
       show: true,
     },
     {
+      icon: 'fas fa-share-alt',
+      label: 'Social Media',
+      path: '/admin/social-media',
+      show: true,
+    },
+    {
       icon: 'fas fa-envelope',
       label: 'Messages',
       path: '/admin/messages',

@@ -1,10 +1,31 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { footer, siteName } from '../../content/site'
+import { fetchVisibleSocialLinks } from '../../lib/socialLinks'
 import './Footer.css'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
-  const { about, columns, contact, social, copyright } = footer
+  const { about, columns, contact, copyright } = footer
+  const [social, setSocial] = useState(footer.social)
+
+  useEffect(() => {
+    let cancelled = false
+
+    fetchVisibleSocialLinks('UK')
+      .then((links) => {
+        if (!cancelled && links?.length) {
+          setSocial(links)
+        }
+      })
+      .catch((error) => {
+        console.error('Footer: failed to load social links', error)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   return (
     <footer className="site-footer">
@@ -27,11 +48,11 @@ const Footer = () => {
                 <div className="footer-social">
                   {social.map((item) => (
                     <a
-                      key={item.name}
+                      key={item.platform || item.name}
                       href={item.url}
                       aria-label={item.name}
-                      target="_blank"
-                      rel="noreferrer"
+                      target={item.url.startsWith('mailto:') ? undefined : '_blank'}
+                      rel={item.url.startsWith('mailto:') ? undefined : 'noreferrer'}
                     >
                       <i className={item.icon}></i>
                     </a>

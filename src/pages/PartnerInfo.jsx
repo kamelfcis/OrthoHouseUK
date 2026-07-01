@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { partnerDetail } from '../content/partners'
+import PortfolioRequestModal from '../components/partners/PortfolioRequestModal'
 import './PartnerInfo.css'
 
 const PartnerInfo = () => {
@@ -10,6 +11,7 @@ const PartnerInfo = () => {
   const [partnerImage, setPartnerImage] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [portfolioModalOpen, setPortfolioModalOpen] = useState(false)
 
   useEffect(() => {
     // Check if we should scroll to details section (from URL hash or query param)
@@ -165,20 +167,6 @@ const PartnerInfo = () => {
           value: partner.contact_phone,
           href: `tel:${partner.contact_phone}`
         }
-      : null,
-    partner?.partner_code
-      ? {
-          icon: 'fas fa-qrcode',
-          label: labels.partnerCode ?? 'Partner code',
-          value: partner.partner_code
-        }
-      : null,
-    partner?.partnership_type
-      ? {
-          icon: 'fas fa-handshake',
-          label: labels.partnershipType ?? 'Partnership type',
-          value: partner.partnership_type
-        }
       : null
   ].filter(Boolean)
 
@@ -191,17 +179,26 @@ const PartnerInfo = () => {
             <span>{partnerDetail.backToPartners ?? 'Back to partners'}</span>
           </Link>
 
-          <div className="partner-hero-tags">
-            {partner.partnership_type && <span className="partner-tag">{partner.partnership_type}</span>}
-            {partner.partner_code && <span className="partner-tag tag-code">Code: {partner.partner_code}</span>}
-            {partner.website_url && <span className="partner-tag tag-online">{partnerDetail.trustedPartner ?? 'Trusted partner'}</span>}
-          </div>
+          {partner.website_url && (
+            <div className="partner-hero-tags">
+              <span className="partner-tag tag-online">{partnerDetail.trustedPartner ?? 'Trusted partner'}</span>
+            </div>
+          )}
 
           <h1 className="partner-hero-title">{partnerName}</h1>
 
           {trimmedSummary && (
             <p className="partner-hero-summary">{trimmedSummary}</p>
           )}
+
+          <button
+            type="button"
+            className="ds-btn ds-btn--primary partner-portfolio-cta"
+            onClick={() => setPortfolioModalOpen(true)}
+          >
+            <i className="fas fa-file-alt" aria-hidden="true"></i>
+            <span>{partnerDetail.requestPortfolio ?? 'Request portfolio'}</span>
+          </button>
 
           <div className="partner-hero-stats">
             {partner.website_url && (
@@ -251,20 +248,14 @@ const PartnerInfo = () => {
                   </div>
                 </div>
 
-                <div className="partner-sidebar-meta">
-                  {partner.partner_code && (
-                    <div className="sidebar-meta-item">
-                      <span className="sidebar-meta-label">{labels.partnerCode ?? 'Partner code'}</span>
-                      <span className="sidebar-meta-value">{partner.partner_code}</span>
-                    </div>
-                  )}
-                  {partner.partnership_type && (
-                    <div className="sidebar-meta-item">
-                      <span className="sidebar-meta-label">{labels.type ?? 'Type'}</span>
-                      <span className="sidebar-meta-value">{partner.partnership_type}</span>
-                    </div>
-                  )}
-                </div>
+                <button
+                  type="button"
+                  className="ds-btn ds-btn--primary partner-portfolio-cta partner-portfolio-cta--sidebar"
+                  onClick={() => setPortfolioModalOpen(true)}
+                >
+                  <i className="fas fa-file-alt" aria-hidden="true"></i>
+                  <span>{partnerDetail.requestPortfolio ?? 'Request portfolio'}</span>
+                </button>
               </div>
 
               {(partner.website_url || partner.contact_email || partner.contact_phone) && (
@@ -353,6 +344,13 @@ const PartnerInfo = () => {
           </div>
         </div>
       </div>
+
+      <PortfolioRequestModal
+        isOpen={portfolioModalOpen}
+        onClose={() => setPortfolioModalOpen(false)}
+        partnerId={partner.partner_id}
+        partnerName={partnerName}
+      />
     </div>
   )
 }

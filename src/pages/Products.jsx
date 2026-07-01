@@ -1,6 +1,7 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import { useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import ProductCard from '../components/common/ProductCard'
 import EmptyState from '../components/common/EmptyState'
@@ -9,7 +10,43 @@ import { pageSeo } from '../content/seo'
 import { productsPage } from '../content/products'
 import './Products.css'
 
+const normalizeCategoryKey = (value) =>
+  String(value).toLowerCase().replace(/[^a-z0-9]/g, '')
+
+const CATEGORY_PARAM_ALIASES = {
+  foot_ankle: 'footankle',
+  hand_wrist: 'handwrist',
+  trauma: 'handwrist',
+  elbow_shoulder: 'shoulder',
+  shoulder: 'shoulder',
+  arthroplasty: 'shoulder',
+  bone_graft: 'bonegraft'
+}
+
+const resolveCategoryFromParam = (param, categories) => {
+  if (!param || categories.length === 0) return null
+
+  const trimmed = String(param).trim()
+  if (/^\d+$/.test(trimmed)) {
+    const categoryId = Number(trimmed)
+    return categories.find((category) => category.category_id === categoryId)?.category_id ?? null
+  }
+
+  const aliasKey =
+    CATEGORY_PARAM_ALIASES[trimmed.toLowerCase()] ?? normalizeCategoryKey(trimmed)
+
+  const match = categories.find((category) => {
+    const codeKey = normalizeCategoryKey(category.category_code)
+    const nameKey = normalizeCategoryKey(category.category_name)
+    return codeKey === aliasKey || nameKey === aliasKey
+  })
+
+  return match?.category_id ?? null
+}
+
 const Products = () => {
+  const [searchParams] = useSearchParams()
+  const categoryParam = searchParams.get('category')
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [categoryImages, setCategoryImages] = useState({})
@@ -21,6 +58,21 @@ const Products = () => {
     triggerOnce: true,
     threshold: 0.25
   })
+
+  const scrollToProductsSection = useCallback(() => {
+    setTimeout(() => {
+      if (productsSectionRef.current) {
+        const headerOffset = 100
+        const elementPosition = productsSectionRef.current.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      }
+    }, 100)
+  }, [])
 
   const heroContainerVariants = {
     hidden: { opacity: 0, y: 60 },
@@ -62,9 +114,21 @@ const Products = () => {
   }
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    if (!categoryParam) {
+      window.scrollTo(0, 0)
+    }
     fetchData()
   }, [])
+
+  useEffect(() => {
+    if (loading || !categoryParam || categories.length === 0) return
+
+    const categoryId = resolveCategoryFromParam(categoryParam, categories)
+    if (categoryId) {
+      setSelectedCategory(categoryId)
+      scrollToProductsSection()
+    }
+  }, [loading, categoryParam, categories, scrollToProductsSection])
 
   const fetchData = async () => {
     try {
@@ -205,24 +269,12 @@ const Products = () => {
 
   const handleCategoryClick = (categoryId) => {
     if (selectedCategory === categoryId) {
-      setSelectedCategory(null) // Deselect if same category clicked
+      setSelectedCategory(null)
     } else {
       setSelectedCategory(categoryId)
     }
-    
-    // Smooth scroll to products section
-    setTimeout(() => {
-      if (productsSectionRef.current) {
-        const headerOffset = 100 // Account for fixed navbar if any
-        const elementPosition = productsSectionRef.current.getBoundingClientRect().top
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        })
-      }
-    }, 100) // Small delay to ensure state update is processed
+    scrollToProductsSection()
   }
 
   const filteredProducts = selectedCategory

@@ -159,214 +159,146 @@
   padding-block: var(--ds-section-y-sm);
 }
 
-/* Creative Partners Showcase */
+/* Partners logo grid */
 .partners-showcase {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2.5rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ds-space-5);
+  margin-top: var(--ds-space-8);
 }
 
-/* Modern Partner Card Design - Simple and Reliable */
-.partner-card-modern {
+.partner-logo-tile-wrap {
+  min-width: 0;
+}
+
+.partner-logo-tile {
+  display: block;
   position: relative;
-  width: 100%;
-  height: auto;
-  min-height: 400px;
+  aspect-ratio: 5 / 4;
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--ds-radius-lg);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.partner-card-modern-inner {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  border-radius: 20px;
-  padding: 2rem;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid transparent;
-  position: relative;
-  overflow: hidden;
-}
-
-.partner-card-modern-inner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #55b8e6 0%, #0077b6 50%, #55b8e6 100%);
-  background-size: 200% 100%;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.partner-card-modern:hover .partner-card-modern-inner {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 60px rgba(85, 184, 230, 0.3);
-  border-color: #55b8e6;
-}
-
-.partner-card-modern:hover .partner-card-modern-inner::before {
-  opacity: 1;
-  animation: shimmer 2s linear infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.partner-logo-wrapper {
-  width: 100%;
-  height: 200px;
+.partner-logo-tile__surface {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.5rem;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 15px;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s ease;
+  width: 100%;
+  height: 100%;
+  padding: clamp(var(--ds-space-6), 10%, var(--ds-space-10));
+  background: var(--ds-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-xs);
+  transition:
+    transform var(--ds-duration-normal, 0.28s) var(--ds-ease-out),
+    box-shadow var(--ds-duration-normal, 0.28s) var(--ds-ease-out),
+    border-color var(--ds-duration-normal, 0.28s) var(--ds-ease-out);
 }
 
-.partner-card-modern:hover .partner-logo-wrapper {
-  transform: scale(1.02);
-}
-
-.partner-logo-modern {
+.partner-logo-tile__logo {
+  display: block;
   max-width: 100%;
   max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
-  transition: transform 0.3s ease;
+  object-position: center;
+  transition: transform var(--ds-duration-normal, 0.28s) var(--ds-ease-out);
 }
 
-.partner-card-modern:hover .partner-logo-modern {
-  transform: scale(1.05);
-}
-
-.partner-icon-fallback-modern {
-  width: 120px;
-  height: 120px;
-  background: linear-gradient(135deg, #55b8e6 0%, #0077b6 100%);
-  border-radius: 50%;
+.partner-logo-tile__fallback {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--white);
-  font-size: 3rem;
-  box-shadow: 0 4px 15px rgba(85, 184, 230, 0.3);
+  width: clamp(3.5rem, 28%, 5rem);
+  height: clamp(3.5rem, 28%, 5rem);
+  border-radius: 50%;
+  background: var(--ds-gradient-brand-soft);
+  color: var(--ds-brand-600);
+  font-size: clamp(1.25rem, 4vw, 1.75rem);
+  border: 1px solid var(--ds-brand-100);
 }
 
-.partner-info-modern {
-  flex: 1;
-  margin-bottom: 1.5rem;
-  text-align: center;
+.partner-logo-tile:hover .partner-logo-tile__surface,
+.partner-logo-tile:focus-visible .partner-logo-tile__surface {
+  transform: translateY(-4px);
+  border-color: var(--ds-brand-200);
+  box-shadow: var(--ds-shadow-md);
 }
 
-.partner-name-modern {
-  font-family: var(--font-headers), serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--heading-color);
-  margin: 0 0 1rem 0;
-  line-height: 1.3;
-  transition: color 0.3s ease;
+.partner-logo-tile:hover .partner-logo-tile__logo,
+.partner-logo-tile:focus-visible .partner-logo-tile__logo {
+  transform: scale(1.03);
 }
 
-.partner-card-modern:hover .partner-name-modern {
-  color: #55b8e6;
+.partner-logo-tile:focus-visible .partner-logo-tile__surface {
+  box-shadow: var(--ds-shadow-md), var(--ds-ring);
 }
 
-.partner-description-modern {
-  color: rgba(29, 41, 57, 0.75);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
+.partner-logo-tile::after {
+  content: attr(data-partner-name);
+  position: absolute;
+  left: 50%;
+  bottom: var(--ds-space-3);
+  transform: translateX(-50%) translateY(6px);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--ds-radius-pill);
+  background: var(--ds-surface-inverse);
+  color: var(--ds-text-on-brand);
+  font-size: var(--ds-text-xs);
+  font-weight: var(--ds-weight-medium);
+  letter-spacing: var(--ds-tracking-wide);
+  white-space: nowrap;
+  max-width: calc(100% - var(--ds-space-6));
   overflow: hidden;
   text-overflow: ellipsis;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--ds-duration-fast, 0.18s) var(--ds-ease-out),
+    transform var(--ds-duration-fast, 0.18s) var(--ds-ease-out);
+  z-index: 2;
 }
 
-.partner-action-modern {
-  margin-top: auto;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+.partner-logo-tile:hover::after,
+.partner-logo-tile:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
-.partner-more-info-btn-modern {
-  width: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.875rem 1.5rem;
-  background: linear-gradient(135deg, #55b8e6 0%, #0077b6 100%);
-  color: var(--white);
-  border: none;
-  border-radius: 25px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(85, 184, 230, 0.3);
-  font-family: inherit;
-  outline: none;
-  position: relative;
-  overflow: hidden;
+@media (min-width: 768px) {
+  .partners-showcase {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--ds-space-6);
+  }
 }
 
-.partner-more-info-btn-modern::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
+@media (min-width: 1200px) {
+  .partners-showcase {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--ds-space-6);
+  }
 }
 
-.partner-more-info-btn-modern:hover::before {
-  width: 300px;
-  height: 300px;
+@media (max-width: 479px) {
+  .partners-showcase {
+    gap: var(--ds-space-4);
+  }
+
+  .partner-logo-tile {
+    aspect-ratio: 3 / 2;
+  }
+
+  .partner-logo-tile__surface {
+    padding: var(--ds-space-5);
+  }
 }
 
-.partner-more-info-btn-modern:hover {
-  background: linear-gradient(135deg, #0077b6 0%, #005f9a 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(85, 184, 230, 0.4);
-}
-
-.partner-more-info-btn-modern:active {
-  transform: translateY(0);
-}
-
-.partner-more-info-btn-modern i {
-  font-size: 0.9rem;
-  position: relative;
-  z-index: 1;
-}
-
-.partner-more-info-btn-modern span {
-  position: relative;
-  z-index: 1;
-}
-
-
+/* Legacy partner card styles (flip cards) — kept for reference */
 .partner-card-creative {
   perspective: 1000px;
   height: 400px;
@@ -740,52 +672,16 @@
   font-size: 0.85rem;
 }
 
-/* Responsive Design */
+/* Responsive Design — legacy flip cards */
 @media (max-width: 991px) {
-  .partners-showcase {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-  }
-  
-  .partner-card-modern {
-    min-height: 380px;
-  }
-  
-  .partner-logo-wrapper {
-    height: 180px;
+  .partner-card-creative {
+    height: 380px;
   }
 }
 
 @media (max-width: 767px) {
-  .partners-showcase {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .partner-card-modern {
-    min-height: 360px;
-  }
-  
-  .partner-card-modern-inner {
-    padding: 1.5rem;
-  }
-  
-  .partner-logo-wrapper {
-    height: 160px;
-    margin-bottom: 1.25rem;
-  }
-  
-  .partner-name-modern {
-    font-size: 1.3rem;
-  }
-  
-  .partner-description-modern {
-    font-size: 0.9rem;
-  }
-  
-  .partner-more-info-btn-modern {
-    padding: 0.75rem 1.25rem;
-    font-size: 0.9rem;
+  .partner-card-creative {
+    height: 360px;
   }
 }
 

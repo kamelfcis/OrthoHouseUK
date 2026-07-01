@@ -6,7 +6,7 @@
 import { readMediaCache, writeMediaCache } from './mediaCache'
 
 const API_KEY = import.meta.env.VITE_PEXELS_API_KEY
-const HERO_VIDEOS_CACHE_KEY = 'pexels_hero_videos_v5'
+const HERO_VIDEOS_CACHE_KEY = 'pexels_hero_videos_v6'
 
 /** Session-wide registry — hero + future sections share this set. */
 const sessionUsedVideoIds = new Set()
@@ -25,18 +25,11 @@ const PEXELS_HEADERS = () => ({
   Authorization: API_KEY
 })
 
-/** Curated hero carousel — first clip loads ASAP; rest staggered for bandwidth. */
-export const HERO_VIDEO_QUERIES = [
-  { query: 'orthopaedic joint pain', eyebrow: 'Joint pain' },
-  { query: 'knee joint pain rehabilitation', eyebrow: 'Knee rehabilitation' },
-  { query: 'joint replacement orthopaedic', eyebrow: 'Joint replacement' },
-  { query: 'orthopaedic surgery operating theatre', eyebrow: 'Clinical excellence' },
-  { query: 'physiotherapy rehabilitation exercise', eyebrow: 'Patient pathways' }
-]
+/** Single curated hero clip — Pexels 6111045 (disabled equipment exercise fitness). */
+export const HERO_VIDEO_ID = 6111045
+export const HERO_VIDEO_EYEBROW = 'Rehabilitation'
 
 const VIDEOS_PER_QUERY = 4
-const MAX_HERO_VIDEOS = HERO_VIDEO_QUERIES.length
-const STAGGER_MS = 200
 const DESKTOP_PREFERRED_WIDTH = 1280
 const DESKTOP_MAX_WIDTH = 1920
 const MOBILE_PREFERRED_WIDTH = 640
@@ -125,6 +118,19 @@ const mapVideoToSlide = (video, eyebrow) => {
   }
 }
 
+const fetchVideoById = async (videoId) => {
+  const response = await fetch(
+    `https://api.pexels.com/videos/videos/${videoId}`,
+    { headers: PEXELS_HEADERS() }
+  )
+
+  if (!response.ok) {
+    throw new Error(`Pexels API error: ${response.status}`)
+  }
+
+  return response.json()
+}
+
 const searchVideos = async (query, perPage = VIDEOS_PER_QUERY) => {
   const params = new URLSearchParams({
     query,
@@ -195,10 +201,6 @@ export async function fetchPexelsVideo(query, { eyebrow = 'Healthcare', perPage 
 }
 
 /**
- * Fetch curated healthcare hero videos — one unique clip per keyword.
- * Returns an empty array when the key is missing or every query fails.
- */
-/**
  * Fetch a single editorial section video from Pexels.
  * Returns null when the key is missing, the API fails, or no unique clip is available.
  */
@@ -254,11 +256,9 @@ export async function fetchSectionVideos(specs, options = {}) {
   return result
 }
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
-
 /**
- * Fetch hero videos sequentially — first clip ASAP, rest staggered to avoid
- * parallel CDN downloads on initial load. Supports progressive UI via onProgress.
+ * Fetch the single curated hero video by Pexels ID.
+ * Supports progressive UI via onProgress.
  */
 export async function fetchHeroVideos({ onProgress } = {}) {
   const cached = readMediaCache(HERO_VIDEOS_CACHE_KEY)
@@ -275,27 +275,17 @@ export async function fetchHeroVideos({ onProgress } = {}) {
   }
 
   try {
-    const slides = []
+    const video = await fetchVideoById(HERO_VIDEO_ID)
+    const slide = mapVideoToSlide(video, HERO_VIDEO_EYEBROW)
+    if (!slide) return []
 
-    for (const { query, eyebrow } of HERO_VIDEO_QUERIES.slice(0, MAX_HERO_VIDEOS)) {
-      const videos = await searchVideos(query, VIDEOS_PER_QUERY)
-      const slide = pickUniqueVideo(videos, eyebrow)
-      if (slide) {
-        slides.push(slide)
-        onProgress?.([...slides])
-      }
-      if (slides.length < MAX_HERO_VIDEOS) {
-        await delay(STAGGER_MS)
-      }
-    }
-
-    if (slides.length > 0) {
-      writeMediaCache(HERO_VIDEOS_CACHE_KEY, slides)
-      return slides
-    }
-    return []
+    sessionUsedVideoIds.add(video.id)
+    const slides = [slide]
+    writeMediaCache(HERO_VIDEOS_CACHE_KEY, slides)
+    onProgress?.(slides)
+    return slides
   } catch (err) {
-    console.warn('Failed to fetch Pexels hero videos:', err)
+    console.warn('Failed to fetch Pexels hero video:', err)
     return []
   }
 }

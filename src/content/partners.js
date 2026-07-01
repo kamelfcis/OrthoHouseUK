@@ -43,17 +43,38 @@ export const partnerDetail = {
   connectWith: (name) => `Connect with ${name}`,
   about: (name) => `About ${name}`,
   productsHeading: 'Partner Products',
-  speakCta: 'Speak with Our Team',
+  requestPortfolio: 'Request portfolio',
   labels: {
     website: 'Website',
     email: 'Email',
-    phone: 'Phone',
-    partnerCode: 'Partner code',
-    partnershipType: 'Partnership type',
-    type: 'Type'
+    phone: 'Phone'
   },
   stats: {
     products: 'Products',
     categories: 'Specialities'
+  },
+  portfolioModal: {
+    title: (name) => `Request ${name} portfolio`,
+    subtitle: 'Enter your email and we will send the partner brochures directly to your inbox.',
+    emailLabel: 'Email address',
+    emailPlaceholder: 'you@company.com',
+    privacy:
+      'We only use your email to send this portfolio request. Your details are handled in line with UK data protection law.',
+    submit: 'Send portfolio',
+    submitting: 'Sending…',
+    cancel: 'Cancel',
+    close: 'Close',
+    done: 'Done',
+    successTitle: 'Check your inbox',
+    successMessage: 'Your portfolio is on its way.',
+    successToast: 'Check your inbox — your portfolio is on its way',
+    errors: {
+      emailRequired: 'Please enter your email address.',
+      emailInvalid: 'Please enter a valid email address.',
+      rateLimited: 'Too many requests. Please try again in an hour.',
+      notAvailable: 'Portfolio not available for this partner yet.',
+      network: 'Unable to connect. Please check your connection and try again.',
+      generic: 'Unable to send portfolio. Please try again.'
+    }
   }
 }

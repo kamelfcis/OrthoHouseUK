@@ -98,6 +98,20 @@ export const homeProducts = {
   viewAll: 'View full product catalogue'
 }
 
+export const homeFeaturedProducts = {
+  eyebrow: 'Product portfolio',
+  title: 'Featured implant systems',
+  subtitle:
+    'A curated selection from our partner portfolio — trauma, arthroplasty, foot & ankle, and regenerative bone graft solutions.',
+  loading: 'Loading featured products…',
+  viewAll: 'View full product catalogue',
+  viewProduct: 'View product',
+  prevAria: 'Previous featured products',
+  nextAria: 'Next featured products',
+  slideAria: (index, total) => `Featured product ${index + 1} of ${total}`,
+  dotAria: (index) => `Go to featured product slide ${index + 1}`
+}
+
 export const homeWhyChooseUs = {
   eyebrow: 'Why OrthoHouse UK',
   title: 'Trusted by surgeons, hospitals, and manufacturing partners',
@@ -149,7 +163,7 @@ export const homeSpecialties = {
       imageAlt: 'Foot and ankle orthopaedic assessment with cast immobilisation',
       imageFallback:
         'https://images.unsplash.com/photo-1706777193603-76c3e9613553?auto=format&fit=crop&w=800&q=80',
-      link: '/products'
+      link: '/products?category=foot_ankle'
     },
     {
       id: 'trauma',
@@ -160,7 +174,7 @@ export const homeSpecialties = {
       imageAlt: 'Trauma orthopaedic anatomy illustrating fracture fixation and bone injury',
       imageFallback:
         'https://images.unsplash.com/photo-1768644675720-2f274f84c87a?auto=format&fit=crop&w=800&q=80',
-      link: '/products'
+      link: '/products?category=hand_wrist'
     },
     {
       id: 'arthroplasty',
@@ -172,7 +186,7 @@ export const homeSpecialties = {
       imageAlt: 'Knee joint replacement arthroplasty implant systems for elective surgery',
       imageFallback:
         'https://images.unsplash.com/photo-1715531786629-bd8b2dd87066?auto=format&fit=crop&w=800&q=80',
-      link: '/products'
+      link: '/products?category=shoulder'
     },
     {
       id: 'bone-graft',
@@ -184,7 +198,7 @@ export const homeSpecialties = {
       imageAlt: 'Post-operative orthopaedic rehabilitation supporting bone graft and fusion recovery',
       imageFallback:
         'https://images.unsplash.com/photo-1643834534240-75aee14ecdc8?auto=format&fit=crop&w=800&q=80',
-      link: '/products'
+      link: '/products?category=bone_graft'
     }
   ]
 }

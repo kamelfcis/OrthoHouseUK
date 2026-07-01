@@ -1,8 +1,9 @@
 import { useEffect, useState, useMemo, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { toPublicStorageUrl } from '../lib/storageUrl'
 import HeroBackground from '../components/common/HeroBackground'
 import useBranchData from '../hooks/useBranchData'
 import SEO from '../components/SEO/SEO'
@@ -12,15 +13,13 @@ import '../components/Home/Capabilities.css'
 import './Services.css'
 
 const Services = () => {
-  const navigate = useNavigate()
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1
   })
   const { branchData, loading } = useBranchData('UK')
   const [partners, setPartners] = useState([])
-  const [partnerImages, setPartnerImages] = useState({})
-  const [displayedCount, setDisplayedCount] = useState(5) // Show first 5 partners initially
+  const [displayedCount, setDisplayedCount] = useState(8)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -66,38 +65,6 @@ const Services = () => {
           }))
 
         setPartners(partnersList)
-
-        // Fetch partner logos from storage
-        const imagePromises = partnersList.map(async (partner) => {
-          if (partner.logo_url) {
-            try {
-              const { data: imageData } = await supabase.storage
-                .from('partner-logos')
-                .getPublicUrl(partner.logo_url)
-              
-              return {
-                partnerId: partner.partner_id,
-                imageUrl: imageData?.publicUrl || partner.logo_url
-              }
-            } catch (err) {
-              console.error(`Error fetching logo for partner ${partner.partner_id}:`, err)
-              return {
-                partnerId: partner.partner_id,
-                imageUrl: partner.logo_url
-              }
-            }
-          }
-          return null
-        })
-
-        const imageResults = await Promise.all(imagePromises)
-        const imagesMap = {}
-        imageResults.forEach(result => {
-          if (result) {
-            imagesMap[result.partnerId] = result.imageUrl
-          }
-        })
-        setPartnerImages(imagesMap)
       } catch (error) {
         console.error('Error fetching partners:', error)
       }
@@ -127,14 +94,8 @@ const Services = () => {
     }
   }
 
-  const getShortDescription = (description) => {
-    if (!description) return partnersPage.noDescription
-    // Let CSS handle the truncation, just return the full description
-    return description
-  }
-
   const handleLoadMore = useCallback(() => {
-    setDisplayedCount(prev => Math.min(prev + 5, partners.length))
+    setDisplayedCount(prev => Math.min(prev + 8, partners.length))
   }, [partners.length])
 
   const displayedPartners = useMemo(() => {
@@ -198,71 +159,54 @@ const Services = () => {
               animate={inView ? 'visible' : 'hidden'}
             >
               <AnimatePresence mode="popLayout">
-                {displayedPartners.map((partner, index) => (
-                  <motion.div
-                    key={partner.partner_id}
-                    className="partner-card-modern"
-                    variants={itemVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    layout
-                  >
-                    <div className="partner-card-modern-inner">
-                      <div className="partner-logo-wrapper">
-                        {partnerImages[partner.partner_id] ? (
-                          <>
-                            <img 
-                              src={partnerImages[partner.partner_id]} 
-                              alt={`${partner.partner_name} logo`}
-                              className="partner-logo-modern"
-                              loading={index < 5 ? "eager" : "lazy"}
-                              decoding="async"
-                              onError={(e) => {
-                                e.target.style.display = 'none'
-                                e.target.nextSibling.style.display = 'flex'
-                              }}
-                            />
-                            <div className="partner-icon-fallback-modern" style={{ display: 'none' }}>
-                              <i className="fas fa-handshake"></i>
-                            </div>
-                          </>
-                        ) : (
-                          <div className="partner-icon-fallback-modern">
-                            <i className="fas fa-handshake"></i>
-                          </div>
-                        )}
-                      </div>
-                      
-                      <div className="partner-info-modern">
-                        <h3 className="partner-name-modern">{partner.partner_name}</h3>
-                        {partner.description && (
-                          <p className="partner-description-modern">
-                            {getShortDescription(partner.description)}
-                          </p>
-                        )}
-                      </div>
-                      
-                      <div className="partner-action-modern">
-                        <button
-                          type="button"
-                          className="partner-more-info-btn-modern"
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            const partnerId = partner.partner_id
-                            if (partnerId) {
-                              window.location.href = `/partners/${partnerId}`
-                            }
-                          }}
-                        >
-                          <i className="fas fa-info-circle"></i>
-                          <span>{partnersPage.moreInfo}</span>
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+                {displayedPartners.map((partner, index) => {
+                  const logoSrc = toPublicStorageUrl('partner-logos', partner.logo_url)
+
+                  return (
+                    <motion.div
+                      key={partner.partner_id}
+                      className="partner-logo-tile-wrap"
+                      variants={itemVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      layout
+                    >
+                      <Link
+                        to={`/partners/${partner.partner_id}`}
+                        className="partner-logo-tile"
+                        aria-label={`View ${partner.partner_name} partner profile`}
+                        data-partner-name={partner.partner_name}
+                      >
+                        <span className="partner-logo-tile__surface">
+                          {logoSrc ? (
+                            <>
+                              <img
+                                src={logoSrc}
+                                alt={`${partner.partner_name} logo`}
+                                className="partner-logo-tile__logo"
+                                loading={index < 8 ? 'eager' : 'lazy'}
+                                decoding="async"
+                                onError={(e) => {
+                                  e.target.style.display = 'none'
+                                  const fallback = e.target.nextElementSibling
+                                  if (fallback) fallback.hidden = false
+                                }}
+                              />
+                              <span className="partner-logo-tile__fallback" hidden aria-hidden="true">
+                                <i className="fas fa-handshake" />
+                              </span>
+                            </>
+                          ) : (
+                            <span className="partner-logo-tile__fallback" aria-hidden="true">
+                              <i className="fas fa-handshake" />
+                            </span>
+                          )}
+                        </span>
+                      </Link>
+                    </motion.div>
+                  )
+                })}
               </AnimatePresence>
               
               {hasMorePartners && (

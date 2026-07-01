@@ -123,6 +123,26 @@
   margin: 0;
 }
 
+.partner-portfolio-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: fit-content;
+  padding: 0.85rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  border-radius: var(--ds-radius-md, 12px);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.partner-portfolio-cta--sidebar {
+  width: 100%;
+}
+
 .partner-hero-stats {
   display: flex;
   flex-wrap: wrap;
@@ -464,6 +484,165 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+/* Portfolio request modal */
+.portfolio-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(8, 23, 47, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.portfolio-modal-content {
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--ds-surface, var(--white));
+  border-radius: 20px;
+  box-shadow: 0 24px 64px rgba(8, 23, 47, 0.28);
+}
+
+.portfolio-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--ds-border-strong, rgba(29, 41, 57, 0.12));
+}
+
+.portfolio-modal-header h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 3vw, 1.65rem);
+  color: var(--ds-text-heading, var(--black));
+  line-height: 1.3;
+}
+
+.portfolio-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(29, 41, 57, 0.06);
+  color: rgba(29, 41, 57, 0.55);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.portfolio-modal-close:hover {
+  background: rgba(29, 41, 57, 0.12);
+  color: var(--ds-brand-600, #1e5a8e);
+}
+
+.portfolio-modal-form,
+.portfolio-modal-body {
+  padding: 24px 28px 28px;
+}
+
+.portfolio-modal-subtitle {
+  margin: 0 0 1.25rem;
+  color: var(--ds-text-muted, rgba(29, 41, 57, 0.72));
+  line-height: 1.6;
+  font-size: 0.98rem;
+}
+
+.portfolio-modal-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.portfolio-modal-form .ds-form-field {
+  margin-bottom: 1rem;
+}
+
+.portfolio-modal-privacy {
+  margin: 0 0 1.5rem;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--ds-text-muted, rgba(29, 41, 57, 0.65));
+}
+
+.portfolio-modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.portfolio-modal-actions .ds-btn {
+  min-width: 120px;
+}
+
+.portfolio-modal-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.portfolio-modal-body--success {
+  text-align: center;
+}
+
+.portfolio-modal-success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: rgba(91, 155, 55, 0.12);
+  color: #5b9b37;
+  font-size: 2rem;
+}
+
+.portfolio-modal-body--success h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.35rem;
+  color: var(--ds-text-heading, var(--black));
+}
+
+.portfolio-modal-body--success p {
+  margin: 0 0 1.5rem;
+  color: var(--ds-text-muted, rgba(29, 41, 57, 0.72));
+  line-height: 1.6;
+}
+
+@media (max-width: 560px) {
+  .portfolio-modal-header,
+  .portfolio-modal-form,
+  .portfolio-modal-body {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .portfolio-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .portfolio-modal-actions .ds-btn {
+    width: 100%;
   }
 }
 
