@@ -225,7 +225,13 @@ Deno.serve(async (req) => {
       status: "failed",
       error_message: `Resend ${resendResponse.status}: ${errorText.slice(0, 500)}`,
     });
-    return jsonResponse(req, { error: "Unable to send email" }, 502);
+
+    const resendFailure = mapResendFailure(
+      resendResponse.status,
+      errorText,
+      Deno.env.get("RESEND_SANDBOX_OWNER_EMAIL") ?? undefined,
+    );
+    return jsonResponse(req, resendFailure.body, resendFailure.status);
   }
 
   await supabase.from("portfolio_requests").insert({
@@ -236,6 +242,81 @@ Deno.serve(async (req) => {
 
   return jsonResponse(req, { success: true });
 });
+
+interface ResendErrorBody {
+  statusCode?: number;
+  message?: string;
+}
+
+function parseResendError(errorText: string): ResendErrorBody {
+  try {
+    return JSON.parse(errorText) as ResendErrorBody;
+  } catch {
+    return { message: errorText };
+  }
+}
+
+function isResendSandboxRestriction(status: number, message: string): boolean {
+  const lower = message.toLowerCase();
+  return (
+    status === 403 ||
+    lower.includes("only send testing emails") ||
+    lower.includes("your own email address") ||
+    lower.includes("verify a domain")
+  );
+}
+
+function extractSandboxOwnerEmail(message: string, configured?: string): string | undefined {
+  if (configured?.trim()) {
+    return configured.trim();
+  }
+
+  const match = message.match(/your own email address \(([^)]+)\)/i);
+  return match?.[1]?.trim();
+}
+
+function buildSandboxRestrictionMessage(ownerEmail?: string): string {
+  if (ownerEmail) {
+    return `Portfolio emails can only be sent to ${ownerEmail} until our email domain is verified. Please use that address or contact us for assistance.`;
+  }
+
+  return "Portfolio emails are temporarily limited while our email domain is being verified. Please contact us if you need immediate access.";
+}
+
+function mapResendFailure(
+  status: number,
+  errorText: string,
+  sandboxOwnerEmail?: string,
+): { status: number; body: Record<string, unknown> } {
+  const parsed = parseResendError(errorText);
+  const resendMessage = parsed.message ?? errorText;
+
+  if (isResendSandboxRestriction(status, resendMessage)) {
+    const ownerEmail = extractSandboxOwnerEmail(resendMessage, sandboxOwnerEmail);
+    return {
+      status: 403,
+      body: {
+        code: "email_sandbox_restricted",
+        message: buildSandboxRestrictionMessage(ownerEmail),
+      },
+    };
+  }
+
+  if (status >= 400 && status < 500) {
+    return {
+      status: status === 429 ? 429 : 422,
+      body: {
+        code: "email_send_failed",
+        message: "Unable to send portfolio email. Please try again later.",
+      },
+    };
+  }
+
+  return {
+    status: 502,
+    body: { error: "Unable to send email" },
+  };
+}
 
 function sanitizeFilename(name: string): string {
   return name.replace(/[^\w\s.-]/g, "").trim() || "portfolio";

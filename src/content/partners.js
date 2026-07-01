@@ -73,6 +73,8 @@ export const partnerDetail = {
       emailInvalid: 'Please enter a valid email address.',
       rateLimited: 'Too many requests. Please try again in an hour.',
       notAvailable: 'Portfolio not available for this partner yet.',
+      sandboxRestricted:
+        'Portfolio emails are temporarily limited while our email domain is being verified. Please contact us if you need immediate access.',
       network: 'Unable to connect. Please check your connection and try again.',
       generic: 'Unable to send portfolio. Please try again.'
     }

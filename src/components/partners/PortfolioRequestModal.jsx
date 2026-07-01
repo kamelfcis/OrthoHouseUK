@@ -71,8 +71,22 @@ const PortfolioRequestModal = ({ isOpen, onClose, partnerId, partnerName }) => {
     if (code === 'invalid_email' || message.includes('invalid email')) {
       return errors.emailInvalid
     }
+    if (code === 'email_sandbox_restricted') {
+      return (
+        responseData?.message ??
+        errors.sandboxRestricted ??
+        'Portfolio emails are limited until our email domain is verified.'
+      )
+    }
+    if (code === 'email_send_failed') {
+      return responseData?.message ?? errors.generic
+    }
     if (invokeError?.name === 'FunctionsFetchError' || message.includes('failed to fetch')) {
       return errors.network
+    }
+
+    if (responseData?.message && typeof responseData.message === 'string') {
+      return responseData.message
     }
 
     return errors.generic
