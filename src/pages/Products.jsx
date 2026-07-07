@@ -21,6 +21,44 @@ const CATEGORY_PARAM_ALIASES = {
   bone_graft: 'bonegraft'
 }
 
+const CATEGORY_VARIANT_MAP = {
+  bonegraft: 'bonegraft',
+  footankle: 'footankle',
+  handwrist: 'upperlimb',
+  upperlimb: 'upperlimb',
+  shoulder: 'shoulder',
+  knee: 'knee',
+  hip: 'hip',
+  spine: 'spine',
+  trauma: 'trauma',
+  sports: 'sports',
+  arthroplasty: 'shoulder',
+  instruments: 'instruments',
+  biologics: 'bonegraft'
+}
+
+const CATEGORY_SVG_MAP = {
+  bonegraft: '/assets/bone%20graft.svg',
+  footankle: '/assets/footandankle.svg',
+  shoulder: '/assets/shoulder.svg',
+  upperlimb: '/assets/upperlimb.svg'
+}
+
+const getCategoryVariant = (category) => {
+  const codeKey = normalizeCategoryKey(category.category_code || '')
+  const nameKey = normalizeCategoryKey(category.category_name || '')
+
+  if (CATEGORY_VARIANT_MAP[codeKey]) return CATEGORY_VARIANT_MAP[codeKey]
+  if (CATEGORY_VARIANT_MAP[nameKey]) return CATEGORY_VARIANT_MAP[nameKey]
+
+  const matched = Object.entries(CATEGORY_VARIANT_MAP).find(
+    ([key]) => nameKey.includes(key) || codeKey.includes(key)
+  )
+  return matched?.[1] || 'default'
+}
+
+const getCategorySvg = (variant) => CATEGORY_SVG_MAP[variant] ?? null
+
 const resolveCategoryFromParam = (param, categories) => {
   if (!param || categories.length === 0) return null
 
@@ -47,7 +85,6 @@ const Products = () => {
   const categoryParam = searchParams.get('category')
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
-  const [categoryImages, setCategoryImages] = useState({})
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [loading, setLoading] = useState(true)
   const [ukBranch, setUkBranch] = useState(null)
@@ -111,31 +148,6 @@ const Products = () => {
 
       if (categoriesError) throw categoriesError
       setCategories(categoriesData || [])
-
-      // Fetch category images for UK branch
-      const categoryImagesMap = {}
-      if (categoriesData && categoriesData.length > 0) {
-        const imagePromises = categoriesData.map(async (category) => {
-          const { data: images, error: imgError } = await supabase
-            .from('category_images')
-            .select('*')
-            .eq('category_id', category.category_id)
-            .eq('branch_id', branch.branch_id)
-            .order('image_order', { ascending: true })
-
-          if (!imgError && images && images.length > 0) {
-            const primaryImage = images.find(img => img.is_primary) || images[0]
-            if (primaryImage) {
-              const imageUrl = getImageUrl(primaryImage.image_url)
-              categoryImagesMap[category.category_id] = imageUrl
-            }
-          }
-          return null
-        })
-
-        await Promise.all(imagePromises)
-      }
-      setCategoryImages(categoryImagesMap)
 
       // Fetch products for UK branch
       const { data: branchProducts, error: productsError } = await supabase
@@ -208,13 +220,6 @@ const Products = () => {
     }
   }
 
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return null
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ljfkmtuxqaznnmmxeydf.supabase.co'
-    const projectRef = supabaseUrl.replace('https://', '').replace('.supabase.co', '')
-    return `https://${projectRef}.supabase.co/storage/v1/object/public/category-images/${imagePath}`
-  }
-
   const getProductImageUrl = (imagePath) => {
     if (!imagePath) return null
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ljfkmtuxqaznnmmxeydf.supabase.co'
@@ -243,33 +248,49 @@ const Products = () => {
         description={pageSeo.products.description}
         keywords={pageSeo.products.keywords}
       />
-      <div className="products-hero">
-        <div className="products-hero__media" role="presentation">
-          <div className="products-hero__media-inner" aria-hidden="true" />
-        </div>
-        <div className="products-hero__spotlights" aria-hidden="true" />
-        <div className="products-hero__shine" aria-hidden="true" />
-        <div className="products-hero__vignette" aria-hidden="true" />
-        <div className="products-hero__overlay" aria-hidden="true" />
-      </div>
-
       <div className="products-page-main">
         <div className="container">
           {categories.length > 0 && (
             <div className="categories-filter-section" role="group" aria-label={productsPage.filterTitle}>
               <h3 className="categories-filter-title">{productsPage.filterTitle}</h3>
-              <div className="category-chips">
-                {categories.map((category) => (
-                  <button
-                    key={category.category_id}
-                    type="button"
-                    className={`category-chip${selectedCategory === category.category_id ? ' is-active' : ''}`}
-                    onClick={() => handleCategoryClick(category.category_id)}
-                    aria-pressed={selectedCategory === category.category_id}
-                  >
-                    {category.category_name}
-                  </button>
-                ))}
+              <div className="categories-grid">
+                {categories.map((category) => {
+                  const isActive = selectedCategory === category.category_id
+                  const variant = getCategoryVariant(category)
+                  const svgSrc = getCategorySvg(variant)
+
+                  return (
+                    <button
+                      key={category.category_id}
+                      type="button"
+                      className={`category-filter-card${isActive ? ' active' : ''}`}
+                      onClick={() => handleCategoryClick(category.category_id)}
+                      aria-pressed={isActive}
+                      aria-label={`Filter by ${category.category_name}`}
+                    >
+                      {isActive && (
+                        <span className="category-active-indicator" aria-hidden="true">
+                          <i className="fas fa-check" />
+                        </span>
+                      )}
+                      <div
+                        className={`category-watermark category-watermark--${variant}${svgSrc ? ' category-watermark--has-svg' : ''}`}
+                        aria-hidden="true"
+                      >
+                        {svgSrc && (
+                          <img
+                            src={svgSrc}
+                            alt=""
+                            className="category-watermark-svg"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        )}
+                      </div>
+                      <span className="category-filter-name">{category.category_name}</span>
+                    </button>
+                  )
+                })}
               </div>
               {selectedCategory && (
                 <button

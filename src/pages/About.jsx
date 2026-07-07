@@ -107,19 +107,10 @@ const About = () => {
             initial="hidden"
             animate={heroInView ? 'visible' : 'hidden'}
           >
-            <motion.div
-              className="about-hero__eyebrow"
-              variants={heroChildVariants}
-            >
-              {aboutPage.hero.eyebrow}
-            </motion.div>
             <motion.h1 className="about-hero__title" variants={heroChildVariants}>
               <motion.span variants={heroLineVariants}>{aboutPage.hero.titleLine1}</motion.span>
               <motion.span variants={heroLineVariants}>{aboutPage.hero.titleLine2}</motion.span>
             </motion.h1>
-            <motion.p className="about-hero__subtitle" variants={heroChildVariants}>
-              {aboutPage.hero.subtitle}
-            </motion.p>
           </motion.div>
         </div>
       </div>

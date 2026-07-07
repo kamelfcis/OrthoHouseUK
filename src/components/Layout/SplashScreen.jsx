@@ -21,8 +21,6 @@ const SplashScreen = () => {
       }
     }
 
-    const timer = setTimeout(dispatchFinished, 350)
-
     const handleReady = () => {
       dispatchFinished()
     }
@@ -35,7 +33,6 @@ const SplashScreen = () => {
     }
 
     return () => {
-      clearTimeout(timer)
       document.removeEventListener('DOMContentLoaded', handleReady)
       window.removeEventListener('load', handleReady)
     }

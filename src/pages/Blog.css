@@ -15,7 +15,7 @@
 .blog-hero__media {
   position: absolute;
   inset: 0;
-  background: url('/assets/images/blogs.jpg') center / cover no-repeat;
+  background: url('/assets/optimized/events/blogs-1200.webp') center / cover no-repeat;
   transform: scale(1.08);
   transition: transform 22s ease-in-out;
   z-index: 0;

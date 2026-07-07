@@ -10,6 +10,7 @@
     "generate-sitemap": "node scripts/generate-sitemap.js",
     "extract-pdf-images": "python scripts/extract-pdf-images.py",
     "organize-assets": "node scripts/organize-assets.mjs",
+    "compress-images": "node scripts/compress-public-images.mjs",
     "assets:pipeline": "npm run extract-pdf-images && npm run organize-assets",
     "extract-portfolio": "python scripts/extract_portfolio.py",
     "optimize-portfolio": "node scripts/optimize_portfolio_assets.mjs",

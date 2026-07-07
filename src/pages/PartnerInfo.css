@@ -14,7 +14,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: url('/assets/images/partners-hero.jpg') center / cover no-repeat;
+  background: url('/assets/optimized/heroes/partners-hero-1200.webp') center / cover no-repeat;
   z-index: 0;
   animation: partnerHeroSlide 1s ease-out forwards, partnerHeroKenBurns 24s ease-in-out infinite alternate;
 }

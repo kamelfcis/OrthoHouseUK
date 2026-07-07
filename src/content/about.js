@@ -2,11 +2,8 @@ import { aboutHeroImage } from '../data/localAssets'
 
 export const aboutPage = {
   hero: {
-    eyebrow: 'About OrthoHouse UK',
     titleLine1: 'Advancing Orthopaedic',
     titleLine2: 'Care Across the UK',
-    subtitle:
-      'We connect surgeons and hospitals with innovative implants and clinical support — built on regulatory excellence and long-term partnerships.',
     // Local: office trade show photography — Unsplash retained only as remote fallback
     localImage: aboutHeroImage,
     imageQuery: 'medical team healthcare professional',
@@ -116,7 +113,7 @@ export const ceoVisionMission = {
       text: 'My aim is to build an organisation that makes a genuine difference across the UK healthcare sector. At OrthoHouse UK, we are dedicated to advancing orthopaedic care by supplying high-quality implants and clinical support to surgeons and hospitals nationwide. We look forward to continuing our growth alongside NHS and private-sector partners, and to strengthening our contribution to clinical education across the United Kingdom.',
       author: {
         name: 'Waleed Emad',
-        title: 'Chief executive & founder'
+        title: 'Founder & CEO'
       }
     },
     vision: {

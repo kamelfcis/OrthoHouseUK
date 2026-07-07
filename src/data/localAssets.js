@@ -10,14 +10,15 @@ import { buildLocalImage } from '../utils/responsiveImage'
 
 // —— Page heroes —————————————————————————————————————————————————————————————
 
-/** About hero — OrthoHouse trade show exhibition scene */
-export const aboutHeroImage = {
-  src: '/assets/office/Gemini_Generated_Image_ch1msrch1msrch1m.png',
-  alt: 'OrthoHouse UK team at an orthopaedic trade show exhibition stand',
-  width: 2660,
-  height: 1600,
-  source: 'legacy'
-}
+/** About hero — OrthoHouse trade show exhibition booth */
+export const aboutHeroImage = buildLocalImage({
+  category: 'about',
+  name: 'about',
+  alt: 'OrthoHouse UK exhibition booth at an orthopaedic trade show',
+  source: 'legacy',
+  width: 2662,
+  height: 1600
+})
 
 /** Contact hero — legacy office photography (high resolution) */
 export const contactHeroImage = buildLocalImage({
@@ -152,7 +153,7 @@ export const homeEventImages = {
 // —— Brand logos —————————————————————————————————————————————————————————————
 
 export const brandLogos = {
-  nav: '/assets/brand/logo-svg-png.png',
+  nav: '/assets/brand/logo-svg.svg',
   navSvg: '/assets/brand/logo-svg.svg',
   footer: '/assets/brand/logo-svg.svg',
   primary: '/assets/brand/logo-primary.png'
