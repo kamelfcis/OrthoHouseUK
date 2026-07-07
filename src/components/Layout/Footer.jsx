@@ -9,7 +9,7 @@ const DEFAULT_NAV_VISIBILITY = { partners: false, blog: false }
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
-  const { about, columns, contact, copyright } = footer
+  const { about, columns, contact } = footer
   const [social, setSocial] = useState(footer.social)
   const [navVisibility, setNavVisibility] = useState(DEFAULT_NAV_VISIBILITY)
 
@@ -63,7 +63,6 @@ const Footer = () => {
                   decoding="async"
                 />
                 <h3>{about.title}</h3>
-                <p>{about.description}</p>
                 <div className="footer-social">
                   {social.map((item) => (
                     <a
@@ -138,12 +137,8 @@ const Footer = () => {
         <div className="container">
           <div className="copyright-content">
             <p>
-              &copy; {currentYear} {siteName} | All Rights Reserved | Powered by{' '}
-              <a href={copyright.poweredBy.url} target="_blank" rel="noreferrer">
-                {copyright.poweredBy.label}
-              </a>
+              &copy; {currentYear} {siteName} | All Rights Reserved
             </p>
-            <p>{copyright.tagline}</p>
           </div>
         </div>
       </div>

@@ -1,10 +1,9 @@
-import { useState, useEffect, useCallback, memo } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { HERO_SLIDES } from '../../data/heroSlides'
 import { fetchHeroSlides } from '../../lib/unsplash'
 import { fetchHeroVideos, isPexelsConfigured } from '../../lib/pexels'
 import { runWhenIdle } from '../../lib/idle'
-import { useHeroVideoMode } from '../../hooks/useHeroVideoMode'
 import { homeHero } from '../../content/home'
 import HeroSlider from './HeroSlider'
 import './Hero.css'
@@ -12,7 +11,6 @@ import './Hero.css'
 const Hero = ({ branchData }) => {
   const [slides, setSlides] = useState(HERO_SLIDES)
   const [videoSlides, setVideoSlides] = useState([])
-  const [activeSlide, setActiveSlide] = useState(0)
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -69,19 +67,12 @@ const Hero = ({ branchData }) => {
     (branchName ? `OrthoHouse ${branchName}` : homeHero.titleFallback)
 
   const [motionRef, motionInView] = useInView({ triggerOnce: true, threshold: 0.35 })
-  const useVideoMode = useHeroVideoMode(videoSlides)
-  const displaySlides = useVideoMode ? videoSlides : slides
-
-  const handleSlideChange = useCallback((index) => {
-    setActiveSlide(index)
-  }, [])
 
   return (
     <section className="hero-section" aria-label={homeHero.ariaLabel}>
       <HeroSlider
         slides={isPexelsConfigured() ? [] : slides}
         videoSlides={videoSlides}
-        onSlideChange={handleSlideChange}
       />
 
       <div className="hero-overlay" aria-hidden="true" />
@@ -93,10 +84,6 @@ const Hero = ({ branchData }) => {
             className={`hero-content-inner${motionInView ? ' is-visible' : ''}`}
             ref={motionRef}
           >
-            <span key={`eyebrow-${activeSlide}`} className="hero-eyebrow hero-animate-item">
-              {displaySlides[activeSlide]?.eyebrow}
-            </span>
-
             <h1 className="hero-title hero-animate-item" role="presentation">
               {title.split('\n').map((line, index, arr) => (
                 <span key={`hero-line-${index}`} className="hero-animate-item">

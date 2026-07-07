@@ -1,4 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
+import { useLocation } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import GoToTop from './GoToTop'
@@ -8,11 +9,18 @@ import './Layout.css'
 const ChatAssistant = lazy(() => import('./ChatAssistant'))
 
 const Layout = ({ children }) => {
+  const location = useLocation()
+  const isHomePage = location.pathname === '/'
   const [isScrolled, setIsScrolled] = useState(false)
   const [showChat, setShowChat] = useState(false)
   useSmoothScroll()
 
   useEffect(() => {
+    if (!isHomePage) {
+      setShowChat(false)
+      return undefined
+    }
+
     const loadChat = () => setShowChat(true)
     const idleId = window.requestIdleCallback
       ? window.requestIdleCallback(loadChat, { timeout: 4000 })
@@ -25,7 +33,7 @@ const Layout = ({ children }) => {
         clearTimeout(idleId)
       }
     }
-  }, [])
+  }, [isHomePage])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,7 +65,7 @@ const Layout = ({ children }) => {
       </main>
       <Footer />
       {isScrolled && <GoToTop />}
-      {showChat && (
+      {isHomePage && showChat && (
         <Suspense fallback={null}>
           <ChatAssistant />
         </Suspense>

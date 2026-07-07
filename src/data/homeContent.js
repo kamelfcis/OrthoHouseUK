@@ -7,6 +7,5 @@ export {
   homeSpecialties,
   homeUkJourney,
   homeAccreditations,
-  homeEvents,
-  homeJoinCta
+  homeEvents
 } from '../content/home'

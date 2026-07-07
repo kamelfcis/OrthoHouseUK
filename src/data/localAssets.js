@@ -78,33 +78,6 @@ export const homeCapabilityImages = {
   })
 }
 
-export const homeWhyChooseImages = {
-  compliance: buildLocalImage({
-    category: 'presentation',
-    name: 'orthohouse-for-01-2933x1650',
-    alt: 'OrthoHouse UK — trusted orthopaedic distribution with full MHRA regulatory compliance',
-    source: 'presentation',
-    width: 2933,
-    height: 1650
-  }),
-  partnership: buildLocalImage({
-    category: 'products',
-    name: 'our-products-banner',
-    alt: 'Orthopaedic implant product portfolio from manufacturing partners',
-    source: 'legacy',
-    width: 8159,
-    height: 5439
-  }),
-  education: buildLocalImage({
-    category: 'presentation',
-    name: '1st-cadaver-courses-in-middle-east-06-960x1280',
-    alt: 'Hands-on orthopaedic education at a surgical training event',
-    source: 'presentation',
-    width: 960,
-    height: 1280
-  })
-}
-
 export const homeSpecialtyImages = {
   'foot-ankle': buildLocalImage({
     category: 'products',
@@ -139,15 +112,6 @@ export const homeSpecialtyImages = {
     height: 788
   })
 }
-
-export const homeJoinCtaImage = buildLocalImage({
-  category: 'presentation',
-  name: 'life-at-orthohouse-05-880x495',
-  alt: 'OrthoHouse UK team at the London headquarters',
-  source: 'presentation',
-  width: 880,
-  height: 495
-})
 
 // —— Events (UK journey) —————————————————————————————————————————————————————
 

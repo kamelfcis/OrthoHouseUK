@@ -15,6 +15,7 @@ const SECTION_ICONS = {
   blog: 'fas fa-newspaper',
   home_specialties: 'fas fa-stethoscope',
   home_featured_products: 'fas fa-box-open',
+  home_resources: 'fas fa-book-open',
 }
 
 const Navigation = () => {

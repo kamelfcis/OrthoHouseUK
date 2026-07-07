@@ -33,42 +33,6 @@ export const homeFeaturedProducts = {
   dotAria: (index) => `Go to featured product slide ${index + 1}`
 }
 
-export const homeWhyChooseUs = {
-  eyebrow: 'Why OrthoHouse UK',
-  title: 'Trusted by surgeons, hospitals, and manufacturing partners',
-  subtitle:
-    'We work alongside clinical and procurement teams to ensure the right implant is available, compliant, and supported — not simply listed in a catalogue.',
-  items: [
-    {
-      id: 'compliance',
-      title: 'Regulatory confidence',
-      text: 'Every product in our portfolio is distributed under full MHRA compliance. Our UKRP services help manufacturers and hospital teams meet post-Brexit regulatory requirements with clear documentation and oversight.',
-      imageQuery: 'knee joint anatomy x-ray orthopaedic',
-      imageAlt: 'Knee joint anatomy and imaging supporting regulatory orthopaedic documentation',
-      imageFallback:
-        'https://images.unsplash.com/photo-1715531785980-ce9b3bf1c38d?auto=format&fit=crop&w=800&q=80'
-    },
-    {
-      id: 'partnership',
-      title: 'Long-term manufacturer relationships',
-      text: 'We partner with innovators who share our commitment to evidence-based orthopaedics — from Astrolabe trauma systems to Permedica arthroplasty and Eincobio bone graft technologies.',
-      imageQuery: 'orthopaedic surgeon scrubs theatre',
-      imageAlt: 'Orthopaedic surgeon in theatre scrubs representing long-term implant partnerships',
-      imageFallback:
-        'https://images.unsplash.com/photo-1606431424031-dbdedefc5bb0?auto=format&fit=crop&w=800&q=80'
-    },
-    {
-      id: 'education',
-      title: 'Education that supports practice',
-      text: 'We sponsor and exhibit at BOA, BOFAS, and BESS events each year — connecting with the UK orthopaedic community through hands-on education, not passive marketing.',
-      imageQuery: 'post-operative orthopaedic rehabilitation bandages',
-      imageAlt: 'Post-operative orthopaedic recovery following joint surgery and clinical education',
-      imageFallback:
-        'https://images.unsplash.com/photo-1746807177009-826f115f41f2?auto=format&fit=crop&w=800&q=80'
-    }
-  ]
-}
-
 export const homeSpecialties = {
   eyebrow: 'Clinical specialties',
   title: 'Orthopaedic categories we serve',
@@ -371,29 +335,4 @@ export const homeTeamTeaser = {
   featuredCount: 3,
   viewAll: 'Meet the full team',
   viewAllPath: '/team'
-}
-
-export const homeJoinCta = {
-  eyebrow: 'Working with us',
-  title: 'Discuss your orthopaedic supply requirements',
-  tagline:
-    'Whether you are a surgeon exploring implant systems, a procurement team seeking a dependable supplier, or a manufacturer looking for UK distribution — we would welcome your enquiry.',
-  bullets: [
-    'Dedicated account teams for trauma, arthroplasty, foot & ankle, and bone graft',
-    'MHRA-compliant distribution with full regulatory documentation',
-    'Responsive support from enquiry to ongoing theatre supply',
-    'London headquarters with national hospital coverage'
-  ],
-  imageQuery: 'orthopaedic surgeon consultation knee',
-  imageAlt: 'Orthopaedic surgeon discussing joint replacement options with a patient',
-  imageFallback:
-    'https://images.unsplash.com/photo-1715531786135-5ac445758873?auto=format&fit=crop&w=1200&q=80',
-  office: {
-    label: 'UK office',
-    address: '6th Floor, 2 Kingdom Street, London W2 6BD',
-    contactLink: '/contact'
-  },
-  cta: 'Speak with our team',
-  secondaryCta: 'View our partners',
-  secondaryLink: '/partners'
 }

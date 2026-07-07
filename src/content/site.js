@@ -27,9 +27,7 @@ export const socialLinks = [
 
 export const footer = {
   about: {
-    title: 'About OrthoHouse UK',
-    description:
-      'OrthoHouse UK connects world-class orthopaedic manufacturers with surgeons and hospitals across the United Kingdom — specialising in trauma, arthroplasty, foot & ankle, and bone graft solutions.'
+    title: 'About OrthoHouse UK'
   },
   columns: {
     company: {
@@ -56,11 +54,7 @@ export const footer = {
     emailHref: 'mailto:info@ortho-house.com',
     addressLines: ['2 Kingdom Street, London W2 6BD', 'United Kingdom']
   },
-  social: socialLinks,
-  copyright: {
-    tagline: 'Orthopaedic medical devices & clinical support',
-    poweredBy: { label: 'ngdc.com.eg', url: 'https://ngdc.com.eg' }
-  }
+  social: socialLinks
 }
 
 export const ctas = {

@@ -118,26 +118,15 @@
 
 .copyright-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  gap: var(--ds-space-4, 1rem);
+  text-align: center;
 }
 
 .copyright-content p {
   color: rgba(255, 255, 255, 0.58);
   margin: 0;
   font-size: var(--ds-text-sm, 0.875rem);
-}
-
-.copyright-content a {
-  color: rgba(255, 255, 255, 0.72);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.copyright-content a:hover {
-  color: var(--ds-brand-300, var(--main));
 }
 
 .footer-row {
@@ -154,6 +143,10 @@
 .footer-columns,
 .contact-widget {
   width: 100%;
+}
+
+.footer-about .footer-social {
+  margin-top: 0;
 }
 
 .footer-columns {

@@ -31,6 +31,7 @@ DEFAULT_SETTINGS = [
     ("blog", False, 2),
     ("home_specialties", True, 10),
     ("home_featured_products", True, 20),
+    ("home_resources", True, 30),
 ]
 
 

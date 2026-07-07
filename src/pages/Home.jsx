@@ -11,7 +11,6 @@ import './Home.css'
 
 const HeroPartnersCarousel = lazy(() => import('../components/Home/HeroPartnersCarousel'))
 const HomeFeaturedProducts = lazy(() => import('../components/Home/HomeFeaturedProducts'))
-const HomeWhyChooseUs = lazy(() => import('../components/Home/HomeWhyChooseUs'))
 const HomeSpecialties = lazy(() => import('../components/Home/HomeSpecialties'))
 const HomeHowItWorks = lazy(() => import('../components/Home/HomeHowItWorks'))
 const Stats = lazy(() => import('../components/Home/Stats'))
@@ -19,12 +18,12 @@ const HomeTestimonials = lazy(() => import('../components/Home/HomeTestimonials'
 const HomeAccreditations = lazy(() => import('../components/Home/HomeAccreditations'))
 const HomeEvents = lazy(() => import('../components/Home/HomeEvents'))
 const HomeResources = lazy(() => import('../components/Home/HomeResources'))
-const HomeJoinCta = lazy(() => import('../components/Home/HomeJoinCta'))
 
 const Home = () => {
   const { branchData } = useBranchData('UK')
   const [showSpecialties, setShowSpecialties] = useState(true)
   const [showFeaturedProducts, setShowFeaturedProducts] = useState(true)
+  const [showResources, setShowResources] = useState(true)
 
   useEffect(() => {
     let cancelled = false
@@ -34,12 +33,14 @@ const Home = () => {
         if (!cancelled) {
           setShowSpecialties(Boolean(visibility.home_specialties))
           setShowFeaturedProducts(Boolean(visibility.home_featured_products))
+          setShowResources(Boolean(visibility.home_resources))
         }
       })
       .catch(() => {
         if (!cancelled) {
           setShowSpecialties(true)
           setShowFeaturedProducts(true)
+          setShowResources(true)
         }
       })
 
@@ -97,12 +98,7 @@ const Home = () => {
         </Suspense>
       )}
 
-      {/* 4. Why choose us */}
-      <Suspense fallback={<SectionSkeleton minHeight={400} />}>
-        <HomeWhyChooseUs />
-      </Suspense>
-
-      {/* 6. How it works */}
+      {/* 4. How it works */}
       <Suspense fallback={<SectionSkeleton minHeight={280} />}>
         <HomeHowItWorks />
       </Suspense>
@@ -128,14 +124,11 @@ const Home = () => {
       </Suspense>
 
       {/* 12. Latest insights / blog */}
-      <Suspense fallback={<SectionSkeleton minHeight={280} />}>
-        <HomeResources branchData={branchData} />
-      </Suspense>
-
-      {/* 13. Strong call-to-action */}
-      <Suspense fallback={<SectionSkeleton minHeight={280} />}>
-        <HomeJoinCta />
-      </Suspense>
+      {showResources && (
+        <Suspense fallback={<SectionSkeleton minHeight={280} />}>
+          <HomeResources branchData={branchData} />
+        </Suspense>
+      )}
     </div>
   )
 }

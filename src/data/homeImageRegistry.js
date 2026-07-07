@@ -1,9 +1,5 @@
 import { HERO_SLIDES } from './heroSlides'
-import {
-  homeWhyChooseUs,
-  homeSpecialties,
-  homeJoinCta
-} from '../content/home'
+import { homeSpecialties } from '../content/home'
 
 /** Extract Unsplash photo slug from a CDN URL, e.g. "photo-1551601651-2a8555f1a136". */
 export const extractUnsplashPhotoId = (url) => {
@@ -14,9 +10,7 @@ export const extractUnsplashPhotoId = (url) => {
 
 const collectFallbackUrls = () => {
   const urls = [
-    ...homeWhyChooseUs.items.map((item) => item.imageFallback),
     ...homeSpecialties.items.map((item) => item.imageFallback),
-    homeJoinCta.imageFallback,
     ...HERO_SLIDES.map((slide) => slide.src)
   ]
   return urls
