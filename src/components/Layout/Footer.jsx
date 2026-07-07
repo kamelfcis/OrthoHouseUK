@@ -50,8 +50,8 @@ const Footer = () => {
     <footer className="site-footer">
       <div className="site-footer__main">
         <div className="container">
-          <div className="row footer-row">
-            <div className="col-lg-4 col-md-12">
+          <div className="footer-row">
+            <div className="footer-col footer-col--about">
               <div className="footer-widget footer-about">
                 <img
                   src="/assets/images/Logo_SVG.svg"
@@ -79,33 +79,33 @@ const Footer = () => {
               </div>
             </div>
 
-            <div className="col-lg-6 col-md-8">
-              <div className="footer-columns">
-                <div className="footer-widget">
-                  <h3>{columns.company.title}</h3>
-                  <ul>
-                    {columns.company.links.map((link) => (
-                      <li key={link.path}>
-                        <Link to={link.path}>{link.name}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="footer-widget">
-                  <h3>{columns.resources.title}</h3>
-                  <ul>
-                    {resourceLinks.map((link) => (
-                      <li key={link.path}>
-                        <Link to={link.path}>{link.name}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+            <div className="footer-col footer-col--company">
+              <div className="footer-widget">
+                <h3>{columns.company.title}</h3>
+                <ul>
+                  {columns.company.links.map((link) => (
+                    <li key={link.path}>
+                      <Link to={link.path}>{link.name}</Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 
-            <div className="col-lg-2 col-md-4 contact-column">
+            <div className="footer-col footer-col--resources">
+              <div className="footer-widget">
+                <h3>{columns.resources.title}</h3>
+                <ul>
+                  {resourceLinks.map((link) => (
+                    <li key={link.path}>
+                      <Link to={link.path}>{link.name}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="footer-col footer-col--contact">
               <div className="footer-widget contact-widget">
                 <h3>{contact.title}</h3>
                 <ul className="contact-info">

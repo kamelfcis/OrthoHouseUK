@@ -15,8 +15,6 @@ const HomeSpecialties = lazy(() => import('../components/Home/HomeSpecialties'))
 const HomeHowItWorks = lazy(() => import('../components/Home/HomeHowItWorks'))
 const Stats = lazy(() => import('../components/Home/Stats'))
 const HomeTestimonials = lazy(() => import('../components/Home/HomeTestimonials'))
-const HomeAccreditations = lazy(() => import('../components/Home/HomeAccreditations'))
-const HomeEvents = lazy(() => import('../components/Home/HomeEvents'))
 const HomeResources = lazy(() => import('../components/Home/HomeResources'))
 
 const Home = () => {
@@ -111,16 +109,6 @@ const Home = () => {
       {/* 8. Testimonials */}
       <Suspense fallback={<SectionSkeleton minHeight={260} />}>
         <HomeTestimonials />
-      </Suspense>
-
-      {/* 10. Trust & compliance */}
-      <Suspense fallback={<SectionSkeleton minHeight={240} />}>
-        <HomeAccreditations />
-      </Suspense>
-
-      {/* 11. Community impact */}
-      <Suspense fallback={<SectionSkeleton minHeight={260} />}>
-        <HomeEvents />
       </Suspense>
 
       {/* 12. Latest insights / blog */}

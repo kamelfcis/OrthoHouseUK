@@ -10,15 +10,14 @@ import { buildLocalImage } from '../utils/responsiveImage'
 
 // —— Page heroes —————————————————————————————————————————————————————————————
 
-/** About hero — PDF slide "The heart of OrthoHouse" (p07) */
-export const aboutHeroImage = buildLocalImage({
-  category: 'presentation',
-  name: 'the-heart-of-orthohouse-03-1477x890',
-  alt: 'OrthoHouse team collaborating in a modern clinical environment',
-  source: 'presentation',
-  width: 1477,
-  height: 890
-})
+/** About hero — OrthoHouse trade show exhibition scene */
+export const aboutHeroImage = {
+  src: '/assets/office/Gemini_Generated_Image_ch1msrch1msrch1m.png',
+  alt: 'OrthoHouse UK team at an orthopaedic trade show exhibition stand',
+  width: 2660,
+  height: 1600,
+  source: 'legacy'
+}
 
 /** Contact hero — legacy office photography (high resolution) */
 export const contactHeroImage = buildLocalImage({

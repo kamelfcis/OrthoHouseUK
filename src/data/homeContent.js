@@ -5,7 +5,5 @@ export {
   homeMission,
   homeStats,
   homeSpecialties,
-  homeUkJourney,
-  homeAccreditations,
-  homeEvents
+  homeUkJourney
 } from '../content/home'

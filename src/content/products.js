@@ -1,11 +1,4 @@
 export const productsPage = {
-  hero: {
-    eyebrow: 'Product Portfolio',
-    titleLine1: 'Precision Engineered',
-    titleLine2: 'Orthopaedic Solutions',
-    subtitle:
-      'Explore our curated range of trauma, arthroplasty, foot & ankle, and regenerative technologies — distributed with full MHRA compliance and clinical support.',
-  },
   filterTitle: 'Filter by Category',
   clearFilter: 'Clear filter',
   filterInfo: (count, category) =>

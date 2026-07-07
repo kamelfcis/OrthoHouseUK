@@ -7,7 +7,7 @@ export const aboutPage = {
     titleLine2: 'Care Across the UK',
     subtitle:
       'We connect surgeons and hospitals with innovative implants and clinical support — built on regulatory excellence and long-term partnerships.',
-    // Local: presentation PDF p07 — Unsplash retained only as remote fallback
+    // Local: office trade show photography — Unsplash retained only as remote fallback
     localImage: aboutHeroImage,
     imageQuery: 'medical team healthcare professional',
     imageAlt: aboutHeroImage.alt,
@@ -23,6 +23,10 @@ export const aboutPage = {
     ]
   },
   ukJourney: {
+    eyebrow: 'Our expansion',
+    title: 'Ortho House UK journey',
+    subtitle:
+      'From establishment in London to NHS Scotland framework approval — a measured path rooted in clinical partnership and regulatory excellence.',
     milestones: [
       {
         date: 'Jul 2022',

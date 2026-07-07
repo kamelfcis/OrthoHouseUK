@@ -1,6 +1,4 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
-import { motion } from 'framer-motion'
-import { useInView } from 'react-intersection-observer'
 import { useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import ProductCard from '../components/common/ProductCard'
@@ -54,10 +52,6 @@ const Products = () => {
   const [loading, setLoading] = useState(true)
   const [ukBranch, setUkBranch] = useState(null)
   const productsSectionRef = useRef(null)
-  const [heroRef, heroInView] = useInView({
-    triggerOnce: true,
-    threshold: 0.25
-  })
 
   const scrollToProductsSection = useCallback(() => {
     setTimeout(() => {
@@ -73,45 +67,6 @@ const Products = () => {
       }
     }, 100)
   }, [])
-
-  const heroContainerVariants = {
-    hidden: { opacity: 0, y: 60 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.85,
-        ease: [0.22, 1, 0.36, 1],
-        staggerChildren: 0.12,
-        delayChildren: 0.1
-      }
-    }
-  }
-
-  const heroChildVariants = {
-    hidden: { opacity: 0, y: 24, skewY: 4 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      skewY: 0,
-      transition: {
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  }
-
-  const heroLineVariants = {
-    hidden: { opacity: 0, x: -36 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  }
 
   useEffect(() => {
     if (!categoryParam) {
@@ -295,29 +250,6 @@ const Products = () => {
         <div className="products-hero__spotlights" aria-hidden="true" />
         <div className="products-hero__shine" aria-hidden="true" />
         <div className="products-hero__overlay" aria-hidden="true" />
-        <div className="products-hero__container container">
-          <motion.div
-            className="products-hero__content"
-            ref={heroRef}
-            variants={heroContainerVariants}
-            initial="hidden"
-            animate={heroInView ? 'visible' : 'hidden'}
-          >
-            <motion.div
-              className="products-hero__eyebrow"
-              variants={heroChildVariants}
-            >
-              {productsPage.hero.eyebrow}
-            </motion.div>
-            <motion.h1 className="products-hero__title" variants={heroChildVariants}>
-              <motion.span variants={heroLineVariants}>{productsPage.hero.titleLine1}</motion.span>
-              <motion.span variants={heroLineVariants}>{productsPage.hero.titleLine2}</motion.span>
-            </motion.h1>
-            <motion.p className="products-hero__subtitle" variants={heroChildVariants}>
-              {productsPage.hero.subtitle}
-            </motion.p>
-          </motion.div>
-        </div>
       </div>
 
       <div className="products-page-main">
