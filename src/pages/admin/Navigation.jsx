@@ -7,6 +7,11 @@ import {
   mergeNavRowsWithDefaults,
   mergeHomeSectionRowsWithDefaults,
 } from '../../lib/navLinkSettings'
+import {
+  fetchHomeStatsForAdmin,
+  mergeHomeStatRowsWithDefaults,
+  saveHomeStatsForAdmin,
+} from '../../lib/homeStats'
 import toast from 'react-hot-toast'
 import './Navigation.css'
 
@@ -16,6 +21,7 @@ const SECTION_ICONS = {
   home_specialties: 'fas fa-stethoscope',
   home_featured_products: 'fas fa-box-open',
   home_resources: 'fas fa-book-open',
+  home_stats: 'fas fa-chart-column',
 }
 
 const Navigation = () => {
@@ -27,6 +33,7 @@ const Navigation = () => {
   const [selectedBranchId, setSelectedBranchId] = useState('')
   const [links, setLinks] = useState([])
   const [homeSections, setHomeSections] = useState([])
+  const [homeStats, setHomeStats] = useState([])
 
   const activeBranchId = isBranchManager
     ? String(appUser?.branch_id || '')
@@ -84,12 +91,14 @@ const Navigation = () => {
   const loadSettings = async (branchId) => {
     try {
       setLoading(true)
-      const [navRows, sectionRows] = await Promise.all([
+      const [navRows, sectionRows, statRows] = await Promise.all([
         fetchNavLinkSettingsForAdmin(branchId),
         fetchHomeSectionSettingsForAdmin(branchId),
+        fetchHomeStatsForAdmin(branchId).catch(() => mergeHomeStatRowsWithDefaults([], branchId)),
       ])
       setLinks(navRows)
       setHomeSections(sectionRows)
+      setHomeStats(statRows)
       hasLoadedRef.current = true
     } catch (error) {
       if (error.code === '42P01' || error.code === 'PGRST205') {
@@ -99,6 +108,7 @@ const Navigation = () => {
       }
       setLinks(mergeNavRowsWithDefaults([], branchId))
       setHomeSections(mergeHomeSectionRowsWithDefaults([], branchId))
+      setHomeStats(mergeHomeStatRowsWithDefaults([], branchId))
     } finally {
       setLoading(false)
     }
@@ -128,6 +138,14 @@ const Navigation = () => {
     )
   }
 
+  const updateHomeStat = (statKey, field, value) => {
+    setHomeStats((current) =>
+      current.map((stat) =>
+        stat.stat_key === statKey ? { ...stat, [field]: value } : stat
+      )
+    )
+  }
+
   const handleSave = async (e) => {
     e.preventDefault()
     if (!activeBranchId) {
@@ -150,6 +168,8 @@ const Navigation = () => {
         .upsert(payload, { onConflict: 'branch_id,nav_key' })
 
       if (error) throw error
+
+      await saveHomeStatsForAdmin(branchId, homeStats)
 
       toast.success('Navigation settings saved.')
       hasLoadedRef.current = false
@@ -252,6 +272,58 @@ const Navigation = () => {
                     {section.checkboxLabel}
                   </label>
                 </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <h2 className="nav-panel-heading nav-panel-heading--spaced">Homepage statistics</h2>
+        <p className="nav-panel-description">
+          Edit the numbers and labels shown in the statistics section. Enable the section above to display these on the homepage.
+        </p>
+        <div className="home-stats-list">
+          {homeStats.map((stat) => (
+            <div key={stat.stat_key} className="home-stat-row">
+              <div className="home-stat-row__header">
+                <span className="home-stat-row__icon" aria-hidden="true">
+                  <i className={`fas ${stat.icon}`} />
+                </span>
+                <strong>{stat.metaLabel}</strong>
+              </div>
+              <div className="home-stat-fields">
+                <label className="home-stat-field">
+                  <span>Value</span>
+                  <input
+                    type="number"
+                    min="0"
+                    value={stat.stat_value}
+                    onChange={(e) =>
+                      updateHomeStat(stat.stat_key, 'stat_value', e.target.value)
+                    }
+                  />
+                </label>
+                <label className="home-stat-field home-stat-field--suffix">
+                  <span>Suffix</span>
+                  <input
+                    type="text"
+                    maxLength={8}
+                    placeholder="e.g. +"
+                    value={stat.stat_suffix}
+                    onChange={(e) =>
+                      updateHomeStat(stat.stat_key, 'stat_suffix', e.target.value)
+                    }
+                  />
+                </label>
+                <label className="home-stat-field home-stat-field--label">
+                  <span>Label</span>
+                  <input
+                    type="text"
+                    value={stat.label}
+                    onChange={(e) =>
+                      updateHomeStat(stat.stat_key, 'label', e.target.value)
+                    }
+                  />
+                </label>
               </div>
             </div>
           ))}

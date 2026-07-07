@@ -15,6 +15,7 @@ const HomeSpecialties = lazy(() => import('../components/Home/HomeSpecialties'))
 const HomeHowItWorks = lazy(() => import('../components/Home/HomeHowItWorks'))
 const Stats = lazy(() => import('../components/Home/Stats'))
 const HomeTestimonials = lazy(() => import('../components/Home/HomeTestimonials'))
+const HomeAccreditations = lazy(() => import('../components/Home/HomeAccreditations'))
 const HomeResources = lazy(() => import('../components/Home/HomeResources'))
 
 const Home = () => {
@@ -22,6 +23,7 @@ const Home = () => {
   const [showSpecialties, setShowSpecialties] = useState(true)
   const [showFeaturedProducts, setShowFeaturedProducts] = useState(true)
   const [showResources, setShowResources] = useState(true)
+  const [showStats, setShowStats] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -32,6 +34,7 @@ const Home = () => {
           setShowSpecialties(Boolean(visibility.home_specialties))
           setShowFeaturedProducts(Boolean(visibility.home_featured_products))
           setShowResources(Boolean(visibility.home_resources))
+          setShowStats(Boolean(visibility.home_stats))
         }
       })
       .catch(() => {
@@ -39,6 +42,7 @@ const Home = () => {
           setShowSpecialties(true)
           setShowFeaturedProducts(true)
           setShowResources(true)
+          setShowStats(false)
         }
       })
 
@@ -102,13 +106,20 @@ const Home = () => {
       </Suspense>
 
       {/* 7. Statistics & measurable outcomes */}
-      <Suspense fallback={<SectionSkeleton minHeight={300} />}>
-        <Stats branchData={branchData} />
-      </Suspense>
+      {showStats && (
+        <Suspense fallback={<SectionSkeleton minHeight={300} />}>
+          <Stats />
+        </Suspense>
+      )}
 
       {/* 8. Testimonials */}
       <Suspense fallback={<SectionSkeleton minHeight={260} />}>
         <HomeTestimonials />
+      </Suspense>
+
+      {/* 10. Trust & compliance */}
+      <Suspense fallback={<SectionSkeleton minHeight={240} />}>
+        <HomeAccreditations />
       </Suspense>
 
       {/* 12. Latest insights / blog */}

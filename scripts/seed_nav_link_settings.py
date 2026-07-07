@@ -21,6 +21,7 @@ import requests
 
 ROOT = Path(__file__).resolve().parents[1]
 MIGRATION_PATH = ROOT / "supabase" / "migrations" / "20250707120000_create_nav_link_settings.sql"
+HOME_STATS_MIGRATION_PATH = ROOT / "supabase" / "migrations" / "20250707160000_home_stats.sql"
 
 SUPABASE_URL = os.environ.get("VITE_SUPABASE_URL", "https://ljfkmtuxqaznnmmxeydf.supabase.co").rstrip("/")
 SERVICE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
@@ -32,6 +33,16 @@ DEFAULT_SETTINGS = [
     ("home_specialties", True, 10),
     ("home_featured_products", True, 20),
     ("home_resources", True, 30),
+    ("home_stats", False, 40),
+]
+
+DEFAULT_HOME_STATS = [
+    ("employees", 25, "", "Employees", "fa-users-gear", 1),
+    ("surgeons", 100, "+", "Surgeons supported", "fa-user-doctor", 2),
+    ("hospitals", 75, "+", "Partner hospitals", "fa-hospital", 3),
+    ("operations", 80, "+", "Theatre cases supported daily", "fa-heart-pulse", 4),
+    ("partners", 10, "+", "Manufacturing partners", "fa-handshake", 5),
+    ("events", 20, "+", "Education events per year", "fa-calendar-days", 6),
 ]
 
 
@@ -109,6 +120,85 @@ def apply_migration_with_psycopg() -> None:
         conn.close()
 
 
+def apply_home_stats_migration_with_psycopg() -> None:
+    password = os.environ.get("SUPABASE_DB_PASSWORD")
+    if not password:
+        raise RuntimeError("SUPABASE_DB_PASSWORD is not set.")
+
+    try:
+        import psycopg2
+    except ImportError as exc:
+        raise RuntimeError("Install psycopg2-binary to apply migrations from this script.") from exc
+
+    project_ref = SUPABASE_URL.replace("https://", "").split(".")[0]
+    host = os.environ.get(
+        "SUPABASE_DB_HOST",
+        "aws-0-eu-central-1.pooler.supabase.com",
+    )
+    port = int(os.environ.get("SUPABASE_DB_PORT", "6543"))
+    user = os.environ.get("SUPABASE_DB_USER", f"postgres.{project_ref}")
+    database = os.environ.get("SUPABASE_DB_NAME", "postgres")
+
+    sql = HOME_STATS_MIGRATION_PATH.read_text(encoding="utf-8")
+    conn = psycopg2.connect(
+        host=host,
+        port=port,
+        user=user,
+        password=password,
+        dbname=database,
+        sslmode="require",
+    )
+    try:
+        conn.autocommit = True
+        with conn.cursor() as cur:
+            cur.execute(sql)
+    finally:
+        conn.close()
+
+
+def home_stats_table_exists() -> bool:
+    resp = requests.get(
+        f"{SUPABASE_URL}/rest/v1/home_stats?select=home_stat_id&limit=1",
+        headers=headers(),
+        timeout=30,
+    )
+    if resp.status_code == 200:
+        return True
+    if resp.status_code == 404:
+        return False
+    raise RuntimeError(
+        f"Unexpected status checking home_stats ({resp.status_code}): {resp.text[:300]}"
+    )
+
+
+def seed_home_stats(dry_run: bool = False) -> None:
+    payload = [
+        {
+            "branch_id": UK_BRANCH_ID,
+            "stat_key": stat_key,
+            "stat_value": stat_value,
+            "stat_suffix": stat_suffix,
+            "label": label,
+            "icon": icon,
+            "display_order": display_order,
+        }
+        for stat_key, stat_value, stat_suffix, label, icon, display_order in DEFAULT_HOME_STATS
+    ]
+
+    if dry_run:
+        print(json_dumps(payload))
+        return
+
+    resp = requests.post(
+        f"{SUPABASE_URL}/rest/v1/home_stats?on_conflict=branch_id,stat_key",
+        headers=headers(),
+        json=payload,
+        timeout=60,
+    )
+    if resp.status_code not in (200, 201):
+        raise RuntimeError(f"Home stats seed failed ({resp.status_code}): {resp.text[:500]}")
+
+
 def seed_settings(dry_run: bool = False) -> None:
     payload = [
         {
@@ -172,6 +262,23 @@ def main() -> int:
 
     print("Seeding default UK nav link settings...")
     seed_settings(dry_run=args.dry_run)
+
+    if not args.dry_run and not home_stats_table_exists():
+        print("home_stats table not found. Attempting migration...")
+        try:
+            apply_home_stats_migration_with_psycopg()
+            print("Home stats migration applied.")
+        except Exception as exc:
+            print(f"Could not apply home_stats migration automatically: {exc}", file=sys.stderr)
+            print(
+                f"\nRun the SQL manually in Supabase SQL Editor:\n  {HOME_STATS_MIGRATION_PATH}",
+                file=sys.stderr,
+            )
+
+    if args.dry_run or home_stats_table_exists():
+        print("Seeding default UK home stats...")
+        seed_home_stats(dry_run=args.dry_run)
+
     print("Done.")
     return 0
 

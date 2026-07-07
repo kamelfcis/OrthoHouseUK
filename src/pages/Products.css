@@ -16,40 +16,35 @@
 }
 
 @keyframes productsKenBurns {
-  0% {
-    transform: scale(1.06) translate(0, 0);
-  }
-  25% {
-    transform: scale(1.1) translate(-1.5%, -1.5%);
-  }
-  50% {
-    transform: scale(1.14) translate(1.5%, 1.5%);
-  }
-  75% {
-    transform: scale(1.1) translate(-1%, 1%);
-  }
+  0%,
   100% {
-    transform: scale(1.06) translate(0, 0);
+    transform: scale(1.02) translate(0, 0);
+  }
+  30% {
+    transform: scale(1.05) translate(-0.6%, -0.4%);
+  }
+  65% {
+    transform: scale(1.07) translate(0.5%, 0.35%);
   }
 }
 
 @keyframes productsHeroLightSweep {
   0% {
-    background-position: 220% 0;
+    background-position: 240% 0;
     opacity: 0;
   }
-  12% {
-    opacity: 1;
+  10% {
+    opacity: 0.85;
   }
-  48% {
-    background-position: -20% 0;
-    opacity: 1;
+  45% {
+    background-position: -15% 0;
+    opacity: 0.85;
   }
-  88% {
+  82% {
     opacity: 0;
   }
   100% {
-    background-position: -20% 0;
+    background-position: -15% 0;
     opacity: 0;
   }
 }
@@ -58,15 +53,15 @@
   0%,
   100% {
     transform: translate(0, 0) scale(1);
+    opacity: 0.18;
+  }
+  42% {
+    transform: translate(8%, -3%) scale(1.08);
+    opacity: 0.42;
+  }
+  72% {
+    transform: translate(4%, 2%) scale(1.03);
     opacity: 0.28;
-  }
-  40% {
-    transform: translate(12%, -4%) scale(1.12);
-    opacity: 0.62;
-  }
-  70% {
-    transform: translate(6%, 3%) scale(1.05);
-    opacity: 0.4;
   }
 }
 
@@ -74,32 +69,33 @@
   0%,
   100% {
     transform: translate(0, 0) scale(1);
-    opacity: 0.22;
+    opacity: 0.14;
   }
-  35% {
-    transform: translate(-10%, 5%) scale(1.08);
-    opacity: 0.55;
+  38% {
+    transform: translate(-7%, 4%) scale(1.06);
+    opacity: 0.36;
   }
-  65% {
-    transform: translate(-4%, -3%) scale(0.96);
-    opacity: 0.38;
+  68% {
+    transform: translate(-3%, -2%) scale(0.98);
+    opacity: 0.24;
   }
 }
 
 @keyframes productsHeroScrollParallax {
   from {
-    transform: scale(1.08) translateY(0);
+    transform: scale(1.04) translateY(0);
   }
   to {
-    transform: scale(1.12) translateY(-3.5%);
+    transform: scale(1.08) translateY(-2.5%);
   }
 }
 
 .products-hero {
   position: relative;
   overflow: hidden;
-  min-height: clamp(220px, 32vw, 360px);
+  min-height: clamp(280px, 40vw, 460px);
   isolation: isolate;
+  background: #071a2e;
 }
 
 .products-hero__media {
@@ -111,22 +107,23 @@
 
 .products-hero__media-inner {
   position: absolute;
-  inset: -4%;
-  background: url('/assets/producthero.jpeg') center / cover no-repeat;
-  transform: scale(1.08);
+  inset: -5%;
+  background: url('/assets/office/Gemini_Generated_Image_g8c0xng8c0xng8c0.png') center center / cover no-repeat;
+  transform: scale(1.04);
   transform-origin: center;
-  filter: saturate(108%) contrast(1.02);
+  filter: saturate(106%) contrast(1.06) brightness(1.03);
   will-change: transform;
-  animation: productsKenBurns 26s ease-in-out infinite alternate;
+  animation: productsKenBurns 34s ease-in-out infinite alternate;
+  backface-visibility: hidden;
 }
 
 @supports (animation-timeline: scroll()) {
   .products-hero__media-inner {
     animation:
-      productsKenBurns 26s ease-in-out infinite alternate,
+      productsKenBurns 34s ease-in-out infinite alternate,
       productsHeroScrollParallax linear both;
     animation-timeline: auto, scroll(root);
-    animation-range: normal, 0% 45%;
+    animation-range: normal, 0% 40%;
   }
 }
 
@@ -143,30 +140,36 @@
   content: '';
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(140, 220, 255, 0.42) 0%,
-    rgba(85, 184, 230, 0.12) 42%,
-    transparent 72%
-  );
-  filter: blur(2px);
+  filter: blur(3px);
 }
 
 .products-hero__spotlights::before {
-  width: clamp(220px, 42vw, 520px);
-  height: clamp(180px, 38vw, 440px);
-  top: 18%;
-  left: 8%;
-  animation: productsHeroSpotlightA 14s ease-in-out infinite;
+  width: clamp(260px, 46vw, 580px);
+  height: clamp(200px, 40vw, 480px);
+  top: 14%;
+  left: 6%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 248, 238, 0.34) 0%,
+    rgba(140, 210, 245, 0.14) 38%,
+    transparent 70%
+  );
+  animation: productsHeroSpotlightA 18s ease-in-out infinite;
 }
 
 .products-hero__spotlights::after {
-  width: clamp(200px, 36vw, 460px);
-  height: clamp(160px, 32vw, 400px);
-  top: 22%;
-  right: 4%;
-  animation: productsHeroSpotlightB 14s ease-in-out infinite;
-  animation-delay: -7s;
+  width: clamp(240px, 40vw, 520px);
+  height: clamp(180px, 34vw, 440px);
+  top: 20%;
+  right: 2%;
+  background: radial-gradient(
+    circle,
+    rgba(190, 228, 255, 0.28) 0%,
+    rgba(85, 184, 230, 0.1) 40%,
+    transparent 72%
+  );
+  animation: productsHeroSpotlightB 18s ease-in-out infinite;
+  animation-delay: -9s;
 }
 
 .products-hero__shine {
@@ -175,44 +178,62 @@
   z-index: 2;
   pointer-events: none;
   background: linear-gradient(
-    108deg,
+    112deg,
     transparent 0%,
-    transparent 38%,
-    rgba(255, 255, 255, 0.06) 46%,
-    rgba(190, 235, 255, 0.28) 50%,
-    rgba(255, 255, 255, 0.06) 54%,
-    transparent 62%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.04) 47%,
+    rgba(220, 245, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0.04) 53%,
+    transparent 60%,
     transparent 100%
   );
-  background-size: 240% 100%;
+  background-size: 260% 100%;
   mix-blend-mode: soft-light;
-  animation: productsHeroLightSweep 8.5s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  animation: productsHeroLightSweep 11s cubic-bezier(0.42, 0, 0.18, 1) infinite;
+}
+
+.products-hero__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 92% 82% at 50% 42%, transparent 48%, rgba(4, 14, 28, 0.42) 100%),
+    linear-gradient(180deg, rgba(6, 18, 36, 0.22) 0%, transparent 28%, transparent 72%, rgba(6, 18, 36, 0.28) 100%);
 }
 
 .products-hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    115deg,
-    rgba(10, 29, 55, 0.8) 0%,
-    rgba(7, 54, 91, 0.58) 40%,
-    rgba(8, 96, 140, 0.38) 68%,
-    rgba(12, 118, 168, 0.22) 100%
-  );
-  mix-blend-mode: multiply;
-  z-index: 3;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 22, 42, 0.08) 0%,
+      transparent 22%,
+      transparent 68%,
+      rgba(247, 249, 252, 0.92) 100%
+    ),
+    linear-gradient(
+      100deg,
+      rgba(8, 24, 48, 0.14) 0%,
+      transparent 42%,
+      transparent 58%,
+      rgba(8, 24, 48, 0.1) 100%
+    );
+  z-index: 4;
 }
 
 @media (max-width: 768px) {
   .products-hero {
-    min-height: clamp(200px, 40vw, 280px);
+    min-height: clamp(240px, 48vw, 340px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .products-hero__media-inner {
     animation: none;
-    transform: scale(1.05);
+    transform: scale(1.02);
+    will-change: auto;
   }
 
   .products-hero__shine,

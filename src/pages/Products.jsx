@@ -249,6 +249,7 @@ const Products = () => {
         </div>
         <div className="products-hero__spotlights" aria-hidden="true" />
         <div className="products-hero__shine" aria-hidden="true" />
+        <div className="products-hero__vignette" aria-hidden="true" />
         <div className="products-hero__overlay" aria-hidden="true" />
       </div>
 

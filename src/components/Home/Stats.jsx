@@ -1,37 +1,41 @@
+import { useEffect, useState } from 'react'
 import useNearViewport from '../../hooks/useNearViewport'
 import CountUp from 'react-countup'
 import SectionHeading from '../common/SectionHeading'
-import { homeStats } from '../../content/home'
+import { homeStats as homeStatsContent } from '../../content/home'
+import { fetchHomeStats } from '../../lib/homeStats'
 import './Stats.css'
-
-const STAT_TYPE_MAP = {
-  employees: 'employees',
-  surgeons: 'surgeons',
-  hospitals: 'hospitals',
-  operations: 'operations',
-  partners: 'partners',
-  events: 'events'
-}
 
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-const Stats = ({ branchData }) => {
+const getInitialStatsContent = () => ({
+  eyebrow: homeStatsContent.eyebrow,
+  title: homeStatsContent.title,
+  subtitle: homeStatsContent.subtitle,
+  items: homeStatsContent.items,
+})
+
+const Stats = () => {
   const [ref, inView] = useNearViewport()
+  const [statsContent, setStatsContent] = useState(getInitialStatsContent)
 
-  const statistics = branchData?.statistics || {}
+  useEffect(() => {
+    let cancelled = false
 
-  const resolveStatValue = (key, fallback) => {
-    const statType = STAT_TYPE_MAP[key]
-    const fromDb = statType && statistics[statType]?.[0]?.stat_value
-    return fromDb != null ? Number(fromDb) : fallback
-  }
+    fetchHomeStats('UK')
+      .then((data) => {
+        if (!cancelled) setStatsContent(data)
+      })
+      .catch(() => {
+        if (!cancelled) setStatsContent(getInitialStatsContent())
+      })
 
-  const stats = homeStats.items.map((item) => ({
-    ...item,
-    number: resolveStatValue(item.key, item.number)
-  }))
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const reduced = prefersReducedMotion()
 
@@ -39,15 +43,15 @@ const Stats = ({ branchData }) => {
     <section className="stats-section ds-section" ref={ref} aria-labelledby="stats-heading">
       <div className="container">
         <SectionHeading
-          eyebrow={homeStats.eyebrow}
-          title={homeStats.title}
-          subtitle={homeStats.subtitle}
+          eyebrow={statsContent.eyebrow}
+          title={statsContent.title}
+          subtitle={statsContent.subtitle}
           titleId="stats-heading"
           className="stats-section__head"
         />
 
         <div className={`stats-grid reveal-stagger${inView ? ' is-visible' : ''}`}>
-          {stats.map((stat, index) => (
+          {statsContent.items.map((stat, index) => (
             <div
               key={stat.key}
               className="stat-item reveal-item"

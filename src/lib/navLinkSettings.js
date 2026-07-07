@@ -1,7 +1,7 @@
 import { nav } from '../content/site'
 
 /** @typedef {'partners'|'blog'} NavToggleKey */
-/** @typedef {'home_specialties'|'home_featured_products'|'home_resources'} HomeSectionKey */
+/** @typedef {'home_specialties'|'home_featured_products'|'home_resources'|'home_stats'} HomeSectionKey */
 
 /** @type {Record<NavToggleKey, { label: string; path: string; displayOrder: number }>} */
 export const NAV_TOGGLE_META = {
@@ -29,6 +29,12 @@ export const HOME_SECTION_META = {
     checkboxLabel: 'Show Latest from our blog section on homepage',
     displayOrder: 30,
   },
+  home_stats: {
+    label: 'Statistics & measurable outcomes',
+    subtitle: 'OrthoHouse UK by the numbers',
+    checkboxLabel: 'Show Statistics section on homepage',
+    displayOrder: 40,
+  },
 }
 
 export const NAV_TOGGLE_KEYS = Object.keys(NAV_TOGGLE_META)
@@ -43,6 +49,7 @@ const DEFAULT_HOME_SECTION_VISIBILITY = /** @type {Record<HomeSectionKey, boolea
   home_specialties: true,
   home_featured_products: true,
   home_resources: true,
+  home_stats: false,
 })
 
 const pathToNavKey = (path) => {

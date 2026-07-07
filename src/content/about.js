@@ -23,10 +23,10 @@ export const aboutPage = {
     ]
   },
   ukJourney: {
-    eyebrow: 'Our expansion',
+    eyebrow: '',
     title: 'Ortho House UK journey',
     subtitle:
-      'From establishment in London to NHS Scotland framework approval — a measured path rooted in clinical partnership and regulatory excellence.',
+      '',
     milestones: [
       {
         date: 'Jul 2022',

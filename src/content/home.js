@@ -142,9 +142,9 @@ export const homeStats = {
   title: 'OrthoHouse UK by the numbers',
   subtitle: 'Trusted by surgeons, hospitals, and manufacturing partners across the United Kingdom.',
   items: [
-    { key: 'employees', icon: 'fa-users-gear', number: 240, suffix: '', label: 'Employees' },
-    { key: 'surgeons', icon: 'fa-user-doctor', number: 300, suffix: '+', label: 'Surgeons supported' },
-    { key: 'hospitals', icon: 'fa-hospital', number: 170, suffix: '+', label: 'Partner hospitals' },
+    { key: 'employees', icon: 'fa-users-gear', number: 25, suffix: '', label: 'Employees' },
+    { key: 'surgeons', icon: 'fa-user-doctor', number: 100, suffix: '+', label: 'Surgeons supported' },
+    { key: 'hospitals', icon: 'fa-hospital', number: 75, suffix: '+', label: 'Partner hospitals' },
     { key: 'operations', icon: 'fa-heart-pulse', number: 80, suffix: '+', label: 'Theatre cases supported daily' },
     { key: 'partners', icon: 'fa-handshake', number: 10, suffix: '+', label: 'Manufacturing partners' },
     { key: 'events', icon: 'fa-calendar-days', number: 20, suffix: '+', label: 'Education events per year' }
@@ -191,6 +191,36 @@ export const homeUkJourney = {
       date: 'Oct 2025',
       title: 'NHS Scotland framework',
       description: 'Approved supplier on the NHS Scotland Orthopaedic Trauma & Extremity framework.'
+    }
+  ]
+}
+
+export const homeAccreditations = {
+  eyebrow: 'Trust and compliance',
+  title: 'Accreditations and approvals',
+  subtitle:
+    'Committed to the highest standards of regulatory compliance and quality assurance in medical device distribution.',
+  items: [
+    {
+      id: 'mhra',
+      title: 'MHRA registered',
+      description:
+        'Registered as an MHRA distributor and UK Responsible Person (UKRP) for medical devices.',
+      icon: 'fa-shield-halved'
+    },
+    {
+      id: 'nhs-scotland',
+      title: 'NHS Scotland approved',
+      description:
+        'Approved supplier on the NHS Scotland Orthopaedic Trauma & Extremity framework.',
+      icon: 'fa-hospital'
+    },
+    {
+      id: 'ukrp',
+      title: 'UK Responsible Person',
+      description:
+        'Full UKRP services ensuring post-Brexit regulatory compliance for our manufacturing partners.',
+      icon: 'fa-certificate'
     }
   ]
 }
