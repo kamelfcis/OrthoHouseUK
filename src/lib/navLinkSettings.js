@@ -1,4 +1,5 @@
 import { nav } from '../content/site'
+import { getBranchDataSnapshot } from './branchDataCache'
 
 /** @typedef {'partners'|'blog'} NavToggleKey */
 /** @typedef {'home_specialties'|'home_featured_products'|'home_resources'|'home_stats'} HomeSectionKey */
@@ -136,23 +137,39 @@ const rowsToHomeSectionVisibility = (rows) => {
   return visibility
 }
 
-const fetchBranchSettingsRows = async (branchCode) => {
+export const getHomeSectionVisibilityFromRows = (rows) => {
+  if (!rows?.length) return { ...DEFAULT_HOME_SECTION_VISIBILITY }
+  return rowsToHomeSectionVisibility(rows)
+}
+
+export const getNavVisibilityFromRows = (rows) => {
+  if (!rows?.length) return { ...DEFAULT_NAV_VISIBILITY }
+  return rowsToNavVisibility(rows)
+}
+
+const fetchBranchSettingsRows = async (branchCode, branchId = null) => {
   const { supabase } = await import('./supabase')
 
-  const { data: branch, error: branchError } = await supabase
-    .from('branches')
-    .select('branch_id')
-    .eq('branch_code', branchCode)
-    .eq('is_active', true)
-    .maybeSingle()
+  let resolvedBranchId = branchId
 
-  if (branchError) throw branchError
-  if (!branch) return []
+  if (!resolvedBranchId) {
+    const { data: branch, error: branchError } = await supabase
+      .from('branches')
+      .select('branch_id')
+      .eq('branch_code', branchCode)
+      .eq('is_active', true)
+      .maybeSingle()
+
+    if (branchError) throw branchError
+    if (!branch) return []
+
+    resolvedBranchId = branch.branch_id
+  }
 
   const { data, error } = await supabase
     .from('nav_link_settings')
     .select('nav_key, is_visible')
-    .eq('branch_id', branch.branch_id)
+    .eq('branch_id', resolvedBranchId)
 
   if (error) {
     if (error.code === '42P01' || error.code === 'PGRST205') {
@@ -164,9 +181,16 @@ const fetchBranchSettingsRows = async (branchCode) => {
   return data || []
 }
 
-export const fetchNavVisibility = async (branchCode = 'UK') => {
+export const fetchNavVisibility = async (branchCode = 'UK', branchId = null) => {
   try {
-    const rows = await fetchBranchSettingsRows(branchCode)
+    if (!branchId) {
+      const { data } = getBranchDataSnapshot(branchCode)
+      if (data?.navLinkSettings) {
+        return getNavVisibilityFromRows(data.navLinkSettings)
+      }
+    }
+
+    const rows = await fetchBranchSettingsRows(branchCode, branchId)
     if (!rows.length) return { ...DEFAULT_NAV_VISIBILITY }
     return rowsToNavVisibility(rows)
   } catch {
@@ -174,9 +198,16 @@ export const fetchNavVisibility = async (branchCode = 'UK') => {
   }
 }
 
-export const fetchHomeSectionVisibility = async (branchCode = 'UK') => {
+export const fetchHomeSectionVisibility = async (branchCode = 'UK', branchId = null) => {
   try {
-    const rows = await fetchBranchSettingsRows(branchCode)
+    if (!branchId) {
+      const { data } = getBranchDataSnapshot(branchCode)
+      if (data?.navLinkSettings) {
+        return getHomeSectionVisibilityFromRows(data.navLinkSettings)
+      }
+    }
+
+    const rows = await fetchBranchSettingsRows(branchCode, branchId)
     if (!rows.length) return { ...DEFAULT_HOME_SECTION_VISIBILITY }
     return rowsToHomeSectionVisibility(rows)
   } catch {

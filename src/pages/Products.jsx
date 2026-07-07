@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { getBranchDataSnapshot } from '../lib/branchDataCache'
+import { toPublicStorageUrl } from '../lib/storageUrl'
 import ProductCard from '../components/common/ProductCard'
 import EmptyState from '../components/common/EmptyState'
 import SEO from '../components/SEO/SEO'
@@ -80,6 +82,39 @@ const resolveCategoryFromParam = (param, categories) => {
   return match?.category_id ?? null
 }
 
+const buildProductImageMap = (rows) => {
+  const map = {}
+  rows?.forEach((img) => {
+    if (!map[img.product_id]) {
+      map[img.product_id] = toPublicStorageUrl('product-images', img.image_url)
+    }
+  })
+  return map
+}
+
+const transformBranchProducts = (branchProducts, productImagesMap) =>
+  (branchProducts || [])
+    .map((bp) => {
+      const product = bp.products
+      if (!product) return null
+
+      const productImage =
+        productImagesMap[product.product_id] ||
+        `/assets/images/product-${(product.product_id % 6) + 1}.jpg`
+
+      return {
+        id: product.product_id,
+        name: product.product_name,
+        code: product.product_code,
+        description: product.description || product.local_description || '',
+        category: product.product_categories?.category_name || '',
+        categoryId: product.category_id,
+        partner: product.partners?.partner_name || '',
+        image: productImage
+      }
+    })
+    .filter(Boolean)
+
 const Products = () => {
   const [searchParams] = useSearchParams()
   const categoryParam = searchParams.get('category')
@@ -125,92 +160,76 @@ const Products = () => {
   const fetchData = async () => {
     try {
       setLoading(true)
-      
-      // Fetch UK branch
-      const { data: branch, error: branchError } = await supabase
-        .from('branches')
-        .select('*')
-        .eq('branch_code', 'UK')
-        .eq('is_active', true)
-        .single()
 
-      if (branchError) throw branchError
-      if (!branch) throw new Error('UK branch not found')
-      
-      setUkBranch(branch)
+      const snapshot = getBranchDataSnapshot('UK')
+      const cached = snapshot.data
 
-      // Fetch categories
-      const { data: categoriesData, error: categoriesError } = await supabase
-        .from('product_categories')
-        .select('*')
-        .eq('is_active', true)
-        .order('category_name')
-
-      if (categoriesError) throw categoriesError
-      setCategories(categoriesData || [])
-
-      // Fetch products for UK branch
-      const { data: branchProducts, error: productsError } = await supabase
-        .from('branch_products')
-        .select(`
-          *,
-          products (
-            *,
-            product_categories (*),
-            partners (*)
-          )
-        `)
-        .eq('branch_id', branch.branch_id)
-        .eq('is_available', true)
-        .eq('is_public', true)
-
-      if (productsError) throw productsError
-
-      // Fetch product images for UK branch
-      const productIds = (branchProducts || [])
-        .map(bp => bp.products?.product_id)
-        .filter(id => id !== undefined)
-
-      const productImagesMap = {}
-      if (productIds.length > 0) {
-        const { data: productImages, error: imgError } = await supabase
-          .from('product_images')
+      let branch = cached?.branch
+      if (!branch) {
+        const { data, error: branchError } = await supabase
+          .from('branches')
           .select('*')
-          .eq('branch_id', branch.branch_id)
-          .in('product_id', productIds)
-          .order('is_primary', { ascending: false })
-          .order('image_order', { ascending: true })
+          .eq('branch_code', 'UK')
+          .eq('is_active', true)
+          .single()
 
-        if (!imgError && productImages) {
-          productImages.forEach(img => {
-            if (!productImagesMap[img.product_id]) {
-              const imageUrl = getProductImageUrl(img.image_url)
-              productImagesMap[img.product_id] = imageUrl
-            }
-          })
-        }
+        if (branchError) throw branchError
+        if (!data) throw new Error('UK branch not found')
+        branch = data
       }
 
-      // Transform products data
-      const productsList = (branchProducts || []).map(bp => {
-        const product = bp.products
-        if (!product) return null
+      setUkBranch(branch)
 
-        // Get product image
-        let productImage = productImagesMap[product.product_id] || 
-          `/assets/images/product-${product.product_id % 6 + 1}.jpg`
+      const useCachedProducts = Array.isArray(cached?.products)
+      const useCachedImages = cached?.productImages != null
 
-        return {
-          id: product.product_id,
-          name: product.product_name,
-          code: product.product_code,
-          description: product.description || product.local_description || '',
-          category: product.product_categories?.category_name || '',
-          categoryId: product.category_id,
-          partner: product.partners?.partner_name || '',
-          image: productImage
-        }
-      }).filter(p => p !== null)
+      const [categoriesResult, productsResult, imagesResult] = await Promise.all([
+        supabase
+          .from('product_categories')
+          .select('*')
+          .eq('is_active', true)
+          .order('category_name'),
+
+        useCachedProducts
+          ? Promise.resolve({ data: cached.products, error: null })
+          : supabase
+              .from('branch_products')
+              .select(`
+                *,
+                products (
+                  *,
+                  product_categories (*),
+                  partners (*)
+                )
+              `)
+              .eq('branch_id', branch.branch_id)
+              .eq('is_available', true)
+              .eq('is_public', true),
+
+        useCachedImages
+          ? Promise.resolve({ data: null, error: null })
+          : supabase
+              .from('product_images')
+              .select('*')
+              .eq('branch_id', branch.branch_id)
+              .order('is_primary', { ascending: false })
+              .order('image_order', { ascending: true })
+      ])
+
+      if (categoriesResult.error) throw categoriesResult.error
+      if (productsResult.error) throw productsResult.error
+      if (imagesResult.error) throw imagesResult.error
+
+      setCategories(categoriesResult.data || [])
+
+      const productImagesMap = useCachedImages
+        ? cached.productImages
+        : buildProductImageMap(imagesResult.data)
+
+      const productsList = transformBranchProducts(
+        productsResult.data,
+        productImagesMap
+      )
 
       setProducts(productsList)
     } catch (error) {
@@ -218,13 +237,6 @@ const Products = () => {
     } finally {
       setLoading(false)
     }
-  }
-
-  const getProductImageUrl = (imagePath) => {
-    if (!imagePath) return null
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ljfkmtuxqaznnmmxeydf.supabase.co'
-    const projectRef = supabaseUrl.replace('https://', '').replace('.supabase.co', '')
-    return `https://${projectRef}.supabase.co/storage/v1/object/public/product-images/${imagePath}`
   }
 
   const handleCategoryClick = (categoryId) => {

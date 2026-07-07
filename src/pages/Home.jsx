@@ -1,6 +1,6 @@
-import { useEffect, useState, Suspense, lazy } from 'react'
+import { useEffect, useMemo, Suspense, lazy } from 'react'
 import useBranchData from '../hooks/useBranchData'
-import { fetchHomeSectionVisibility } from '../lib/navLinkSettings'
+import { getHomeSectionVisibilityFromRows } from '../lib/navLinkSettings'
 import Hero from '../components/Home/Hero'
 
 import SEO from '../components/SEO/SEO'
@@ -20,36 +20,21 @@ const HomeResources = lazy(() => import('../components/Home/HomeResources'))
 
 const Home = () => {
   const { branchData } = useBranchData('UK')
-  const [showSpecialties, setShowSpecialties] = useState(true)
-  const [showFeaturedProducts, setShowFeaturedProducts] = useState(true)
-  const [showResources, setShowResources] = useState(true)
-  const [showStats, setShowStats] = useState(false)
 
-  useEffect(() => {
-    let cancelled = false
-
-    fetchHomeSectionVisibility('UK')
-      .then((visibility) => {
-        if (!cancelled) {
-          setShowSpecialties(Boolean(visibility.home_specialties))
-          setShowFeaturedProducts(Boolean(visibility.home_featured_products))
-          setShowResources(Boolean(visibility.home_resources))
-          setShowStats(Boolean(visibility.home_stats))
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setShowSpecialties(true)
-          setShowFeaturedProducts(true)
-          setShowResources(true)
-          setShowStats(false)
-        }
-      })
-
-    return () => {
-      cancelled = true
+  const {
+    showSpecialties,
+    showFeaturedProducts,
+    showResources,
+    showStats
+  } = useMemo(() => {
+    const visibility = getHomeSectionVisibilityFromRows(branchData?.navLinkSettings)
+    return {
+      showSpecialties: Boolean(visibility.home_specialties),
+      showFeaturedProducts: Boolean(visibility.home_featured_products),
+      showResources: Boolean(visibility.home_resources),
+      showStats: Boolean(visibility.home_stats)
     }
-  }, [])
+  }, [branchData?.navLinkSettings])
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })

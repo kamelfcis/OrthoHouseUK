@@ -1,3 +1,5 @@
+import { toPublicStorageUrl } from './storageUrl'
+
 const CACHE_TTL_MS = 5 * 60 * 1000
 const STALE_TTL_MS = 30 * 60 * 1000
 
@@ -53,6 +55,16 @@ const loadSupabase = async () => {
   return supabase
 }
 
+const buildProductImageMap = (rows) => {
+  const map = {}
+  rows?.forEach((img) => {
+    if (!map[img.product_id]) {
+      map[img.product_id] = toPublicStorageUrl('product-images', img.image_url)
+    }
+  })
+  return map
+}
+
 const fetchBranchDataFromApi = async (branchCode) => {
   const supabase = await loadSupabase()
 
@@ -72,7 +84,9 @@ const fetchBranchDataFromApi = async (branchCode) => {
     statsResult,
     productsResult,
     partnersResult,
-    blogsResult
+    blogsResult,
+    navSettingsResult,
+    productImagesResult
   ] = await Promise.all([
     supabase
       .from('branch_page_content')
@@ -113,7 +127,19 @@ const fetchBranchDataFromApi = async (branchCode) => {
       .eq('status', 'published')
       .eq('is_public', true)
       .order('published_at', { ascending: false })
-      .limit(6)
+      .limit(6),
+
+    supabase
+      .from('nav_link_settings')
+      .select('nav_key, is_visible')
+      .eq('branch_id', branch.branch_id),
+
+    supabase
+      .from('product_images')
+      .select('product_id, image_url, is_primary, image_order')
+      .eq('branch_id', branch.branch_id)
+      .order('is_primary', { ascending: false })
+      .order('image_order', { ascending: true })
   ])
 
   if (contentResult.error) throw contentResult.error
@@ -122,6 +148,17 @@ const fetchBranchDataFromApi = async (branchCode) => {
   if (productsResult.error) throw productsResult.error
   if (partnersResult.error) throw partnersResult.error
   if (blogsResult.error) throw blogsResult.error
+
+  if (navSettingsResult.error) {
+    if (
+      navSettingsResult.error.code !== '42P01' &&
+      navSettingsResult.error.code !== 'PGRST205'
+    ) {
+      throw navSettingsResult.error
+    }
+  }
+
+  if (productImagesResult.error) throw productImagesResult.error
 
   const contentBySection = {}
   contentResult.data?.forEach((content) => {
@@ -145,6 +182,8 @@ const fetchBranchDataFromApi = async (branchCode) => {
   })
 
   const blogs = (blogsResult.data || []).slice(0, 6)
+  const navLinkSettings = navSettingsResult.error ? [] : navSettingsResult.data || []
+  const productImages = buildProductImageMap(productImagesResult.data)
 
   return {
     branch,
@@ -153,7 +192,9 @@ const fetchBranchDataFromApi = async (branchCode) => {
     statistics: statsByType,
     products: productsResult.data || [],
     partners: partnersResult.data || [],
-    blogs
+    blogs,
+    navLinkSettings,
+    productImages
   }
 }
 

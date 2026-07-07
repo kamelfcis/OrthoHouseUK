@@ -9,7 +9,7 @@ const DEFAULT_NAV_VISIBILITY = { partners: false, blog: false }
 
 const LogoMark = ({ width = 168, height = 96, imgClassName = 'logo' }) => (
   <img
-    src={brandLogos.navSvg}
+    src={brandLogos.nav}
     alt={nav.logoAlt}
     className={imgClassName}
     width={width}

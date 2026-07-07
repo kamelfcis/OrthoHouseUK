@@ -1,19 +1,33 @@
-/** Session cache for Pexels / Unsplash API payloads — speeds repeat visits. */
-const CACHE_TTL_MS = 30 * 60 * 1000
+/** Session + localStorage cache for Pexels / Unsplash API payloads — speeds repeat visits. */
+const SESSION_TTL_MS = 30 * 60 * 1000
+const LOCAL_TTL_MS = 7 * 24 * 60 * 60 * 1000
 
 const memoryCache = new Map()
 
 export const readMediaCache = (key) => {
   const memory = memoryCache.get(key)
-  if (memory && Date.now() - memory.timestamp <= CACHE_TTL_MS) {
+  if (memory && Date.now() - memory.timestamp <= SESSION_TTL_MS) {
     return memory.data
   }
 
   try {
     const raw = sessionStorage.getItem(key)
+    if (raw) {
+      const { data, timestamp } = JSON.parse(raw)
+      if (data && Date.now() - timestamp <= SESSION_TTL_MS) {
+        memoryCache.set(key, { data, timestamp })
+        return data
+      }
+    }
+  } catch {
+    // sessionStorage may be unavailable
+  }
+
+  try {
+    const raw = localStorage.getItem(key)
     if (!raw) return null
     const { data, timestamp } = JSON.parse(raw)
-    if (!data || Date.now() - timestamp > CACHE_TTL_MS) return null
+    if (!data || Date.now() - timestamp > LOCAL_TTL_MS) return null
     memoryCache.set(key, { data, timestamp })
     return data
   } catch {
@@ -28,5 +42,10 @@ export const writeMediaCache = (key, data) => {
     sessionStorage.setItem(key, JSON.stringify(entry))
   } catch {
     // sessionStorage may be unavailable or full
+  }
+  try {
+    localStorage.setItem(key, JSON.stringify(entry))
+  } catch {
+    // localStorage may be unavailable or full
   }
 }

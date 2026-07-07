@@ -153,7 +153,7 @@ export const homeEventImages = {
 // —— Brand logos —————————————————————————————————————————————————————————————
 
 export const brandLogos = {
-  nav: '/assets/brand/logo-svg.svg',
+  nav: '/assets/brand/logo-svg-png.png',
   navSvg: '/assets/brand/logo-svg.svg',
   footer: '/assets/brand/logo-svg.svg',
   primary: '/assets/brand/logo-primary.png'

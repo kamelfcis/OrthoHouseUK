@@ -197,12 +197,16 @@
   animation: heroContentIn 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+.hero-content-inner.is-visible .hero-logo-wrap {
+  animation-delay: 0s;
+}
+
 .hero-content-inner.is-visible .hero-title > .hero-animate-item:nth-child(1) {
-  animation-delay: 0.08s;
+  animation-delay: 0.14s;
 }
 
 .hero-content-inner.is-visible .hero-title > .hero-animate-item:nth-child(2) {
-  animation-delay: 0.18s;
+  animation-delay: 0.26s;
 }
 
 @keyframes heroContentIn {
@@ -213,6 +217,59 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Brand mark — entrance staggered before title lines */
+.hero-logo-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--ds-space-5);
+}
+
+.hero-logo {
+  width: clamp(108px, 20vw, 188px);
+  height: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 6px 20px rgba(0, 78, 128, 0.42));
+}
+
+.hero-logo-wrap::after {
+  content: '';
+  position: absolute;
+  inset: -28% -18%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(155, 226, 255, 0.32) 0%,
+    rgba(0, 118, 182, 0.1) 52%,
+    transparent 72%
+  );
+  filter: blur(10px);
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.55;
+  animation: heroLogoGlow 6.2s ease-in-out infinite alternate;
+}
+
+@keyframes heroLogoGlow {
+  0%   { opacity: 0.42; transform: scale(0.94); }
+  100% { opacity: 0.72; transform: scale(1.06); }
+}
+
+.hero-content-inner.is-visible .hero-logo-wrap {
+  animation: heroLogoEnter 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes heroLogoEnter {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -326,6 +383,16 @@
   .hero-title::before {
     animation: none;
   }
+
+  .hero-logo-wrap::after {
+    animation: none;
+    opacity: 0.55;
+    transform: none;
+  }
+
+  .hero-content-inner.is-visible .hero-logo-wrap {
+    animation: none !important;
+  }
 }
 
 /* =============================================================================
@@ -347,6 +414,14 @@
 
   .hero-content {
     padding: 0 var(--ds-space-3);
+  }
+
+  .hero-logo {
+    width: clamp(96px, 26vw, 148px);
+  }
+
+  .hero-logo-wrap {
+    margin-bottom: var(--ds-space-4);
   }
 }
 

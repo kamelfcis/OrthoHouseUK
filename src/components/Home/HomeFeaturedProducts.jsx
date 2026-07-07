@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, A11y } from 'swiper/modules'
@@ -138,69 +138,13 @@ const FeaturedProductsSkeleton = () => (
 )
 
 const HomeFeaturedProducts = ({ branchData }) => {
-  const [imageMap, setImageMap] = useState({})
-  const [loading, setLoading] = useState(true)
   const prevRef = useRef(null)
   const nextRef = useRef(null)
   const paginationRef = useRef(null)
   const swiperRef = useRef(null)
 
-  const branchId = branchData?.branch?.branch_id
-
-  useEffect(() => {
-    let isMounted = true
-
-    const loadImages = async () => {
-      if (!branchId) {
-        if (isMounted) {
-          setImageMap({})
-          setLoading(false)
-        }
-        return
-      }
-
-      setLoading(true)
-
-      try {
-        const { supabase } = await import('../../lib/supabase')
-        const productIds = (branchData.products || [])
-          .map((bp) => bp.products?.product_id)
-          .filter(Boolean)
-
-        if (productIds.length === 0) {
-          if (isMounted) setImageMap({})
-          return
-        }
-
-        const { data, error } = await supabase
-          .from('product_images')
-          .select('product_id, image_url, is_primary, image_order')
-          .eq('branch_id', branchId)
-          .in('product_id', productIds)
-          .order('is_primary', { ascending: false })
-          .order('image_order', { ascending: true })
-
-        if (error) throw error
-
-        const map = {}
-        data?.forEach((img) => {
-          if (!map[img.product_id]) {
-            map[img.product_id] = toPublicStorageUrl('product-images', img.image_url)
-          }
-        })
-
-        if (isMounted) setImageMap(map)
-      } catch (err) {
-        console.error('Failed to load featured product images:', err)
-        if (isMounted) setImageMap({})
-      } finally {
-        if (isMounted) setLoading(false)
-      }
-    }
-
-    loadImages()
-    return () => { isMounted = false }
-  }, [branchId, branchData?.products])
+  const imageMap = branchData?.productImages || {}
+  const loading = !branchData
 
   const featuredProducts = useMemo(
     () => buildFeaturedProducts(branchData, imageMap),

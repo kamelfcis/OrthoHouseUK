@@ -305,15 +305,18 @@ export async function fetchHeroSlides() {
   }
 
   try {
-    const candidates = []
+    const photoBatches = await Promise.all(
+      SEARCH_QUERIES.map(({ query }) => searchPhotos(query, PHOTOS_PER_QUERY))
+    )
 
-    for (const { query, eyebrow } of SEARCH_QUERIES) {
-      const photos = await searchPhotos(query, PHOTOS_PER_QUERY)
+    const candidates = []
+    photoBatches.forEach((photos, index) => {
+      const { eyebrow } = SEARCH_QUERIES[index]
       const batch = photos
         .map((photo) => mapPhotoToSlide(photo, eyebrow))
         .filter((slide) => claimPhoto(slide))
       candidates.push(...batch)
-    }
+    })
 
     const uniqueSlides = dedupeSlidesByPhotoId(candidates)
     const slides = fillSlidesToTarget(uniqueSlides)

@@ -17,6 +17,19 @@
   scroll-margin-top: var(--ds-header-height, 76px);
 }
 
+/* Defer layout/paint for below-fold home sections */
+.home-page .hero-partners-section,
+.home-page .home-specialties,
+.home-page .home-featured-products,
+.home-page .home-how-it-works,
+.home-page .stats-section,
+.home-page .home-testimonials,
+.home-page .home-accreditations,
+.home-page .home-resources {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 400px;
+}
+
 .loading-container {
   display: flex;
   flex-direction: column;

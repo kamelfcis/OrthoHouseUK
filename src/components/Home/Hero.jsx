@@ -5,6 +5,8 @@ import { fetchHeroSlides } from '../../lib/unsplash'
 import { fetchHeroVideos, isPexelsConfigured } from '../../lib/pexels'
 import { runWhenIdle } from '../../lib/idle'
 import { homeHero } from '../../content/home'
+import { nav } from '../../content/site'
+import { brandLogos } from '../../data/localAssets'
 import HeroSlider from './HeroSlider'
 import './Hero.css'
 
@@ -84,6 +86,17 @@ const Hero = ({ branchData }) => {
             className={`hero-content-inner${motionInView ? ' is-visible' : ''}`}
             ref={motionRef}
           >
+            <div className="hero-logo-wrap hero-animate-item">
+              <img
+                src={brandLogos.nav}
+                alt={nav.logoAlt}
+                className="hero-logo"
+                width={200}
+                height={114}
+                decoding="async"
+                fetchPriority="high"
+              />
+            </div>
             <h1 className="hero-title hero-animate-item" role="presentation">
               {title.split('\n').map((line, index, arr) => (
                 <span key={`hero-line-${index}`} className="hero-animate-item">

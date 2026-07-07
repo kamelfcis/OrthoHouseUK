@@ -7,8 +7,6 @@ import { pageSeo } from '../content/seo'
 import { aboutPage } from '../content/about'
 import AboutUkJourney from '../components/About/AboutUkJourney'
 import CeoVisionMission from '../components/Home/CeoVisionMission'
-import HomeAboutSection from '../components/Home/About'
-import useBranchData from '../hooks/useBranchData'
 import './About.css'
 
 const SectionFallback = ({ height = 260 }) => (
@@ -18,8 +16,6 @@ const SectionFallback = ({ height = 260 }) => (
 )
 
 const About = () => {
-  const { branchData } = useBranchData('UK')
-
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
@@ -121,11 +117,6 @@ const About = () => {
       <Suspense fallback={<SectionFallback />}>
         <CeoVisionMission />
       </Suspense>
-
-      {/* Hidden About Section from Home (for SEO/content purposes) */}
-      <div style={{ display: 'none' }}>
-        <HomeAboutSection branchData={branchData} />
-      </div>
 
       {/* Main Content */}
       <div className="about-page-content ds-section">
