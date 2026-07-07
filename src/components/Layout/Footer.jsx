@@ -2,12 +2,21 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { footer, siteName } from '../../content/site'
 import { fetchVisibleSocialLinks } from '../../lib/socialLinks'
+import { fetchNavVisibility, filterFooterResourceLinks } from '../../lib/navLinkSettings'
 import './Footer.css'
+
+const DEFAULT_NAV_VISIBILITY = { partners: false, blog: false }
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
   const { about, columns, contact, copyright } = footer
   const [social, setSocial] = useState(footer.social)
+  const [navVisibility, setNavVisibility] = useState(DEFAULT_NAV_VISIBILITY)
+
+  const resourceLinks = filterFooterResourceLinks(
+    columns.resources.links,
+    navVisibility
+  )
 
   useEffect(() => {
     let cancelled = false
@@ -20,6 +29,16 @@ const Footer = () => {
       })
       .catch((error) => {
         console.error('Footer: failed to load social links', error)
+      })
+
+    fetchNavVisibility('UK')
+      .then((visibility) => {
+        if (!cancelled) {
+          setNavVisibility(visibility)
+        }
+      })
+      .catch((error) => {
+        console.error('Footer: failed to load nav visibility', error)
       })
 
     return () => {
@@ -77,7 +96,7 @@ const Footer = () => {
                 <div className="footer-widget">
                   <h3>{columns.resources.title}</h3>
                   <ul>
-                    {columns.resources.links.map((link) => (
+                    {resourceLinks.map((link) => (
                       <li key={link.path}>
                         <Link to={link.path}>{link.name}</Link>
                       </li>

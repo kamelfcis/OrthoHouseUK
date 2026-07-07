@@ -1,35 +1,28 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { nav } from '../../content/site'
-import { brandLogos, ukFlagIcon } from '../../data/localAssets'
+import { brandLogos } from '../../data/localAssets'
+import { fetchNavVisibility, filterNavItems } from '../../lib/navLinkSettings'
 import './Navbar.css'
 
+const DEFAULT_NAV_VISIBILITY = { partners: false, blog: false }
+
 const LogoMark = ({ width = 168, height = 96, imgClassName = 'logo' }) => (
-  <span className="site-navbar__logo-mark">
-    <img
-      src={brandLogos.nav}
-      alt={nav.logoAlt}
-      className={imgClassName}
-      width={width}
-      height={height}
-      decoding="async"
-    />
-    <img
-      className="site-navbar__uk-flag"
-      src={ukFlagIcon}
-      alt=""
-      width={60}
-      height={72}
-      decoding="async"
-      aria-hidden="true"
-    />
-  </span>
+  <img
+    src={brandLogos.nav}
+    alt={nav.logoAlt}
+    className={imgClassName}
+    width={width}
+    height={height}
+    decoding="async"
+  />
 )
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [navVisibility, setNavVisibility] = useState(DEFAULT_NAV_VISIBILITY)
   const location = useLocation()
 
   useEffect(() => {
@@ -57,6 +50,24 @@ const Navbar = () => {
     setIsMenuOpen(false)
   }, [location])
 
+  useEffect(() => {
+    let cancelled = false
+
+    fetchNavVisibility('UK')
+      .then((visibility) => {
+        if (!cancelled) {
+          setNavVisibility(visibility)
+        }
+      })
+      .catch((error) => {
+        console.error('Navbar: failed to load nav visibility', error)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   const handleSearch = (e) => {
     e.preventDefault()
     if (searchQuery.trim()) {
@@ -65,6 +76,8 @@ const Navbar = () => {
       setSearchQuery('')
     }
   }
+
+  const visibleNavItems = filterNavItems(nav.items, navVisibility)
 
   const isActive = (path) => {
     if (path === '/') return location.pathname === '/'
@@ -101,7 +114,7 @@ const Navbar = () => {
             </div>
 
             <ul className="navbar-menu site-navbar__list">
-              {nav.items.map((item) => (
+              {visibleNavItems.map((item) => (
                 <li
                   key={item.path}
                   className={isActive(item.path) ? 'active' : ''}

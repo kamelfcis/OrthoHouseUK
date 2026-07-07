@@ -37,6 +37,7 @@ const AdminCategories = lazy(() => import('./pages/admin/Categories'))
 const AdminUsers = lazy(() => import('./pages/admin/Users'))
 const AdminBranches = lazy(() => import('./pages/admin/Branches'))
 const AdminSocialMedia = lazy(() => import('./pages/admin/SocialMedia'))
+const AdminNavigation = lazy(() => import('./pages/admin/Navigation'))
 
 function App() {
   const [showCookieConsent, setShowCookieConsent] = useState(false)
@@ -157,6 +158,11 @@ function App() {
         <Route path="social-media" element={
           <Suspense fallback={<RouteLoader />}>
             <AdminSocialMedia />
+          </Suspense>
+        } />
+        <Route path="navigation" element={
+          <Suspense fallback={<RouteLoader />}>
+            <AdminNavigation />
           </Suspense>
         } />
         <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />

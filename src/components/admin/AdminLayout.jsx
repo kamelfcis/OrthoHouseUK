@@ -88,6 +88,12 @@ const AdminLayout = () => {
       show: true,
     },
     {
+      icon: 'fas fa-bars',
+      label: 'Navigation',
+      path: '/admin/navigation',
+      show: true,
+    },
+    {
       icon: 'fas fa-envelope',
       label: 'Messages',
       path: '/admin/messages',

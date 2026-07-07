@@ -5,9 +5,9 @@ export const nav = {
   items: [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
-    { name: 'Our Partners', path: '/partners' },
+    { name: 'Our Partners', path: '/partners', key: 'partners' },
     { name: 'Products', path: '/products' },
-    { name: 'Blog', path: '/blog' },
+    { name: 'Blog', path: '/blog', key: 'blog' },
     { name: 'Contact Us', path: '/contact' }
   ],
   cta: 'Speak with our team',
