@@ -1,5 +1,6 @@
-import { useEffect, Suspense, lazy } from 'react'
+import { useEffect, useState, Suspense, lazy } from 'react'
 import useBranchData from '../hooks/useBranchData'
+import { fetchHomeSectionVisibility } from '../lib/navLinkSettings'
 import Hero from '../components/Home/Hero'
 
 import SEO from '../components/SEO/SEO'
@@ -9,8 +10,6 @@ import { generateOrganizationSchema, generateWebsiteSchema, generateLocalBusines
 import './Home.css'
 
 const HeroPartnersCarousel = lazy(() => import('../components/Home/HeroPartnersCarousel'))
-const HomeValueProp = lazy(() => import('../components/Home/HomeValueProp'))
-const HomeCapabilities = lazy(() => import('../components/Home/HomeCapabilities'))
 const HomeFeaturedProducts = lazy(() => import('../components/Home/HomeFeaturedProducts'))
 const HomeWhyChooseUs = lazy(() => import('../components/Home/HomeWhyChooseUs'))
 const HomeSpecialties = lazy(() => import('../components/Home/HomeSpecialties'))
@@ -24,6 +23,30 @@ const HomeJoinCta = lazy(() => import('../components/Home/HomeJoinCta'))
 
 const Home = () => {
   const { branchData } = useBranchData('UK')
+  const [showSpecialties, setShowSpecialties] = useState(true)
+  const [showFeaturedProducts, setShowFeaturedProducts] = useState(true)
+
+  useEffect(() => {
+    let cancelled = false
+
+    fetchHomeSectionVisibility('UK')
+      .then((visibility) => {
+        if (!cancelled) {
+          setShowSpecialties(Boolean(visibility.home_specialties))
+          setShowFeaturedProducts(Boolean(visibility.home_featured_products))
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setShowSpecialties(true)
+          setShowFeaturedProducts(true)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -55,30 +78,24 @@ const Home = () => {
       {/* 1. Full-width hero */}
       <Hero branchData={branchData} />
 
-      {/* 2. Primary value proposition */}
-      <Suspense fallback={<SectionSkeleton minHeight={420} />}>
-        <HomeValueProp />
-      </Suspense>
-
       {/* Partner trust strip */}
       <Suspense fallback={<SectionSkeleton minHeight={120} />}>
         <HeroPartnersCarousel branchData={branchData} />
       </Suspense>
 
       {/* Service categories */}
-      <Suspense fallback={<SectionSkeleton minHeight={360} />}>
-        <HomeSpecialties />
-      </Suspense>
-
-      {/* 3. Featured services */}
-      <Suspense fallback={<SectionSkeleton minHeight={400} />}>
-        <HomeCapabilities />
-      </Suspense>
+      {showSpecialties && (
+        <Suspense fallback={<SectionSkeleton minHeight={360} />}>
+          <HomeSpecialties />
+        </Suspense>
+      )}
 
       {/* Featured products carousel */}
-      <Suspense fallback={<SectionSkeleton minHeight={420} blocks={3} />}>
-        <HomeFeaturedProducts branchData={branchData} />
-      </Suspense>
+      {showFeaturedProducts && (
+        <Suspense fallback={<SectionSkeleton minHeight={420} blocks={3} />}>
+          <HomeFeaturedProducts branchData={branchData} />
+        </Suspense>
+      )}
 
       {/* 4. Why choose us */}
       <Suspense fallback={<SectionSkeleton minHeight={400} />}>

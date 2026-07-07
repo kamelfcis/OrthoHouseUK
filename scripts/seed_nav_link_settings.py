@@ -29,6 +29,8 @@ UK_BRANCH_ID = 2
 DEFAULT_SETTINGS = [
     ("partners", False, 1),
     ("blog", False, 2),
+    ("home_specialties", True, 10),
+    ("home_featured_products", True, 20),
 ]
 
 

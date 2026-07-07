@@ -289,7 +289,11 @@ const Products = () => {
         keywords={pageSeo.products.keywords}
       />
       <div className="products-hero">
-        <div className="products-hero__media" role="presentation" />
+        <div className="products-hero__media" role="presentation">
+          <div className="products-hero__media-inner" aria-hidden="true" />
+        </div>
+        <div className="products-hero__spotlights" aria-hidden="true" />
+        <div className="products-hero__shine" aria-hidden="true" />
         <div className="products-hero__overlay" aria-hidden="true" />
         <div className="products-hero__container container">
           <motion.div

@@ -19,8 +19,13 @@ const HeroSlideMedia = memo(function HeroSlideMedia({
   index
 }) {
   const videoRef = useRef(null)
+  const [videoReady, setVideoReady] = useState(false)
   const resolvedSrc = useResponsiveVideoSrc(isVideo ? slide : null)
   const shouldAttachVideo = isVideo && (isActive || isNext)
+
+  useEffect(() => {
+    setVideoReady(false)
+  }, [resolvedSrc, isActive])
 
   useEffect(() => {
     const video = videoRef.current
@@ -41,46 +46,23 @@ const HeroSlideMedia = memo(function HeroSlideMedia({
   }, [isActive, isVideo, reduced, resolvedSrc, shouldAttachVideo, isNext])
 
   if (isVideo) {
-    const poster = slide.poster || slide.src
-
     return (
       <div className="hero-slide-media">
-        {shouldAttachVideo ? (
+        {shouldAttachVideo && resolvedSrc ? (
           <video
             ref={videoRef}
-            className="hero-slide-video"
+            className={`hero-slide-video${videoReady ? ' is-ready' : ''}`}
             src={resolvedSrc}
-            poster={poster}
             muted
             playsInline
             autoPlay={isActive && !reduced}
             loop
-            preload={isActive ? 'metadata' : 'none'}
+            preload={isActive ? 'auto' : 'none'}
+            onCanPlay={() => setVideoReady(true)}
             aria-hidden="true"
             tabIndex={-1}
           />
-        ) : (
-          <img
-            className="hero-slide-img hero-slide-img--poster"
-            src={poster}
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-            decoding="async"
-            draggable={false}
-          />
-        )}
-        {!isActive && shouldAttachVideo && poster && (
-          <img
-            className="hero-slide-img hero-slide-img--poster"
-            src={poster}
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-            decoding="async"
-            draggable={false}
-          />
-        )}
+        ) : null}
       </div>
     )
   }
@@ -114,7 +96,9 @@ const HeroSlider = ({ slides, videoSlides = [], onSlideChange }) => {
 
   const slideList = useMemo(() => {
     if (useVideoMode) return videoSlides
-    return slides?.length ? slides : FALLBACK_SLIDES
+    if (slides?.length) return slides
+    if (Array.isArray(slides) && slides.length === 0) return []
+    return FALLBACK_SLIDES
   }, [useVideoMode, videoSlides, slides])
 
   const slideCount = slideList.length
@@ -148,10 +132,6 @@ const HeroSlider = ({ slides, videoSlides = [], onSlideChange }) => {
 
   const goNext = useCallback(() => {
     goTo(activeIdxRef.current + 1)
-  }, [goTo])
-
-  const goPrev = useCallback(() => {
-    goTo(activeIdxRef.current - 1)
   }, [goTo])
 
   const autoplayDelay = isVideoCarousel ? VIDEO_AUTOPLAY_DELAY_MS : AUTOPLAY_DELAY_MS
@@ -223,52 +203,6 @@ const HeroSlider = ({ slides, videoSlides = [], onSlideChange }) => {
           )
         })}
       </div>
-
-      {slideCount > 1 && (
-        <div className="hero-slider-nav" aria-hidden="false">
-          <button
-            type="button"
-            className="hero-slider-nav-btn hero-slider-nav-btn--prev"
-            aria-label="Previous hero slide"
-            onClick={goPrev}
-          >
-            <i className="fas fa-chevron-left" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            className="hero-slider-nav-btn hero-slider-nav-btn--next"
-            aria-label="Next hero slide"
-            onClick={goNext}
-          >
-            <i className="fas fa-chevron-right" aria-hidden="true" />
-          </button>
-        </div>
-      )}
-
-      {slideCount > 1 && (
-        <div className="hero-slider-dots" role="tablist" aria-label="Choose a slide">
-          {slideList.map((slide, i) => (
-            <button
-              key={slide.id}
-              type="button"
-              role="tab"
-              className={`hero-dot${i === activeIdx ? ' is-active' : ''}`}
-              aria-selected={i === activeIdx}
-              aria-label={`Go to slide ${i + 1}: ${slide.eyebrow}`}
-              onClick={() => goTo(i)}
-            >
-              {i === activeIdx && !reduced && (
-                <span
-                  className="hero-dot-progress"
-                  aria-hidden="true"
-                  style={{ animationDuration: `${autoplayDelay}ms` }}
-                  key={`progress-${activeIdx}`}
-                />
-              )}
-            </button>
-          ))}
-        </div>
-      )}
 
       {activeSlide?.credit && (
         <a

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { ceoPortraitImage } from '../../data/localAssets'
 import { ceoVisionMission } from '../../content/about'
 import './CeoVisionMission.css'
 
@@ -14,9 +13,8 @@ const CeoVisionMission = () => {
     threshold: 0.15
   })
 
-  const { sectionEyebrow, tabs, content, ceoImageAlt } = ceoVisionMission
+  const { tabs, content } = ceoVisionMission
   const currentContent = content[activeTab]
-  const showPortrait = activeTab === 'ceo'
 
   return (
     <section
@@ -32,7 +30,6 @@ const CeoVisionMission = () => {
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <header className="ceo-vision-mission-header">
-            <span className="ceo-vision-mission-eyebrow">{sectionEyebrow}</span>
             <nav className="ceo-vision-mission-tabs" aria-label="Leadership content">
               {TAB_KEYS.map((key) => (
                 <button
@@ -49,7 +46,7 @@ const CeoVisionMission = () => {
             </nav>
           </header>
 
-          <div className={`ceo-vision-mission-body${showPortrait ? ' has-portrait' : ''}`}>
+          <div className="ceo-vision-mission-body">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -64,6 +61,9 @@ const CeoVisionMission = () => {
                   {currentContent.title}
                 </h2>
                 <p className="ceo-text">{currentContent.text}</p>
+                {currentContent.brandLine && (
+                  <footer className="ceo-brand-line">{currentContent.brandLine}</footer>
+                )}
                 {currentContent.author && (
                   <footer className="ceo-author">
                     <div className="ceo-author-name">{currentContent.author.name}</div>
@@ -71,30 +71,6 @@ const CeoVisionMission = () => {
                   </footer>
                 )}
               </motion.div>
-            </AnimatePresence>
-
-            <AnimatePresence>
-              {showPortrait && (
-                <motion.figure
-                  className="ceo-portrait"
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.25 }}
-                >
-                  <div className="ceo-portrait-frame">
-                    <img
-                      src={ceoPortraitImage.src}
-                      srcSet={ceoPortraitImage.srcSet}
-                      alt={ceoImageAlt}
-                      className="ceo-portrait-image"
-                      loading="lazy"
-                      width={ceoPortraitImage.width}
-                      height={ceoPortraitImage.height}
-                    />
-                  </div>
-                </motion.figure>
-              )}
             </AnimatePresence>
           </div>
         </motion.div>

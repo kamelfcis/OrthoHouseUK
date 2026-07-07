@@ -1,92 +1,13 @@
 export const homeHero = {
   ariaLabel: 'OrthoHouse UK — orthopaedic medical device distribution',
   titleDefault: 'OrthoHouse UK',
-  titleFallback: 'Orthopaedic solutions for UK surgeons and hospitals',
-  subtitleUk:
-    'A specialist distributor connecting established implant manufacturers with surgeons, NHS trusts, and private hospitals across the United Kingdom.',
-  subtitleDefault:
-    'Connecting established orthopaedic manufacturers with clinicians and hospitals. Trusted distribution, clinical support, and regulatory compliance.',
-  ctaPartners: 'View partner portfolio',
-  ctaContact: 'Speak with our team'
+  titleFallback: 'Orthopaedic solutions for UK surgeons and hospitals'
 }
 
 export const homePartners = {
   eyebrow: 'Manufacturing partners',
   title: 'Trusted by leading',
-  titleHighlight: 'orthopaedic brands',
-  subtitle:
-    'We represent selected manufacturers in trauma, arthroplasty, foot & ankle, and bone graft — bringing proven implant systems to UK theatres.'
-}
-
-export const homeValueProp = {
-  eyebrow: 'Who we are',
-  title: 'Your dedicated orthopaedic distribution partner',
-  lead:
-    'OrthoHouse UK helps surgeons and hospital procurement teams access high-quality implants with confidence. We combine regulatory expertise, responsive logistics, and specialist clinical support — so theatre teams can focus on patient care.',
-  points: [
-    {
-      title: 'MHRA-compliant distribution',
-      text: 'Registered UK distributor and UK Responsible Person (UKRP), supporting post-Brexit regulatory compliance for every product we supply.'
-    },
-    {
-      title: 'Surgeon-centred support',
-      text: 'Dedicated business units for trauma, arthroplasty, foot & ankle, and bone graft — each backed by product specialists who understand theatre workflows.'
-    },
-    {
-      title: 'NHS and private sector reach',
-      text: 'Approved on NHS Scotland frameworks and supplying hospitals across England, Wales, Scotland, and Northern Ireland.'
-    }
-  ],
-  cta: 'About OrthoHouse UK',
-  ctaLink: '/about',
-  imageQuery: 'orthopaedic surgeon knee joint consultation',
-  imageAlt: 'Orthopaedic specialist reviewing knee joint anatomy with a clinical team',
-  imageFallback:
-    'https://images.unsplash.com/photo-1748407407936-2aeffd8428dd?auto=format&fit=crop&w=960&q=80'
-}
-
-export const homeCapabilities = {
-  eyebrow: 'What we deliver',
-  title: 'Distribution capabilities built for UK healthcare',
-  subtitle:
-    'From regulatory registration to theatre-ready supply — a full-service model for surgeons, procurement teams, and manufacturing partners.',
-  linkLabel: 'Learn more',
-  items: [
-    {
-      id: 'distribution',
-      title: 'National implant distribution',
-      description:
-        'Reliable supply of trauma fixation, joint replacement, foot & ankle, and bone graft systems to NHS and private hospitals nationwide.',
-      imageQuery: 'orthopaedic implant components theatre',
-      videoQuery: 'orthopaedic hospital',
-      imageAlt: 'Orthopaedic implant components prepared for theatre supply',
-      imageFallback:
-        'https://images.unsplash.com/photo-1597764690523-15bea4c581c9?auto=format&fit=crop&w=800&q=80',
-      link: '/products'
-    },
-    {
-      id: 'regulatory',
-      title: 'Regulatory and UKRP services',
-      description:
-        'MHRA registration, UK Responsible Person representation, and post-market surveillance support for our manufacturing partners.',
-      imageQuery: 'orthopaedic knee examination clinic',
-      imageAlt: 'Clinician examining a knee injury in an orthopaedic outpatient setting',
-      imageFallback:
-        'https://images.unsplash.com/photo-1746842419697-03234f5ff03e?auto=format&fit=crop&w=800&q=80',
-      link: '/about'
-    },
-    {
-      id: 'clinical',
-      title: 'Clinical education and support',
-      description:
-        'Product training, surgical education events, and responsive case support — delivered by specialists who understand orthopaedic practice.',
-      imageQuery: 'knee replacement surgery preparation',
-      imageAlt: 'Pre-operative marking for knee replacement surgery in an orthopaedic theatre',
-      imageFallback:
-        'https://images.unsplash.com/photo-1746842421430-1b2f3e0950c5?auto=format&fit=crop&w=800&q=80',
-      link: '/services'
-    }
-  ]
+  titleHighlight: 'orthopaedic brands'
 }
 
 export const homeProducts = {

@@ -18,7 +18,7 @@
   justify-content: center;
   /* Top padding = fixed nav height + breathing room */
   padding-top: calc(var(--ds-header-height) + var(--ds-space-12));
-  padding-bottom: calc(var(--ds-space-16) + 36px); /* room for dots */
+  padding-bottom: var(--ds-space-16);
   color: var(--white);
   overflow: hidden;
   isolation: isolate;
@@ -73,10 +73,13 @@
   filter: saturate(105%);
 }
 
-.hero-slide-img--poster {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+.hero-slide-video {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.hero-slide-video.is-ready {
+  opacity: 1;
 }
 
 .hero-slider--video .hero-slide.is-active .hero-slide-media {
@@ -138,113 +141,6 @@
 }
 
 /* =============================================================================
-   SLIDER PAGINATION DOTS
-   ============================================================================= */
-
-.hero-slider-dots {
-  position: absolute;
-  bottom: clamp(16px, 3vh, 28px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.hero-dot {
-  position: relative;
-  width: 28px;
-  height: 4px;
-  padding: 0;
-  border: none;
-  border-radius: var(--ds-radius-pill);
-  background: rgba(255, 255, 255, 0.35);
-  cursor: pointer;
-  overflow: hidden;
-  transition:
-    width var(--ds-duration) var(--ds-ease-out),
-    background var(--ds-duration) var(--ds-ease-out);
-}
-
-.hero-dot.is-active {
-  width: 48px;
-  background: rgba(255, 255, 255, 0.28);
-}
-
-.hero-dot-progress {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 0;
-  border-radius: inherit;
-  background: rgba(255, 255, 255, 0.92);
-  animation: heroDotProgress linear forwards;
-}
-
-@keyframes heroDotProgress {
-  from { width: 0; }
-  to   { width: 100%; }
-}
-
-.hero-section:hover .hero-dot-progress,
-.hero-section:focus-within .hero-dot-progress {
-  animation-play-state: paused;
-}
-
-.hero-dot:hover:not(.is-active) {
-  background: rgba(255, 255, 255, 0.6);
-}
-
-/* =============================================================================
-   DESKTOP NAV ARROWS
-   ============================================================================= */
-
-.hero-slider-nav {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.hero-slider-nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 50%;
-  background: rgba(6, 40, 61, 0.45);
-  color: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(8px);
-  cursor: pointer;
-  transition:
-    background var(--ds-duration) var(--ds-ease-out),
-    border-color var(--ds-duration) var(--ds-ease-out),
-    transform var(--ds-duration) var(--ds-ease-out);
-}
-
-.hero-slider-nav-btn--prev { left: clamp(16px, 2.5vw, 32px); }
-.hero-slider-nav-btn--next { right: clamp(16px, 2.5vw, 32px); }
-
-.hero-slider-nav-btn:hover,
-.hero-slider-nav-btn:focus-visible {
-  background: rgba(0, 118, 182, 0.72);
-  border-color: rgba(255, 255, 255, 0.75);
-  transform: translateY(-50%) scale(1.05);
-}
-
-@media (max-width: 991px) {
-  .hero-slider-nav {
-    display: none;
-  }
-}
-
-/* =============================================================================
    UNSPLASH CREDIT
    ============================================================================= */
 
@@ -271,7 +167,7 @@
    CONTENT LAYER
    ============================================================================= */
 
-/* Let hero controls (arrows, dots) receive clicks outside the text block */
+/* Content layer sits above the hero background */
 .hero-section > .container {
   position: relative;
   z-index: 2;
@@ -311,14 +207,6 @@
 
 .hero-content-inner.is-visible .hero-title > .hero-animate-item:nth-child(2) {
   animation-delay: 0.28s;
-}
-
-.hero-content-inner.is-visible .hero-subtitle {
-  animation-delay: 0.38s;
-}
-
-.hero-content-inner.is-visible .hero-buttons {
-  animation-delay: 0.48s;
 }
 
 @keyframes heroContentIn {
@@ -409,119 +297,13 @@
   animation: heroHaloPulse 6.8s ease-in-out infinite alternate;
 }
 
-.hero-subtitle {
-  position: relative;
-  font-size: clamp(1rem, 1.8vw, 1.2rem);
-  line-height: var(--ds-leading-relaxed);
-  margin-bottom: var(--ds-space-10);
-  color: rgba(255, 255, 255, 0.92);
-  padding: 1.1rem 1.65rem;
-  max-width: 650px;
-  background: linear-gradient(135deg,
-    rgba(0, 118, 182, 0.22) 0%,
-    rgba(0, 150, 199, 0.14) 45%,
-    rgba(0, 150, 199, 0.07) 100%);
-  border-radius: 22px;
-  border: 1px solid rgba(255, 255, 255, 0.20);
-  box-shadow: 0 20px 45px rgba(0, 118, 182, 0.16);
-  backdrop-filter: blur(8px);
-  overflow: hidden;
-}
-
-.hero-subtitle::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  opacity: 0.55;
-  pointer-events: none;
-}
-
-/* =============================================================================
-   HERO BUTTONS
-   ============================================================================= */
-
-.hero-buttons {
-  display: flex;
-  gap: var(--ds-space-4);
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.hero-buttons .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.95rem 2.75rem;
-  border-radius: var(--ds-radius-pill);
-  font-weight: var(--ds-weight-semibold);
-  text-transform: uppercase;
-  letter-spacing: var(--ds-tracking-wide);
-  transition:
-    transform var(--ds-duration) var(--ds-ease-out),
-    box-shadow var(--ds-duration) var(--ds-ease-out),
-    background var(--ds-duration) var(--ds-ease-out);
-  border: 2px solid transparent;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  min-width: 200px;
-  color: #fff;
-  isolation: isolate;
-}
-
-/* Sheen on hover */
-.hero-buttons .btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: var(--ds-gradient-sheen);
-  transform: translateX(-120%);
-  transition: transform 0.55s var(--ds-ease-out);
-}
-
-.hero-buttons .btn:hover::before,
-.hero-buttons .btn:focus-visible::before {
-  transform: translateX(120%);
-}
-
-.hero-buttons .btn-main {
-  border: none;
-  background: linear-gradient(135deg, #0077b6 0%, #0096c7 50%, #55b8e6 100%);
-  box-shadow: var(--ds-shadow-brand);
-}
-
-.hero-buttons .btn-main:hover,
-.hero-buttons .btn-main:focus-visible {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 48px rgba(0, 150, 199, 0.5);
-  background: linear-gradient(135deg, #0096c7 0%, #33bde9 60%, #9be3ff 100%);
-}
-
-.hero-buttons .btn-outline {
-  background: rgba(255, 255, 255, 0.10);
-  border: 2px solid rgba(255, 255, 255, 0.55);
-  box-shadow: var(--ds-shadow-md);
-  backdrop-filter: blur(6px);
-}
-
-.hero-buttons .btn-outline:hover,
-.hero-buttons .btn-outline:focus-visible {
-  transform: translateY(-3px);
-  border-color: #fff;
-  background: rgba(255, 255, 255, 0.18);
-}
-
 /* =============================================================================
    SCROLL INDICATOR
    ============================================================================= */
 
 .hero-scroll-indicator {
   position: absolute;
-  bottom: calc(clamp(16px, 3vh, 28px) + 48px); /* above the dots */
+  bottom: clamp(16px, 3vh, 28px);
   left: 50%;
   transform: translateX(-50%);
   color: rgba(255, 255, 255, 0.65);
@@ -568,22 +350,18 @@
     transform: scale(1.04) !important;
   }
 
+  .hero-slide-video,
+  .hero-slide-video.is-ready {
+    opacity: 1;
+    transition: none;
+  }
+
   .hero-slider--video .hero-slide-video {
     display: none;
   }
 
   .hero-title::before {
     animation: none;
-  }
-
-  .hero-dot,
-  .hero-dot-progress {
-    animation: none !important;
-    transition: none;
-  }
-
-  .hero-dot.is-active {
-    background: rgba(255, 255, 255, 0.92);
   }
 }
 
@@ -601,31 +379,11 @@
 @media (max-width: 767px) {
   .hero-section {
     min-height: clamp(440px, 70vh, 560px);
-    padding-bottom: calc(var(--ds-space-12) + 36px);
+    padding-bottom: var(--ds-space-12);
   }
 
   .hero-content {
     padding: 0 var(--ds-space-3);
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-    align-items: center;
-    gap: var(--ds-space-3);
-  }
-
-  .hero-buttons .btn {
-    width: 100%;
-    max-width: 300px;
-    min-width: unset;
-  }
-
-  .hero-dot {
-    width: 22px;
-  }
-
-  .hero-dot.is-active {
-    width: 38px;
   }
 }
 

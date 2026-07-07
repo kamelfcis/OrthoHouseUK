@@ -62,6 +62,18 @@
   box-shadow: var(--ds-shadow-sm, 0 4px 20px rgba(0, 0, 0, 0.08));
 }
 
+.nav-panel-heading {
+  margin: 0 0 16px;
+  font-size: 1.15rem;
+  color: var(--ds-text-heading, var(--black));
+}
+
+.nav-panel-heading--spaced {
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid var(--ds-border-strong, var(--gray-border));
+}
+
 .nav-links-list {
   display: flex;
   flex-direction: column;

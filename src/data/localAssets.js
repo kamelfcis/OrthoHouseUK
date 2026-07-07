@@ -40,18 +40,6 @@ export const partnersHeroImage = buildLocalImage({
   height: 4000
 })
 
-// —— Leadership ——————————————————————————————————————————————————————————————
-
-/** CEO portrait — legacy (actual photograph; below 800px but authentic) */
-export const ceoPortraitImage = {
-  src: '/assets/optimized/team/ceo-waleed-emad-400.webp',
-  srcSet: '/assets/optimized/team/ceo-waleed-emad-400.webp 400w',
-  alt: 'Waleed Emad, chief executive and founder of OrthoHouse UK',
-  width: 400,
-  height: 500,
-  source: 'legacy'
-}
-
 // —— Homepage editorial ——————————————————————————————————————————————————————
 
 export const homeValuePropImage = buildLocalImage({

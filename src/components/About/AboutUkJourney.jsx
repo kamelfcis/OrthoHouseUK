@@ -1,5 +1,4 @@
 import useNearViewport from '../../hooks/useNearViewport'
-import SectionHeading from '../common/SectionHeading'
 import { aboutPage } from '../../content/about'
 import './AboutUkJourney.css'
 
@@ -12,7 +11,7 @@ const AboutUkJourney = () => {
     <section
       className="about-uk-journey ds-section"
       ref={ref}
-      aria-labelledby="about-uk-journey-heading"
+      aria-label="Ortho House UK journey timeline"
     >
       <div className="about-uk-journey__backdrop" aria-hidden="true">
         <div className="about-uk-journey__grid" />
@@ -21,14 +20,6 @@ const AboutUkJourney = () => {
       </div>
 
       <div className="container about-uk-journey__inner">
-        <SectionHeading
-          className="about-uk-journey__head"
-          eyebrow={ukJourney.eyebrow}
-          title={ukJourney.title}
-          subtitle={ukJourney.subtitle}
-          titleId="about-uk-journey-heading"
-        />
-
         <div className="about-uk-journey__timeline-wrap">
           <div
             className={`about-uk-journey__spine${inView ? ' is-active' : ''}`}

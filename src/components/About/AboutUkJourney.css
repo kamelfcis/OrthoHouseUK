@@ -50,25 +50,8 @@
   z-index: 1;
 }
 
-.about-uk-journey__head .ds-eyebrow {
-  color: rgba(174, 216, 239, 0.95);
-  border-color: rgba(174, 216, 239, 0.35);
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.about-uk-journey__head .ds-section-title {
-  color: var(--ds-text-on-brand);
-}
-
-.about-uk-journey__head .ds-section-subtitle {
-  color: rgba(255, 255, 255, 0.78);
-  max-width: 52ch;
-  margin-inline: auto;
-}
-
 .about-uk-journey__timeline-wrap {
   position: relative;
-  margin-top: var(--ds-space-10);
 }
 
 .about-uk-journey__spine {

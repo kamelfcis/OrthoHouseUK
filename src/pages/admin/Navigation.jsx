@@ -3,10 +3,19 @@ import { useAuth } from '../../contexts/AuthContext'
 import { supabase } from '../../lib/supabase'
 import {
   fetchNavLinkSettingsForAdmin,
+  fetchHomeSectionSettingsForAdmin,
   mergeNavRowsWithDefaults,
+  mergeHomeSectionRowsWithDefaults,
 } from '../../lib/navLinkSettings'
 import toast from 'react-hot-toast'
 import './Navigation.css'
+
+const SECTION_ICONS = {
+  partners: 'fas fa-handshake',
+  blog: 'fas fa-newspaper',
+  home_specialties: 'fas fa-stethoscope',
+  home_featured_products: 'fas fa-box-open',
+}
 
 const Navigation = () => {
   const { appUser, isAdmin, isBranchManager } = useAuth()
@@ -16,6 +25,7 @@ const Navigation = () => {
   const [branches, setBranches] = useState([])
   const [selectedBranchId, setSelectedBranchId] = useState('')
   const [links, setLinks] = useState([])
+  const [homeSections, setHomeSections] = useState([])
 
   const activeBranchId = isBranchManager
     ? String(appUser?.branch_id || '')
@@ -43,7 +53,7 @@ const Navigation = () => {
     }
 
     if (!hasLoadedRef.current) {
-      loadLinks(parseInt(activeBranchId, 10))
+      loadSettings(parseInt(activeBranchId, 10))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appUser, activeBranchId])
@@ -70,11 +80,15 @@ const Navigation = () => {
     }
   }
 
-  const loadLinks = async (branchId) => {
+  const loadSettings = async (branchId) => {
     try {
       setLoading(true)
-      const rows = await fetchNavLinkSettingsForAdmin(branchId)
-      setLinks(rows)
+      const [navRows, sectionRows] = await Promise.all([
+        fetchNavLinkSettingsForAdmin(branchId),
+        fetchHomeSectionSettingsForAdmin(branchId),
+      ])
+      setLinks(navRows)
+      setHomeSections(sectionRows)
       hasLoadedRef.current = true
     } catch (error) {
       if (error.code === '42P01' || error.code === 'PGRST205') {
@@ -83,6 +97,7 @@ const Navigation = () => {
         toast.error('Error loading navigation settings: ' + error.message)
       }
       setLinks(mergeNavRowsWithDefaults([], branchId))
+      setHomeSections(mergeHomeSectionRowsWithDefaults([], branchId))
     } finally {
       setLoading(false)
     }
@@ -92,7 +107,7 @@ const Navigation = () => {
     setSelectedBranchId(branchId)
     hasLoadedRef.current = false
     if (branchId) {
-      loadLinks(parseInt(branchId, 10))
+      loadSettings(parseInt(branchId, 10))
     }
   }
 
@@ -100,6 +115,14 @@ const Navigation = () => {
     setLinks((current) =>
       current.map((link) =>
         link.nav_key === navKey ? { ...link, [field]: value } : link
+      )
+    )
+  }
+
+  const updateHomeSection = (sectionKey, field, value) => {
+    setHomeSections((current) =>
+      current.map((section) =>
+        section.nav_key === sectionKey ? { ...section, [field]: value } : section
       )
     )
   }
@@ -114,11 +137,11 @@ const Navigation = () => {
     try {
       setSaving(true)
       const branchId = parseInt(activeBranchId, 10)
-      const payload = links.map((link) => ({
+      const payload = [...links, ...homeSections].map((item) => ({
         branch_id: branchId,
-        nav_key: link.nav_key,
-        is_visible: Boolean(link.is_visible),
-        display_order: link.display_order,
+        nav_key: item.nav_key,
+        is_visible: Boolean(item.is_visible),
+        display_order: item.display_order,
       }))
 
       const { error } = await supabase
@@ -129,7 +152,7 @@ const Navigation = () => {
 
       toast.success('Navigation settings saved.')
       hasLoadedRef.current = false
-      await loadLinks(branchId)
+      await loadSettings(branchId)
     } catch (error) {
       toast.error('Error saving navigation settings: ' + error.message)
     } finally {
@@ -146,7 +169,7 @@ const Navigation = () => {
       <div className="navigation-header">
         <div>
           <h1>Navigation</h1>
-          <p>Control which links appear in the site navbar and footer.</p>
+          <p>Control navbar, footer links, and homepage section visibility.</p>
         </div>
       </div>
 
@@ -173,15 +196,12 @@ const Navigation = () => {
       )}
 
       <form className="nav-links-panel" onSubmit={handleSave}>
+        <h2 className="nav-panel-heading">Navigation links</h2>
         <div className="nav-links-list">
           {links.map((link) => (
             <div key={link.nav_key} className="nav-link-row">
               <div className="nav-link-icon" aria-hidden="true">
-                <i
-                  className={
-                    link.nav_key === 'partners' ? 'fas fa-handshake' : 'fas fa-newspaper'
-                  }
-                ></i>
+                <i className={SECTION_ICONS[link.nav_key] || 'fas fa-link'}></i>
               </div>
 
               <div className="nav-link-fields">
@@ -199,6 +219,36 @@ const Navigation = () => {
                       }
                     />
                     Show in navigation
+                  </label>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <h2 className="nav-panel-heading nav-panel-heading--spaced">Homepage sections</h2>
+        <div className="nav-links-list">
+          {homeSections.map((section) => (
+            <div key={section.nav_key} className="nav-link-row">
+              <div className="nav-link-icon" aria-hidden="true">
+                <i className={SECTION_ICONS[section.nav_key] || 'fas fa-home'}></i>
+              </div>
+
+              <div className="nav-link-fields">
+                <div className="nav-link-title-row">
+                  <div>
+                    <h3>{section.label}</h3>
+                    <p className="nav-link-path">{section.subtitle}</p>
+                  </div>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(section.is_visible)}
+                      onChange={(e) =>
+                        updateHomeSection(section.nav_key, 'is_visible', e.target.checked)
+                      }
+                    />
+                    {section.checkboxLabel}
                   </label>
                 </div>
               </div>

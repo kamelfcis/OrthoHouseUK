@@ -80,9 +80,6 @@ const HeroPartnersCarousel = ({ branchData }) => {
           {homePartners.title}{' '}
           <span className="ds-text-gradient">{homePartners.titleHighlight}</span>
         </h2>
-        <p className="ds-section-subtitle hero-partners-subtitle">
-          {homePartners.subtitle}
-        </p>
       </header>
 
       <div className="hero-partners-carousel-wrap">

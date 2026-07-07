@@ -88,12 +88,6 @@
   margin-top: var(--ds-space-3);
 }
 
-.hero-partners-subtitle {
-  max-width: 580px;
-  margin-inline: auto;
-  text-align: center;
-}
-
 .hero-partners-carousel-wrap {
   position: relative;
   z-index: 1;

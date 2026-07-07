@@ -23,10 +23,6 @@ export const aboutPage = {
     ]
   },
   ukJourney: {
-    eyebrow: 'Our expansion',
-    title: 'Ortho House UK journey',
-    subtitle:
-      'From establishment in London to NHS Scotland framework approval — a measured path rooted in clinical partnership and regulatory excellence.',
     milestones: [
       {
         date: 'Jul 2022',
@@ -105,7 +101,6 @@ export const aboutPage = {
 }
 
 export const ceoVisionMission = {
-  sectionEyebrow: 'Leadership',
   tabs: {
     ceo: 'CEO message',
     vision: 'Vision',
@@ -121,13 +116,15 @@ export const ceoVisionMission = {
       }
     },
     vision: {
-      title: 'Our vision',
-      text: 'To be a trusted orthopaedic distributor across the United Kingdom — connecting surgeons and hospitals with proven implant technology, robust regulatory support, and evidence-based clinical education.',
+      title: 'Vision',
+      text: 'We aspire to be one of the top leading medical devices providers in the Orthopaedic surgical field in the World',
+      brandLine: 'ORTHOHOUSE',
       author: null
     },
     mission: {
-      title: 'Our mission',
-      text: 'We supply advanced orthopaedic implant systems backed by scientific evidence, working closely with surgeons, theatre teams, and hospital procurement. Through MHRA-compliant distribution and dedicated clinical support, we help deliver outstanding outcomes for patients throughout the UK.',
+      title: 'Mission',
+      text: 'Delivering innovative Orthopaedic solutions aligned with industry needs through strategic partnerships, premium products, and value-driven healthcare services.',
+      brandLine: 'ORTHOHOUSE',
       author: null
     }
   },

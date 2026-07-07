@@ -1,7 +1,5 @@
 import { HERO_SLIDES } from './heroSlides'
 import {
-  homeValueProp,
-  homeCapabilities,
   homeWhyChooseUs,
   homeSpecialties,
   homeJoinCta
@@ -16,8 +14,6 @@ export const extractUnsplashPhotoId = (url) => {
 
 const collectFallbackUrls = () => {
   const urls = [
-    homeValueProp.imageFallback,
-    ...homeCapabilities.items.map((item) => item.imageFallback),
     ...homeWhyChooseUs.items.map((item) => item.imageFallback),
     ...homeSpecialties.items.map((item) => item.imageFallback),
     homeJoinCta.imageFallback,
