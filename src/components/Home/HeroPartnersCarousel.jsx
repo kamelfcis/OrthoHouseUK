@@ -54,16 +54,10 @@ const buildPartnerLogos = (branchData) => {
 
 const HeroPartnersCarousel = ({ branchData }) => {
   const partnerLogos = useMemo(() => buildPartnerLogos(branchData), [branchData])
-  const marqueeLogos = useMemo(
-    () => (partnerLogos.length > 1 ? [...partnerLogos, ...partnerLogos] : partnerLogos),
-    [partnerLogos]
-  )
 
   if (partnerLogos.length === 0) {
     return null
   }
-
-  const duration = Math.max(partnerLogos.length * 4, 24)
 
   return (
     <section className="hero-partners-section" aria-labelledby="hero-partners-heading">
@@ -83,23 +77,17 @@ const HeroPartnersCarousel = ({ branchData }) => {
       </header>
 
       <div className="hero-partners-carousel-wrap">
-        <div
-          className="hero-partners-marquee"
-          style={{ '--marquee-duration': `${duration}s` }}
-        >
+        <div className="hero-partners-marquee">
           <div className="hero-partners-marquee-track">
-            {marqueeLogos.map((logo, index) => {
-              const isDuplicate = index >= partnerLogos.length
+            {partnerLogos.map((logo) => {
               const detailPath = getPartnerDetailPath(logo.partnerId)
 
               return (
                 <Link
-                  key={`${logo.id}-${index}`}
+                  key={logo.id}
                   to={detailPath}
                   className="hero-partner-slide"
-                  aria-label={isDuplicate ? undefined : `View ${logo.name} details`}
-                  aria-hidden={isDuplicate || undefined}
-                  tabIndex={isDuplicate ? -1 : undefined}
+                  aria-label={`View ${logo.name} details`}
                 >
                   <span className="hero-partner-border" aria-hidden="true"></span>
                   <div className="hero-partner-glow" aria-hidden="true"></div>
