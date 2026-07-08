@@ -2,8 +2,6 @@ import { useState, useEffect, memo } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { HERO_SLIDES } from '../../data/heroSlides'
 import { fetchHeroSlides } from '../../lib/unsplash'
-import { fetchHeroVideos, isPexelsConfigured } from '../../lib/pexels'
-import { runWhenIdle } from '../../lib/idle'
 import { homeHero } from '../../content/home'
 import { nav } from '../../content/site'
 import { brandLogos } from '../../data/localAssets'
@@ -12,41 +10,13 @@ import './Hero.css'
 
 const Hero = ({ branchData }) => {
   const [slides, setSlides] = useState(HERO_SLIDES)
-  const [videoSlides, setVideoSlides] = useState([])
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     let cancelled = false
-    let cancelIdle = () => {}
 
-    const loadSlides = () => {
-      fetchHeroSlides().then((fetched) => {
-        if (!cancelled && fetched?.length) setSlides(fetched)
-      })
-    }
-
-    // When Pexels video hero is available, defer Unsplash refresh (fallback only).
-    if (isPexelsConfigured()) {
-      cancelIdle = runWhenIdle(loadSlides, { timeout: 4000 })
-    } else {
-      loadSlides()
-    }
-
-    return () => {
-      cancelled = true
-      cancelIdle()
-    }
-  }, [])
-
-  useEffect(() => {
-    let cancelled = false
-
-    fetchHeroVideos({
-      onProgress: (partial) => {
-        if (!cancelled && partial.length) setVideoSlides(partial)
-      }
-    }).then((fetched) => {
-      if (!cancelled && fetched?.length) setVideoSlides(fetched)
+    fetchHeroSlides().then((fetched) => {
+      if (!cancelled && fetched?.length) setSlides(fetched)
     })
 
     return () => {
@@ -66,16 +36,13 @@ const Hero = ({ branchData }) => {
   const branchName = branchData?.branch?.branch_name
   const title =
     heroContent.content_title ||
-    (branchName ? `OrthoHouse ${branchName}` : homeHero.titleFallback)
+    (branchName ? `ORTHOHOUSE ${branchName}` : homeHero.titleFallback)
 
   const [motionRef, motionInView] = useInView({ triggerOnce: true, threshold: 0.35 })
 
   return (
     <section className="hero-section" aria-label={homeHero.ariaLabel}>
-      <HeroSlider
-        slides={isPexelsConfigured() ? [] : slides}
-        videoSlides={videoSlides}
-      />
+      <HeroSlider slides={slides} />
 
       <div className="hero-overlay" aria-hidden="true" />
       <div className="hero-grain" aria-hidden="true" />
@@ -94,7 +61,7 @@ const Hero = ({ branchData }) => {
                 width={200}
                 height={114}
                 decoding="async"
-                fetchPriority="high"
+                fetchpriority="high"
               />
             </div>
             <h1 className="hero-title hero-animate-item" role="presentation">

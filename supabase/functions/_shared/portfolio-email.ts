@@ -38,7 +38,7 @@ export function buildPortfolioEmailHtml(options: PortfolioEmailOptions): string 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Your ${escapeHtml(partnerName)} portfolio from OrthoHouse UK</title>
+  <title>Your ${escapeHtml(partnerName)} portfolio from ORTHOHOUSE UK</title>
 </head>
 <body style="margin:0;padding:0;background:#f1f5f9;font-family:Arial,Helvetica,sans-serif;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f1f5f9;padding:32px 16px;">
@@ -47,7 +47,7 @@ export function buildPortfolioEmailHtml(options: PortfolioEmailOptions): string 
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:560px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px rgba(15,23,42,0.08);">
           <tr>
             <td style="background:${BRAND_BLUE};padding:28px 32px;text-align:center;">
-              <img src="${logoUrl}" alt="OrthoHouse UK" width="180" style="display:block;margin:0 auto 12px;max-width:180px;height:auto;">
+              <img src="${logoUrl}" alt="ORTHOHOUSE UK" width="180" style="display:block;margin:0 auto 12px;max-width:180px;height:auto;">
               <p style="margin:0;color:#ffffff;font-size:14px;letter-spacing:0.04em;text-transform:uppercase;">Portfolio delivery</p>
             </td>
           </tr>
@@ -57,7 +57,7 @@ export function buildPortfolioEmailHtml(options: PortfolioEmailOptions): string 
                 Your ${escapeHtml(partnerName)} portfolio
               </h1>
               <p style="margin:0 0 20px;color:#475569;font-size:15px;line-height:1.6;">
-                Thank you for your interest in OrthoHouse UK. Please find the requested partner materials below.
+                Thank you for your interest in ORTHOHOUSE UK. Please find the requested partner materials below.
               </p>
               <p style="margin:0 0 8px;color:#0f172a;font-size:15px;font-weight:bold;">Included brochures:</p>
               <ul style="margin:0 0 24px;padding-left:20px;">
@@ -65,7 +65,7 @@ export function buildPortfolioEmailHtml(options: PortfolioEmailOptions): string 
               </ul>
               ${downloadSection}
               <p style="margin:0 0 8px;color:#475569;font-size:14px;line-height:1.6;">
-                OrthoHouse UK is an MHRA-registered distributor and UK Responsible Person for leading orthopaedic manufacturers.
+                ORTHOHOUSE UK is an MHRA-registered distributor and UK Responsible Person for leading orthopaedic manufacturers.
               </p>
               <p style="margin:0;color:#64748b;font-size:13px;line-height:1.6;">
                 <a href="${siteUrl}" style="color:${BRAND_BLUE};text-decoration:none;">${escapeHtml(siteHost)}</a>

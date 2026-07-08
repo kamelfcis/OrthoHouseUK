@@ -4,7 +4,7 @@ const getSupabaseUrl = () =>
 export const toPublicStorageUrl = (bucket, path, options = {}) => {
   if (!path) return null
 
-  const { width, quality } = options
+  const { width, quality, cacheKey } = options
   const cleanPath = path.trim().replace(/^\/+/, '')
 
   if (/^https?:\/\//i.test(cleanPath)) {
@@ -20,7 +20,13 @@ export const toPublicStorageUrl = (bucket, path, options = {}) => {
     const params = new URLSearchParams()
     params.set('width', String(width))
     if (quality) params.set('quality', String(quality))
+    if (cacheKey != null) params.set('v', String(cacheKey))
     return `${renderBase}?${params.toString()}`
+  }
+
+  if (cacheKey != null) {
+    const separator = base.includes('?') ? '&' : '?'
+    return `${base}${separator}v=${encodeURIComponent(cacheKey)}`
   }
 
   return base

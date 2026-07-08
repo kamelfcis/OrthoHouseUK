@@ -12,7 +12,6 @@ import './Home.css'
 const HeroPartnersCarousel = lazy(() => import('../components/Home/HeroPartnersCarousel'))
 const HomeFeaturedProducts = lazy(() => import('../components/Home/HomeFeaturedProducts'))
 const HomeSpecialties = lazy(() => import('../components/Home/HomeSpecialties'))
-const HomeHowItWorks = lazy(() => import('../components/Home/HomeHowItWorks'))
 const Stats = lazy(() => import('../components/Home/Stats'))
 const HomeTestimonials = lazy(() => import('../components/Home/HomeTestimonials'))
 const HomeAccreditations = lazy(() => import('../components/Home/HomeAccreditations'))
@@ -84,11 +83,6 @@ const Home = () => {
           <HomeFeaturedProducts branchData={branchData} />
         </Suspense>
       )}
-
-      {/* 4. How it works */}
-      <Suspense fallback={<SectionSkeleton minHeight={280} />}>
-        <HomeHowItWorks />
-      </Suspense>
 
       {/* 7. Statistics & measurable outcomes */}
       {showStats && (

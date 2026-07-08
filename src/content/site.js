@@ -1,7 +1,7 @@
-export const siteName = 'OrthoHouse UK'
+export const siteName = 'ORTHOHOUSE UK'
 
 export const nav = {
-  logoAlt: 'OrthoHouse UK Logo',
+  logoAlt: 'ORTHOHOUSE UK Logo',
   items: [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
@@ -27,7 +27,7 @@ export const socialLinks = [
 
 export const footer = {
   about: {
-    title: 'About OrthoHouse UK'
+    title: 'About ORTHOHOUSE UK'
   },
   columns: {
     company: {
@@ -52,7 +52,7 @@ export const footer = {
     phoneHref: 'tel:+442033683036',
     email: 'info@ortho-house.com',
     emailHref: 'mailto:info@ortho-house.com',
-    addressLines: ['2 Kingdom Street, London W2 6BD', 'United Kingdom']
+    addressLines: ['2 Kingdom Street, W2 6BD London ', 'United Kingdom']
   },
   social: socialLinks
 }

@@ -198,9 +198,9 @@ Deno.serve(async (req) => {
     : undefined;
 
   const resendPayload: Record<string, unknown> = {
-    from: `OrthoHouse UK <${fromEmail}>`,
+    from: `ORTHOHOUSE UK <${fromEmail}>`,
     to: [email],
-    subject: `Your ${partnerName} portfolio from OrthoHouse UK`,
+    subject: `Your ${partnerName} portfolio from ORTHOHOUSE UK`,
     html,
   };
   if (attachments && attachments.length > 0) {

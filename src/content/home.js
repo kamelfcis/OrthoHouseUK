@@ -1,6 +1,6 @@
 export const homeHero = {
-  ariaLabel: 'OrthoHouse UK — orthopaedic medical device distribution',
-  titleDefault: 'OrthoHouse UK',
+  ariaLabel: 'ORTHOHOUSE UK — orthopaedic medical device distribution',
+  titleDefault: 'ORTHOHOUSE UK',
   titleFallback: 'Orthopaedic solutions for UK surgeons and hospitals'
 }
 
@@ -132,14 +132,14 @@ export const homeMission = {
   eyebrow: 'Our purpose',
   title: 'Advancing orthopaedic care across the United Kingdom',
   statement:
-    'Through strategic partnerships, proven implant systems, and practical clinical support, OrthoHouse UK connects established manufacturers with surgeons and hospitals nationwide.',
+    'Through strategic partnerships, proven implant systems, and practical clinical support, ORTHOHOUSE UK connects established manufacturers with surgeons and hospitals nationwide.',
   vision:
     'To be the trusted distribution partner for orthopaedic innovation in the UK — improving patient outcomes through reliable supply, education, and regulatory integrity.'
 }
 
 export const homeStats = {
   eyebrow: 'Measurable outcomes',
-  title: 'OrthoHouse UK by the numbers',
+  title: 'ORTHOHOUSE UK by the numbers',
   subtitle: 'Trusted by surgeons, hospitals, and manufacturing partners across the United Kingdom.',
   items: [
     { key: 'employees', icon: 'fa-users-gear', number: 25, suffix: '', label: 'Employees' },
@@ -153,14 +153,14 @@ export const homeStats = {
 
 export const homeUkJourney = {
   eyebrow: 'Our UK journey',
-  title: 'Building OrthoHouse UK',
+  title: 'Building ORTHOHOUSE UK',
   subtitle:
     'From establishment in London to NHS framework approval — a measured growth path rooted in clinical partnership.',
   milestones: [
     {
       date: 'Jul 2022',
       title: 'UK establishment',
-      description: 'OrthoHouse UK officially established to serve the British orthopaedic market.'
+      description: 'ORTHOHOUSE UK officially established to serve the British orthopaedic market.'
     },
     {
       date: 'Oct 2022',
@@ -206,21 +206,24 @@ export const homeAccreditations = {
       title: 'MHRA registered',
       description:
         'Registered as an MHRA distributor and UK Responsible Person (UKRP) for medical devices.',
-      icon: 'fa-shield-halved'
+      image: '/assets/images/accreditations/mhra-logo.png',
+      imageAlt: 'MHRA logo'
     },
     {
       id: 'nhs-scotland',
       title: 'NHS Scotland approved',
       description:
         'Approved supplier on the NHS Scotland Orthopaedic Trauma & Extremity framework.',
-      icon: 'fa-hospital'
+      image: '/assets/images/accreditations/nhs-logo.png',
+      imageAlt: 'NHS logo'
     },
     {
       id: 'ukrp',
       title: 'UK Responsible Person',
       description:
         'Full UKRP services ensuring post-Brexit regulatory compliance for our manufacturing partners.',
-      icon: 'fa-certificate'
+      image: '/assets/images/accreditations/iso-13485-badge.png',
+      imageAlt: 'ISO 13485:2016 certification badge'
     }
   ]
 }
@@ -229,7 +232,7 @@ export const homeTestimonials = {
   eyebrow: 'What our partners say',
   title: 'Trusted by surgeons and hospital teams',
   subtitle:
-    'Feedback from clinicians and procurement professionals who work with OrthoHouse UK day to day.'
+    'Feedback from clinicians and procurement professionals who work with ORTHOHOUSE UK day to day.'
 }
 
 export const homeResources = {
@@ -240,7 +243,7 @@ export const homeResources = {
   viewAll: 'View all articles',
   readMore: 'Read article',
   empty: 'New articles coming soon.',
-  defaultAuthor: 'OrthoHouse UK'
+  defaultAuthor: 'ORTHOHOUSE UK'
 }
 
 export const homeFaq = {
@@ -251,7 +254,7 @@ export const homeFaq = {
   items: [
     {
       id: 'who',
-      question: 'Who does OrthoHouse UK supply?',
+      question: 'Who does ORTHOHOUSE UK supply?',
       answer:
         'We supply orthopaedic implant systems to NHS trusts, private hospitals, and independent surgical centres across the United Kingdom. Our customers include trauma teams, arthroplasty units, and foot & ankle specialists.'
     },
@@ -259,7 +262,7 @@ export const homeFaq = {
       id: 'regulatory',
       question: 'Are your products MHRA compliant?',
       answer:
-        'Yes. OrthoHouse UK is registered with the MHRA as a medical device distributor and operates as a UK Responsible Person (UKRP). Every product in our portfolio is distributed under full UK regulatory compliance.'
+        'Yes. ORTHOHOUSE UK is registered with the MHRA as a medical device distributor and operates as a UK Responsible Person (UKRP). Every product in our portfolio is distributed under full UK regulatory compliance.'
     },
     {
       id: 'nhs',
@@ -275,7 +278,7 @@ export const homeFaq = {
     },
     {
       id: 'partners',
-      question: 'How can manufacturers partner with OrthoHouse UK?',
+      question: 'How can manufacturers partner with ORTHOHOUSE UK?',
       answer:
         'We welcome enquiries from orthopaedic manufacturers seeking UK distribution. Contact our partnerships team to discuss regulatory onboarding, UKRP services, and market access strategy.'
     },

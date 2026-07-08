@@ -15,62 +15,50 @@ export const aboutPage = {
   philosophy: {
     heading: 'Our Philosophy',
     paragraphs: [
-      'OrthoHouse UK was established to bring world-class orthopaedic innovation to British surgeons and hospitals. We specialise in trauma fixation, arthroplasty, foot & ankle, and bone graft solutions — distributed with full MHRA compliance.',
+      'ORTHOHOUSE UK was established to bring world-class orthopaedic innovation to British surgeons and hospitals. We specialise in trauma fixation, arthroplasty, foot & ankle, and bone graft solutions — distributed with full MHRA compliance.',
       'We combine advanced orthopaedic technology with dedicated clinical support to deliver exceptional outcomes for surgeons and patients across the United Kingdom.'
     ]
   },
   ukJourney: {
     eyebrow: '',
-    title: 'Ortho House UK journey',
+    title: 'ORTHOHOUSE UK journey',
     subtitle:
       '',
     milestones: [
       {
         date: 'Jul 2022',
         dateTime: '2022-07',
-        title: 'UK establishment',
-        description:
-          'OrthoHouse Solutions LTD UK was established to serve the British orthopaedic market.'
+        title: 'UK establishment'
       },
       {
         date: 'Oct 2022',
         dateTime: '2022-10',
-        title: 'London headquarters',
-        description: 'Opened our first office in London at 2 Kingdom Street, Paddington.'
+        title: 'London headquarters'
       },
       {
         date: 'Jun 2023',
         dateTime: '2023-06',
-        title: 'Foot & ankle business unit',
-        description:
-          'Launched the foot & ankle business unit through a strategic partnership with Episcan SRL in the UK.'
+        title: 'Foot & ankle business unit'
       },
       {
         date: 'Dec 2023',
         dateTime: '2023-12',
-        title: 'Trauma business unit',
-        description: 'Partnered with Astrolabe to establish the trauma business unit.'
+        title: 'Trauma business unit'
       },
       {
         date: 'Feb 2024',
         dateTime: '2024-02',
-        title: 'Eincobio bone graft',
-        description:
-          'Partnered with Eincobio, introducing an advanced portfolio of bone graft solutions.'
+        title: 'Eincobio bone graft'
       },
       {
         date: '2024',
         dateTime: '2024',
-        title: 'Permedica arthroplasty',
-        description:
-          'Entered a strategic partnership with Permedica to strengthen our arthroplasty portfolio.'
+        title: 'Permedica arthroplasty'
       },
       {
         date: 'Oct 2025',
         dateTime: '2025-10',
-        title: 'NHS Scotland framework',
-        description:
-          'Successfully appointed as a trusted supplier within the Scottish framework for orthopaedic trauma & extremity.'
+        title: 'NHS Scotland framework'
       }
     ]
   },
@@ -110,7 +98,7 @@ export const ceoVisionMission = {
   content: {
     ceo: {
       title: 'A message from our chief executive',
-      text: 'My aim is to build an organisation that makes a genuine difference across the UK healthcare sector. At OrthoHouse UK, we are dedicated to advancing orthopaedic care by supplying high-quality implants and clinical support to surgeons and hospitals nationwide. We look forward to continuing our growth alongside NHS and private-sector partners, and to strengthening our contribution to clinical education across the United Kingdom.',
+      text: 'My aim is to build an organisation that makes a genuine difference across the UK healthcare sector. At ORTHOHOUSE UK, we are dedicated to advancing orthopaedic care by supplying high-quality implants and clinical support to surgeons and hospitals nationwide. We look forward to continuing our growth alongside NHS and private-sector partners, and to strengthening our contribution to clinical education across the United Kingdom.',
       author: {
         name: 'Waleed Emad',
         title: 'Founder & CEO'
@@ -129,5 +117,5 @@ export const ceoVisionMission = {
       author: null
     }
   },
-  ceoImageAlt: 'Waleed Emad, chief executive and founder of OrthoHouse UK'
+  ceoImageAlt: 'Waleed Emad, chief executive and founder of ORTHOHOUSE UK'
 }

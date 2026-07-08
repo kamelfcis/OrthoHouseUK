@@ -32,7 +32,7 @@ export const HOME_SECTION_META = {
   },
   home_stats: {
     label: 'Statistics & measurable outcomes',
-    subtitle: 'OrthoHouse UK by the numbers',
+    subtitle: 'ORTHOHOUSE UK by the numbers',
     checkboxLabel: 'Show Statistics section on homepage',
     displayOrder: 40,
   },

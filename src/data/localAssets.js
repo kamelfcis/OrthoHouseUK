@@ -1,5 +1,5 @@
 /**
- * Curated local image registry — OrthoHouse UK
+ * Curated local image registry — ORTHOHOUSE UK
  *
  * Source key:
  *   presentation — extracted from Docs/OH presentation for recruitment (1).pdf
@@ -10,11 +10,11 @@ import { buildLocalImage } from '../utils/responsiveImage'
 
 // —— Page heroes —————————————————————————————————————————————————————————————
 
-/** About hero — OrthoHouse trade show exhibition booth */
+/** About hero — ORTHOHOUSE trade show exhibition booth */
 export const aboutHeroImage = buildLocalImage({
   category: 'about',
   name: 'about',
-  alt: 'OrthoHouse UK exhibition booth at an orthopaedic trade show',
+  alt: 'ORTHOHOUSE UK exhibition booth at an orthopaedic trade show',
   source: 'legacy',
   width: 2662,
   height: 1600
@@ -24,7 +24,7 @@ export const aboutHeroImage = buildLocalImage({
 export const contactHeroImage = buildLocalImage({
   category: 'office',
   name: 'contact-office',
-  alt: 'OrthoHouse UK office and clinical consultation setting in London',
+  alt: 'ORTHOHOUSE UK office and clinical consultation setting in London',
   source: 'legacy',
   width: 5740,
   height: 3827
@@ -34,7 +34,7 @@ export const contactHeroImage = buildLocalImage({
 export const partnersHeroImage = buildLocalImage({
   category: 'heroes',
   name: 'partners-hero',
-  alt: 'Healthcare professionals representing OrthoHouse UK manufacturing partnerships',
+  alt: 'Healthcare professionals representing ORTHOHOUSE UK manufacturing partnerships',
   source: 'legacy',
   width: 6000,
   height: 4000
@@ -63,7 +63,7 @@ export const homeCapabilityImages = {
   regulatory: buildLocalImage({
     category: 'presentation',
     name: 'in-2009-orthohouse-03-1536x942',
-    alt: 'OrthoHouse heritage and regulatory excellence since 2009',
+    alt: 'ORTHOHOUSE heritage and regulatory excellence since 2009',
     source: 'presentation',
     width: 1536,
     height: 942
@@ -71,7 +71,7 @@ export const homeCapabilityImages = {
   clinical: buildLocalImage({
     category: 'presentation',
     name: '1st-cadaver-courses-in-middle-east-05-895x610',
-    alt: 'Surgical education and cadaver training course supported by OrthoHouse',
+    alt: 'Surgical education and cadaver training course supported by ORTHOHOUSE',
     source: 'presentation',
     width: 895,
     height: 610
@@ -119,7 +119,7 @@ export const homeEventImages = {
   'boa-2025': buildLocalImage({
     category: 'events',
     name: 'gallery',
-    alt: 'OrthoHouse UK exhibition stand at a national orthopaedic congress',
+    alt: 'ORTHOHOUSE UK exhibition stand at a national orthopaedic congress',
     source: 'legacy',
     width: 8256,
     height: 5504
@@ -127,7 +127,7 @@ export const homeEventImages = {
   'bofas-2025': buildLocalImage({
     category: 'presentation',
     name: '1st-cadaver-courses-in-middle-east-05-895x610',
-    alt: 'Foot and ankle surgical education supported by OrthoHouse',
+    alt: 'Foot and ankle surgical education supported by ORTHOHOUSE',
     source: 'presentation',
     width: 895,
     height: 610
@@ -135,7 +135,7 @@ export const homeEventImages = {
   'bess-2025': buildLocalImage({
     category: 'events',
     name: 'blogs',
-    alt: 'OrthoHouse UK engagement with the upper-extremity orthopaedic community',
+    alt: 'ORTHOHOUSE UK engagement with the upper-extremity orthopaedic community',
     source: 'legacy',
     width: 4032,
     height: 3024

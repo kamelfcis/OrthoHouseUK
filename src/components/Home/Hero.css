@@ -164,6 +164,64 @@
 }
 
 /* =============================================================================
+   SLIDE DOTS (no prev/next arrows)
+   ============================================================================= */
+
+.hero-slider-dots {
+  position: absolute;
+  bottom: clamp(16px, 3vh, 28px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-dot {
+  position: relative;
+  width: 28px;
+  height: 4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--ds-radius-pill);
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    width var(--ds-duration) var(--ds-ease-out),
+    background var(--ds-duration) var(--ds-ease-out);
+}
+
+.hero-dot.is-active {
+  width: 48px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.hero-dot-progress {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.92);
+  animation: heroDotProgress linear forwards;
+}
+
+@keyframes heroDotProgress {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+.hero-section:hover .hero-dot-progress,
+.hero-section:focus-within .hero-dot-progress {
+  animation-play-state: paused;
+}
+
+.hero-dot:hover:not(.is-active) {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+/* =============================================================================
    CONTENT LAYER
    ============================================================================= */
 
@@ -393,6 +451,16 @@
   .hero-content-inner.is-visible .hero-logo-wrap {
     animation: none !important;
   }
+
+  .hero-dot,
+  .hero-dot-progress {
+    animation: none !important;
+    transition: none;
+  }
+
+  .hero-dot.is-active {
+    background: rgba(255, 255, 255, 0.92);
+  }
 }
 
 /* =============================================================================
@@ -422,6 +490,14 @@
 
   .hero-logo-wrap {
     margin-bottom: var(--ds-space-4);
+  }
+
+  .hero-dot {
+    width: 22px;
+  }
+
+  .hero-dot.is-active {
+    width: 38px;
   }
 }
 

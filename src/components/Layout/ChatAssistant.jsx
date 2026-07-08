@@ -445,7 +445,7 @@ const ChatAssistant = () => {
 
     // Handle questions about capabilities
     if (normalized.includes('what can you do') || normalized.includes('what do you do') || normalized.includes('help me') || normalized.includes('what are you')) {
-      return `I'm the OrthoHouse Assistant! I can help you with:\n\n📦 **Products & Categories**: Find specific products or browse by category\n🌐 **Navigation**: Guide you to different pages on our website\n📞 **Contact Info**: Provide phone numbers, emails, and addresses\n📝 **Blog Posts**: Help you find articles and insights\n🤝 **Partners**: Information about our partner companies\n\nJust ask me anything! For example:\n- "Show me knee products"\n- "How do I contact you?"\n- "What categories do you have?"`
+      return `I'm the ORTHOHOUSE Assistant! I can help you with:\n\n📦 **Products & Categories**: Find specific products or browse by category\n🌐 **Navigation**: Guide you to different pages on our website\n📞 **Contact Info**: Provide phone numbers, emails, and addresses\n📝 **Blog Posts**: Help you find articles and insights\n🤝 **Partners**: Information about our partner companies\n\nJust ask me anything! For example:\n- "Show me knee products"\n- "How do I contact you?"\n- "What categories do you have?"`
     }
 
     // Handle thank you
@@ -511,7 +511,7 @@ const ChatAssistant = () => {
 
     // Handle "who" or "what is" questions about OrthoHouse
     if ((normalized.includes('who') || normalized.includes('what is')) && (normalized.includes('orthohouse') || normalized.includes('ortho house') || normalized.includes('company'))) {
-      return `OrthoHouse UK distributes orthopaedic implants, trauma systems, arthroplasty, and bone graft solutions to surgeons and hospitals across the United Kingdom. We offer MHRA-compliant distribution with dedicated clinical support. Learn more on the About page at /about.`
+      return `ORTHOHOUSE UK distributes orthopaedic implants, trauma systems, arthroplasty, and bone graft solutions to surgeons and hospitals across the United Kingdom. We offer MHRA-compliant distribution with dedicated clinical support. Learn more on the About page at /about.`
     }
 
     // Check knowledge base with better matching

@@ -1,4 +1,4 @@
-# robots.txt for Ortho House
+# robots.txt for ORTHOHOUSE
 
 User-agent: *
 Allow: /

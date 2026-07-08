@@ -1,6 +1,6 @@
 export const contactPage = {
   hero: {
-    eyebrow: 'OrthoHouse UK',
+    eyebrow: 'ORTHOHOUSE UK',
     headline: 'Contact us',
     intro:
       'For product enquiries, partnership discussions, or clinical support across the United Kingdom, our UK team is ready to help.'
@@ -10,7 +10,7 @@ export const contactPage = {
     email: 'infoUK@ortho-house.com',
     phone: '+44 20 3368 3036',
     phoneDial: '+442033683036',
-    addressLines: ['2 Kingdom St, London W2 6BD', 'United Kingdom'],
+    addressLines: ['2 Kingdom St, W2 6BD London ', 'United Kingdom'],
     hours: 'Monday to Friday, 9:00–17:00',
     callUs: 'Call us',
     directions: 'Get directions',
@@ -25,7 +25,7 @@ export const contactPage = {
     submit: 'Send message',
     submitting: 'Sending…',
     footnote:
-      'By submitting this form, you agree to be contacted by OrthoHouse UK regarding your enquiry.',
+      'By submitting this form, you agree to be contacted by ORTHOHOUSE UK regarding your enquiry.',
     fields: {
       name: { label: 'Full name', placeholder: 'Jordan Smith', required: true },
       email: { label: 'Email address', placeholder: 'jordan.smith@example.com', required: true },

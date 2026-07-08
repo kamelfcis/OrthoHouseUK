@@ -3,6 +3,9 @@ export const productsPage = {
   clearFilter: 'Clear filter',
   filterInfo: (count, category) =>
     `Showing ${count} product${count !== 1 ? 's' : ''} in ${category}`,
+  selectCategoryTitle: 'Browse by category',
+  selectCategoryPrompt:
+    'Select a category above to view products from our UK catalogue.',
   emptyAll:
     'No products are currently available. Please check back soon or speak with our team.',
   emptyCategory:
@@ -22,7 +25,7 @@ export const productDetail = {
   partnerHeading: 'Manufacturing Partner',
   descriptionHeading: 'Overview',
   seoFallback: (name, category) =>
-    `${name} — ${category} orthopaedic solution from OrthoHouse UK.`,
+    `${name} — ${category} orthopaedic solution from ORTHOHOUSE UK.`,
   labels: {
     code: 'Code',
     productCode: 'Product code',

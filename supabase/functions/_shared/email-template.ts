@@ -40,7 +40,7 @@ function renderBrochureList(brochures: PortfolioBrochure[], attached: boolean): 
 }
 
 export function buildPortfolioEmailSubject(partnerName: string): string {
-  return `Your ${partnerName} portfolio from OrthoHouse UK`;
+  return `Your ${partnerName} portfolio from ORTHOHOUSE UK`;
 }
 
 export function buildPortfolioEmailHtml(options: PortfolioEmailOptions): string {
@@ -64,7 +64,7 @@ export function buildPortfolioEmailHtml(options: PortfolioEmailOptions): string 
         <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(15,23,42,0.08);">
           <tr>
             <td style="background-color:${BRAND_BLUE};padding:28px 32px;text-align:center;">
-              <img src="${LOGO_URL}" alt="OrthoHouse UK" width="180" style="display:block;margin:0 auto;max-width:180px;height:auto;" />
+              <img src="${LOGO_URL}" alt="ORTHOHOUSE UK" width="180" style="display:block;margin:0 auto;max-width:180px;height:auto;" />
             </td>
           </tr>
           <tr>
@@ -76,7 +76,7 @@ export function buildPortfolioEmailHtml(options: PortfolioEmailOptions): string 
                 Your ${safePartner} portfolio
               </h1>
               <p style="margin:0 0 16px 0;font-size:16px;line-height:1.6;color:#475569;">
-                Thank you for your interest in OrthoHouse UK. As requested, here is the ${safePartner} product portfolio.
+                Thank you for your interest in ORTHOHOUSE UK. As requested, here is the ${safePartner} product portfolio.
               </p>
               <p style="margin:0;font-size:15px;line-height:1.6;color:#475569;">
                 ${deliveryNote}
@@ -86,7 +86,7 @@ export function buildPortfolioEmailHtml(options: PortfolioEmailOptions): string 
                 <tr>
                   <td style="border-top:1px solid #e2e8f0;padding-top:20px;">
                     <p style="margin:0 0 12px 0;font-size:14px;line-height:1.6;color:#64748b;">
-                      OrthoHouse UK distributes CE-marked and MHRA-compliant medical devices. Products must be used by qualified healthcare professionals in accordance with applicable regulations and the manufacturer's instructions for use.
+                      ORTHOHOUSE UK distributes CE-marked and MHRA-compliant medical devices. Products must be used by qualified healthcare professionals in accordance with applicable regulations and the manufacturer's instructions for use.
                     </p>
                     <p style="margin:0;font-size:14px;line-height:1.6;color:#64748b;">
                       <a href="${WEBSITE_URL}" style="color:${BRAND_BLUE};text-decoration:none;font-weight:600;">orthohouseuk.com</a>

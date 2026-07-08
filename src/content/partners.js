@@ -4,7 +4,7 @@ export const partnersPage = {
   seo: {
     title: 'Partners — Global Orthopaedic Manufacturers',
     description:
-      'OrthoHouse UK partners with leading orthopaedic manufacturers. MHRA-registered distribution, UK Responsible Person services, and NHS framework access.',
+      'ORTHOHOUSE UK partners with leading orthopaedic manufacturers. MHRA-registered distribution, UK Responsible Person services, and NHS framework access.',
     keywords:
       'orthopaedic partners, medical device distribution UK, MHRA distributor, UKRP, NHS Scotland framework'
   },

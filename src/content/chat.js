@@ -1,19 +1,19 @@
 export const chatUi = {
   welcome:
-    'Hello! I\'m the OrthoHouse UK assistant.\nAsk me about our pages, product categories, specific products, blog posts, or how to contact our team.',
-  title: 'OrthoHouse Assistant',
+    'Hello! I\'m the ORTHOHOUSE UK assistant.\nAsk me about our pages, product categories, specific products, blog posts, or how to contact our team.',
+  title: 'ORTHOHOUSE Assistant',
   typing: 'Typing…',
   online: 'Online',
   closeAria: 'Close chat assistant',
   inputPlaceholder: 'Ask about pages, products, blogs, or contacts…',
-  inputAria: 'Message to OrthoHouse assistant',
+  inputAria: 'Message to ORTHOHOUSE assistant',
   sendAria: 'Send message',
-  toggleOpen: 'Ask OrthoHouse',
+  toggleOpen: 'Ask ORTHOHOUSE',
   toggleClose: 'Close'
 }
 
-export const chatContact = `Reach the OrthoHouse UK team here:
-- Address: 2 Kingdom St, London W2 6BD, United Kingdom
+export const chatContact = `Reach the ORTHOHOUSE UK team here:
+- Address: 2 Kingdom St, W2 6BD London , United Kingdom
 - Phone: +44 20 3368 3036 (Mon–Fri, 9 a.m.–5 p.m.)
 - Email: infoUK@ortho-house.com
 - Contact form: /contact`
@@ -25,7 +25,7 @@ export const chatBlog = `Explore clinical insights, product updates, and industr
 export const chatKnowledgeBase = [
   {
     keywords: ['page', 'pages', 'site', 'navigate', 'navigation', 'menu', 'where to find'],
-    response: `You can explore these OrthoHouse UK pages:
+    response: `You can explore these ORTHOHOUSE UK pages:
 - **Home** (/): Overview of our orthopaedic distribution services
 - **About** (/about): Our story, mission, and values
 - **Products** (/products): Browse our complete product catalogue
@@ -81,7 +81,7 @@ Visit /partners to explore our network of trusted orthopaedic manufacturers.`
   },
   {
     keywords: ['service', 'services', 'treatment', 'solution', 'solutions', 'what do you offer'],
-    response: `OrthoHouse UK distributes orthopaedic medical devices including:
+    response: `ORTHOHOUSE UK distributes orthopaedic medical devices including:
 - Trauma fixation and implant systems
 - Arthroplasty and joint replacement solutions
 - Foot & ankle surgical systems
@@ -96,7 +96,7 @@ Visit /about to learn more, or /contact to discuss your specific requirements.`
 - Use the Contact page form at /contact
 - Call us at +44 20 3368 3036 (Mon–Fri, 9 a.m.–5 p.m.)
 - Email us at infoUK@ortho-house.com
-- Visit our London office at 2 Kingdom St, London W2 6BD
+- Visit our London office at 2 Kingdom St, W2 6BD London 
 
 Our team will follow up promptly to arrange a consultation.`
   },
@@ -110,11 +110,11 @@ Our team will follow up promptly to arrange a consultation.`
   },
   {
     keywords: ['testimonial', 'testimonials', 'review', 'reviews', 'feedback'],
-    response: `Read testimonials from surgeons and hospital leaders at /testimonials. Hear how OrthoHouse UK supports clinical teams with reliable products and dedicated service.`
+    response: `Read testimonials from surgeons and hospital leaders at /testimonials. Hear how ORTHOHOUSE UK supports clinical teams with reliable products and dedicated service.`
   },
   {
     keywords: ['mhra', 'nhs', 'accreditation', 'framework', 'regulatory', 'ukrp'],
-    response: `OrthoHouse UK holds key accreditations:
+    response: `ORTHOHOUSE UK holds key accreditations:
 - **MHRA Registered** — distributor and UK Responsible Person (UKRP)
 - **NHS Scotland Approved** — Orthopaedic Trauma & Extremity framework supplier
 - **UK Responsible Person** — full UKRP services for our partners
@@ -134,12 +134,12 @@ What type of orthopaedic product are you looking for?`,
   loadingCategories: 'I\'m still loading the category catalogue — ask me again in a few seconds.',
   browseCategories: 'Visit /products and tap on any category card to filter the catalogue instantly. You can browse products by specialty, application, or clinical area.',
   partnersFallback: 'The Partners page showcases the manufacturers we represent. Each partner profile links products connected to them. Visit /partners to explore our network.',
-  servicesFallback: 'OrthoHouse UK distributes orthopaedic implants and surgical systems to surgeons and hospitals. Learn about our product portfolio at /products or our partners at /partners.',
+  servicesFallback: 'ORTHOHOUSE UK distributes orthopaedic implants and surgical systems to surgeons and hospitals. Learn about our product portfolio at /products or our partners at /partners.',
   appointmentFallback: 'Ready to connect? Use the Contact page form to request a consultation. Our team will follow up promptly. Visit /contact or call +44 20 3368 3036 (Mon–Fri, 9 a.m.–5 p.m.).',
-  aboutOrthoHouse: 'OrthoHouse UK is a leading distributor of orthopaedic implants, trauma systems, foot & ankle, arthroplasty, and bone graft solutions — serving surgeons, hospitals, and NHS trusts. Learn more on the About page at /about.',
+  aboutOrthoHouse: 'ORTHOHOUSE UK is a leading distributor of orthopaedic implants, trauma systems, foot & ankle, arthroplasty, and bone graft solutions — serving surgeons, hospitals, and NHS trusts. Learn more on the About page at /about.',
   questionFallback: `I understand you have a question. Could you be more specific? For example:
 - "What trauma products do you supply?"
-- "How do I contact OrthoHouse UK?"
+- "How do I contact ORTHOHOUSE UK?"
 - "Where can I find product information?"
 
 I can help with products, categories, contact details, blog posts, and navigating our website.`,

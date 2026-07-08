@@ -1,5 +1,5 @@
 export const adminLogin = {
-  logoAlt: 'OrthoHouse UK',
+  logoAlt: 'ORTHOHOUSE UK',
   heading: 'Admin Portal',
   subheading: 'Sign in to manage your content',
   emailLabel: 'Email Address',

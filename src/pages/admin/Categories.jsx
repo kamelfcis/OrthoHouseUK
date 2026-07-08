@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { supabase } from '../../lib/supabase'
+import { getPublicBranch, getPublicBranchId } from '../../lib/branchDefaults'
 import toast from 'react-hot-toast'
 import './Categories.css'
 
@@ -154,6 +155,7 @@ const Categories = () => {
         .select('*')
         .eq('category_id', categoryId)
         .eq('branch_id', branchId)
+        .order('is_primary', { ascending: false })
         .order('image_order', { ascending: true })
 
       if (error) throw error
@@ -266,7 +268,9 @@ const Categories = () => {
     setUploading(true)
 
     try {
-      const branchId = isBranchManager ? appUser.branch_id : (selectedCategoryForImage?.selectedBranchId || branches[0]?.branch_id)
+      const branchId = isBranchManager
+        ? appUser.branch_id
+        : (selectedCategoryForImage?.selectedBranchId || getPublicBranchId(branches))
       const branchCode = branches.find(b => b.branch_id === branchId)?.branch_code || 'default'
       
       // Generate unique filename
@@ -284,17 +288,21 @@ const Categories = () => {
 
       if (uploadError) throw uploadError
 
-      // Add to category images state
+      // Add to category images state — new uploads become primary by default
       const newImage = {
         image_url: filePath,
         image_alt_text: file.name.replace(/\.[^/.]+$/, ''),
         image_order: categoryImages.filter(img => !img.toDelete).length + 1,
-        is_primary: categoryImages.filter(img => !img.toDelete).length === 0,
+        is_primary: true,
         file: file,
         isNew: true,
       }
 
-      setCategoryImages([...categoryImages, newImage])
+      setCategoryImages((prev) => {
+        const active = prev.filter((img) => !img.toDelete)
+        const demoted = active.map((img) => ({ ...img, is_primary: false }))
+        return [...demoted, newImage]
+      })
       toast.success('Image uploaded successfully')
     } catch (error) {
       toast.error('Error uploading image: ' + error.message)
@@ -425,14 +433,17 @@ const Categories = () => {
     const branchId = isBranchManager ? appUser.branch_id : null
     
     if (isAdmin) {
-      // For admin, we'll let them select a branch
-      setSelectedCategoryForImage({ ...category, selectedBranchId: branches[0]?.branch_id })
+      // Default to the public site branch (UK), not the first row in the table
+      setSelectedCategoryForImage({
+        ...category,
+        selectedBranchId: getPublicBranchId(branches)
+      })
     }
     
     // Fetch existing images for this category and branch
     const images = await fetchCategoryImages(
       category.category_id,
-      branchId || branches[0]?.branch_id
+      branchId || getPublicBranchId(branches)
     )
     setCategoryImages(images)
     setShowImageModal(true)
@@ -448,7 +459,7 @@ const Categories = () => {
       const categoryId = selectedCategoryForImage.category_id
       const branchId = isBranchManager 
         ? appUser?.branch_id 
-        : (selectedCategoryForImage.selectedBranchId || branches[0]?.branch_id)
+        : (selectedCategoryForImage.selectedBranchId || getPublicBranchId(branches))
 
       if (!categoryId || !branchId) {
         toast.error('Category or branch information is missing')
@@ -530,28 +541,28 @@ const Categories = () => {
   }
 
   const getPrimaryImage = (categoryId) => {
-    // Try branch manager first
+    const branchIds = []
+
     if (isBranchManager && appUser?.branch_id) {
-      const key = `${categoryId}_${appUser.branch_id}`
-      const images = categoryImagesMap[key] || []
-      if (images && images.length > 0) {
-        const primary = images.find(img => img.is_primary) || images[0]
-        return primary
-      }
-    }
-    
-    // For admin, show first available image from any branch
-    if (isAdmin && branches.length > 0) {
-      for (const branch of branches) {
-        const key = `${categoryId}_${branch.branch_id}`
-        const images = categoryImagesMap[key] || []
-        if (images && images.length > 0) {
-          const primary = images.find(img => img.is_primary) || images[0]
-          return primary
+      branchIds.push(appUser.branch_id)
+    } else if (isAdmin && branches.length > 0) {
+      const publicBranchId = getPublicBranchId(branches)
+      if (publicBranchId) branchIds.push(publicBranchId)
+      branches.forEach((branch) => {
+        if (!branchIds.includes(branch.branch_id)) {
+          branchIds.push(branch.branch_id)
         }
+      })
+    }
+
+    for (const branchId of branchIds) {
+      const key = `${categoryId}_${branchId}`
+      const images = categoryImagesMap[key] || []
+      if (images.length > 0) {
+        return images.find((img) => img.is_primary) || images[0]
       }
     }
-    
+
     return null
   }
 

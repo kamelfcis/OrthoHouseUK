@@ -21,16 +21,23 @@
 }
 
 .home-accreditations__icon {
-  width: 64px;
-  height: 64px;
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--ds-gradient-brand-soft);
-  color: var(--ds-brand-600);
-  font-size: 1.5rem;
+  background: #ffffff;
   border: 1px solid var(--ds-brand-100);
+  box-shadow: var(--ds-shadow-sm);
+  padding: var(--ds-space-2);
+  overflow: hidden;
+}
+
+.home-accreditations__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .home-accreditations__title {

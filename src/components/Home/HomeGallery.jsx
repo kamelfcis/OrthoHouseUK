@@ -92,7 +92,7 @@ const HomeGallery = ({ branchData }) => {
     return (
       <section className="home-gallery-section" ref={sectionRef}>
         <div className="home-gallery-heading">
-          <span className="home-gallery-tag">Inside OrthoHouse</span>
+          <span className="home-gallery-tag">Inside ORTHOHOUSE</span>
           <h3 className="home-gallery-title">Our Gallery</h3>
           <p className="home-gallery-subtitle">Discover moments from our labs, clinics, and community outreach.</p>
         </div>
@@ -118,7 +118,7 @@ const HomeGallery = ({ branchData }) => {
       </div>
 
       <div className="home-gallery-heading">
-        <span className="home-gallery-tag">Inside OrthoHouse</span>
+        <span className="home-gallery-tag">Inside ORTHOHOUSE</span>
         <h3 className="home-gallery-title">Our Gallery</h3>
         <p className="home-gallery-subtitle">Discover moments from our labs, clinics, and community outreach.</p>
       </div>

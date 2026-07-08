@@ -47,7 +47,7 @@ const SplashScreen = () => {
           <div className="splash-logo-wrapper">
             <img
               src="/assets/images/Logo_SVG.svg"
-              alt="OrthoHouse UK Logo"
+              alt="ORTHOHOUSE UK Logo"
               className="splash-logo-spinning"
               width={200}
               height={200}

@@ -96,9 +96,7 @@ const HeroSlider = ({ slides, videoSlides = [], onSlideChange }) => {
 
   const slideList = useMemo(() => {
     if (useVideoMode) return videoSlides
-    if (slides?.length) return slides
-    if (Array.isArray(slides) && slides.length === 0) return []
-    return FALLBACK_SLIDES
+    return slides?.length ? slides : FALLBACK_SLIDES
   }, [useVideoMode, videoSlides, slides])
 
   const slideCount = slideList.length
@@ -176,7 +174,7 @@ const HeroSlider = ({ slides, videoSlides = [], onSlideChange }) => {
         className={`hero-slider${isVideoCarousel ? ' hero-slider--video' : ''}`}
         role="region"
         aria-roledescription="carousel"
-        aria-label="Hero imagery — OrthoHouse UK"
+        aria-label="Hero imagery — ORTHOHOUSE UK"
       >
         {slideList.map((slide, index) => {
           const isActive = index === activeIdx
@@ -203,6 +201,31 @@ const HeroSlider = ({ slides, videoSlides = [], onSlideChange }) => {
           )
         })}
       </div>
+
+      {slideCount > 1 && (
+        <div className="hero-slider-dots" role="tablist" aria-label="Choose a slide">
+          {slideList.map((slide, i) => (
+            <button
+              key={slide.id}
+              type="button"
+              role="tab"
+              className={`hero-dot${i === activeIdx ? ' is-active' : ''}`}
+              aria-selected={i === activeIdx}
+              aria-label={`Go to slide ${i + 1}: ${slide.eyebrow}`}
+              onClick={() => goTo(i)}
+            >
+              {i === activeIdx && !reduced && (
+                <span
+                  className="hero-dot-progress"
+                  aria-hidden="true"
+                  style={{ animationDuration: `${autoplayDelay}ms` }}
+                  key={`progress-${activeIdx}`}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
 
       {activeSlide?.credit && (
         <a

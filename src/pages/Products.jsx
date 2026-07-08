@@ -92,6 +92,25 @@ const buildProductImageMap = (rows) => {
   return map
 }
 
+const buildCategoryImageMap = (rows) => {
+  const map = {}
+
+  const assignImage = (img) => {
+    if (map[img.category_id]) return
+    const url = toPublicStorageUrl('category-images', img.image_url, {
+      cacheKey: img.image_id ?? img.updated_at ?? img.image_url
+    })
+    if (url) map[img.category_id] = url
+  }
+
+  rows?.forEach((img) => {
+    if (img.is_primary) assignImage(img)
+  })
+  rows?.forEach((img) => assignImage(img))
+
+  return map
+}
+
 const transformBranchProducts = (branchProducts, productImagesMap) =>
   (branchProducts || [])
     .map((bp) => {
@@ -120,6 +139,8 @@ const Products = () => {
   const categoryParam = searchParams.get('category')
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
+  const [categoryImages, setCategoryImages] = useState({})
+  const [failedCategoryImages, setFailedCategoryImages] = useState(() => new Set())
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [loading, setLoading] = useState(true)
   const [ukBranch, setUkBranch] = useState(null)
@@ -183,44 +204,55 @@ const Products = () => {
       const useCachedProducts = Array.isArray(cached?.products)
       const useCachedImages = cached?.productImages != null
 
-      const [categoriesResult, productsResult, imagesResult] = await Promise.all([
-        supabase
-          .from('product_categories')
-          .select('*')
-          .eq('is_active', true)
-          .order('category_name'),
+      const [categoriesResult, categoryImagesResult, productsResult, imagesResult] =
+        await Promise.all([
+          supabase
+            .from('product_categories')
+            .select('*')
+            .eq('is_active', true)
+            .order('category_name'),
 
-        useCachedProducts
-          ? Promise.resolve({ data: cached.products, error: null })
-          : supabase
-              .from('branch_products')
-              .select(`
-                *,
-                products (
+          supabase
+            .from('category_images')
+            .select('image_id, category_id, image_url, is_primary, image_order')
+            .eq('branch_id', branch.branch_id)
+            .order('is_primary', { ascending: false })
+            .order('image_order', { ascending: true }),
+
+          useCachedProducts
+            ? Promise.resolve({ data: cached.products, error: null })
+            : supabase
+                .from('branch_products')
+                .select(`
                   *,
-                  product_categories (*),
-                  partners (*)
-                )
-              `)
-              .eq('branch_id', branch.branch_id)
-              .eq('is_available', true)
-              .eq('is_public', true),
+                  products (
+                    *,
+                    product_categories (*),
+                    partners (*)
+                  )
+                `)
+                .eq('branch_id', branch.branch_id)
+                .eq('is_available', true)
+                .eq('is_public', true),
 
-        useCachedImages
-          ? Promise.resolve({ data: null, error: null })
-          : supabase
-              .from('product_images')
-              .select('*')
-              .eq('branch_id', branch.branch_id)
-              .order('is_primary', { ascending: false })
-              .order('image_order', { ascending: true })
-      ])
+          useCachedImages
+            ? Promise.resolve({ data: null, error: null })
+            : supabase
+                .from('product_images')
+                .select('*')
+                .eq('branch_id', branch.branch_id)
+                .order('is_primary', { ascending: false })
+                .order('image_order', { ascending: true })
+        ])
 
       if (categoriesResult.error) throw categoriesResult.error
+      if (categoryImagesResult.error) throw categoryImagesResult.error
       if (productsResult.error) throw productsResult.error
       if (imagesResult.error) throw imagesResult.error
 
       setCategories(categoriesResult.data || [])
+      setCategoryImages(buildCategoryImageMap(categoryImagesResult.data))
+      setFailedCategoryImages(new Set())
 
       const productImagesMap = useCachedImages
         ? cached.productImages
@@ -242,16 +274,31 @@ const Products = () => {
   const handleCategoryClick = (categoryId) => {
     if (selectedCategory === categoryId) {
       setSelectedCategory(null)
-    } else {
-      setSelectedCategory(categoryId)
+      return
     }
 
+    setSelectedCategory(categoryId)
     scrollToProductsSection()
   }
 
-  const filteredProducts = selectedCategory
-    ? products.filter(p => p.categoryId === selectedCategory)
-    : products
+  const handleClearFilter = () => {
+    setSelectedCategory(null)
+  }
+
+  const handleCategoryImageError = (categoryId) => {
+    setFailedCategoryImages((prev) => {
+      if (prev.has(categoryId)) return prev
+      const next = new Set(prev)
+      next.add(categoryId)
+      return next
+    })
+  }
+
+  const hasSelectedFilter = selectedCategory !== null
+
+  const filteredProducts = hasSelectedFilter
+    ? products.filter((product) => product.categoryId === selectedCategory)
+    : []
 
   return (
       <div className="products-page">
@@ -264,12 +311,15 @@ const Products = () => {
         <div className="container">
           {categories.length > 0 && (
             <div className="categories-filter-section" role="group" aria-label={productsPage.filterTitle}>
-              <h3 className="categories-filter-title">{productsPage.filterTitle}</h3>
               <div className="categories-grid">
                 {categories.map((category) => {
                   const isActive = selectedCategory === category.category_id
                   const variant = getCategoryVariant(category)
-                  const svgSrc = getCategorySvg(variant)
+                  const supabaseImage = failedCategoryImages.has(category.category_id)
+                    ? null
+                    : categoryImages[category.category_id]
+                  const svgSrc = supabaseImage ? null : getCategorySvg(variant)
+                  const hasPhoto = Boolean(supabaseImage)
 
                   return (
                     <button
@@ -286,17 +336,34 @@ const Products = () => {
                         </span>
                       )}
                       <div
-                        className={`category-watermark category-watermark--${variant}${svgSrc ? ' category-watermark--has-svg' : ''}`}
+                        className={`category-watermark category-watermark--${variant}${
+                          hasPhoto
+                            ? ' category-watermark--has-photo'
+                            : svgSrc
+                              ? ' category-watermark--has-svg'
+                              : ''
+                        }`}
                         aria-hidden="true"
                       >
-                        {svgSrc && (
+                        {hasPhoto ? (
                           <img
-                            src={svgSrc}
+                            src={supabaseImage}
                             alt=""
-                            className="category-watermark-svg"
+                            className="category-watermark-photo"
                             loading="lazy"
                             decoding="async"
+                            onError={() => handleCategoryImageError(category.category_id)}
                           />
+                        ) : (
+                          svgSrc && (
+                            <img
+                              src={svgSrc}
+                              alt=""
+                              className="category-watermark-svg"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          )
                         )}
                       </div>
                       <span className="category-filter-name">{category.category_name}</span>
@@ -308,7 +375,7 @@ const Products = () => {
                 <button
                   type="button"
                   className="ds-btn ds-btn--ghost clear-category-filter"
-                  onClick={() => setSelectedCategory(null)}
+                  onClick={handleClearFilter}
                 >
                   <i className="fas fa-times" aria-hidden="true" /> {productsPage.clearFilter}
                 </button>
@@ -316,29 +383,38 @@ const Products = () => {
             </div>
           )}
 
-          <div ref={productsSectionRef}>
+          <div
+            ref={productsSectionRef}
+            className="products-results-section"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             {loading ? (
               <div className="products-skeleton-grid" aria-busy="true" aria-label={productsPage.loading}>
                 {[1, 2, 3, 4, 5, 6].map((n) => (
                   <div key={n} className="products-skeleton-card" />
                 ))}
               </div>
+            ) : !hasSelectedFilter ? (
+              <EmptyState
+                icon="fa-hand-pointer"
+                title={productsPage.selectCategoryTitle}
+                message={productsPage.selectCategoryPrompt}
+              />
             ) : filteredProducts.length === 0 ? (
               <EmptyState
                 icon="fa-box-open"
                 title="No products found"
-                message={selectedCategory ? productsPage.emptyCategory : productsPage.emptyAll}
+                message={productsPage.emptyCategory}
               />
             ) : (
               <div className="products-section">
-                {selectedCategory && (
-                  <div className="filter-info">
-                    {productsPage.filterInfo(
-                      filteredProducts.length,
-                      categories.find(c => c.category_id === selectedCategory)?.category_name
-                    )}
-                  </div>
-                )}
+                <div className="filter-info">
+                  {productsPage.filterInfo(
+                    filteredProducts.length,
+                    categories.find((category) => category.category_id === selectedCategory)?.category_name
+                  )}
+                </div>
                 <div className="products-grid" role="list">
                   {filteredProducts.map((product) => (
                     <ProductCard

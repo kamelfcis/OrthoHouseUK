@@ -9,9 +9,9 @@ export const generateOrganizationSchema = (branchData) => {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'OrthoHouse UK',
-    alternateName: ['OrthoHouse UK', 'OrthoHouse', 'orthohouseuk'],
-    legalName: 'OrthoHouse UK',
+    name: 'ORTHOHOUSE UK',
+    alternateName: ['ORTHOHOUSE UK', 'ORTHOHOUSE', 'orthohouseuk'],
+    legalName: 'ORTHOHOUSE UK',
     url: siteUrl,
     logo: `${siteUrl}/assets/images/logo.png`,
     description: defaultSeo.description,
@@ -40,8 +40,8 @@ export const generateWebsiteSchema = () => {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'OrthoHouse UK',
-    alternateName: ['OrthoHouse UK', 'orthohouseuk'],
+    name: 'ORTHOHOUSE UK',
+    alternateName: ['ORTHOHOUSE UK', 'orthohouseuk'],
     url: siteUrl,
     description: defaultSeo.description.split('.')[0] + '.',
     potentialAction: {
@@ -79,7 +79,7 @@ export const generateProductSchema = (product, branchData) => {
     image: product.image ? [product.image] : [],
     brand: {
       '@type': 'Brand',
-      name: product.partner || 'Ortho House'
+      name: product.partner || 'ORTHOHOUSE'
     },
     category: product.category || '',
     sku: product.product_code || '',
@@ -105,11 +105,11 @@ export const generateArticleSchema = (blog) => {
     dateModified: blog.date || new Date().toISOString(),
     author: {
       '@type': 'Person',
-      name: blog.author || 'OrthoHouse Team'
+      name: blog.author || 'ORTHOHOUSE Team'
     },
     publisher: {
       '@type': 'Organization',
-      name: 'OrthoHouse',
+      name: 'ORTHOHOUSE',
       logo: {
         '@type': 'ImageObject',
         url: `${siteUrl}/assets/images/logo.png`
@@ -132,7 +132,7 @@ export const generateServiceSchema = (service) => {
     description: service.description || '',
     provider: {
       '@type': 'Organization',
-      name: 'Ortho House'
+      name: 'ORTHOHOUSE'
     },
     areaServed: {
       '@type': 'Country',
@@ -149,9 +149,9 @@ export const generateLocalBusinessSchema = (branchData) => {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     '@id': `${siteUrl}#organization`,
-    name: 'OrthoHouse UK',
-    alternateName: ['Ortho House UK', 'OrthoHouse', 'orthohouseuk'],
-    legalName: 'OrthoHouse UK',
+    name: 'ORTHOHOUSE UK',
+    alternateName: ['ORTHOHOUSE UK', 'ORTHOHOUSE', 'orthohouseuk'],
+    legalName: 'ORTHOHOUSE UK',
     image: `${siteUrl}/assets/images/logo.png`,
     url: siteUrl,
     telephone: branchData?.companyInfo?.phone || '',

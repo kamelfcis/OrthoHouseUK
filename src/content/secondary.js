@@ -2,7 +2,7 @@ export const teamPage = {
   seo: {
     title: 'Our Team',
     description:
-      'Meet the OrthoHouse UK team — specialists in orthopaedic distribution, regulatory compliance, and clinical support across the United Kingdom.'
+      'Meet the ORTHOHOUSE UK team — specialists in orthopaedic distribution, regulatory compliance, and clinical support across the United Kingdom.'
   },
   hero: {
     title: 'Our Team',
@@ -64,7 +64,7 @@ export const testimonialsPage = {
   seo: {
     title: 'Testimonials',
     description:
-      'Hear from surgeons, hospital procurement teams, and manufacturing partners about working with OrthoHouse UK.'
+      'Hear from surgeons, hospital procurement teams, and manufacturing partners about working with ORTHOHOUSE UK.'
   },
   hero: {
     title: 'Testimonials',
@@ -74,7 +74,7 @@ export const testimonialsPage = {
     {
       name: 'Mr Andrew Fletcher',
       role: 'Consultant Trauma Surgeon, NHS Trust',
-      text: 'OrthoHouse UK provides reliable access to quality trauma systems with responsive clinical support. Their regulatory expertise gives us confidence in every product we use.',
+      text: 'ORTHOHOUSE UK provides reliable access to quality trauma systems with responsive clinical support. Their regulatory expertise gives us confidence in every product we use.',
       rating: 5
     },
     {
@@ -86,19 +86,19 @@ export const testimonialsPage = {
     {
       name: 'Dr Marco Benedetti',
       role: 'Manufacturing Partner — Arthroplasty',
-      text: 'OrthoHouse UK has been an outstanding UK distribution partner. Their MHRA registration and surgeon education programmes have accelerated our market presence.',
+      text: 'ORTHOHOUSE UK has been an outstanding UK distribution partner. Their MHRA registration and surgeon education programmes have accelerated our market presence.',
       rating: 5
     },
     {
       name: 'Mr James Okonkwo',
       role: 'Consultant Foot & Ankle Surgeon',
-      text: 'From product training to theatre support, OrthoHouse UK understands what surgeons need. A genuinely collaborative approach to patient care.',
+      text: 'From product training to theatre support, ORTHOHOUSE UK understands what surgeons need. A genuinely collaborative approach to patient care.',
       rating: 5
     },
     {
       name: 'Helen Crawford',
       role: 'Hospital Supplies Coordinator',
-      text: 'Professional, knowledgeable, and always available when we need assistance. OrthoHouse UK has become an essential part of our supply chain.',
+      text: 'Professional, knowledgeable, and always available when we need assistance. ORTHOHOUSE UK has become an essential part of our supply chain.',
       rating: 5
     }
   ]
@@ -108,7 +108,7 @@ export const galleryPage = {
   seo: {
     title: 'Gallery',
     description:
-      'Events, conferences, and clinical education moments from OrthoHouse UK across the orthopaedic community.'
+      'Events, conferences, and clinical education moments from ORTHOHOUSE UK across the orthopaedic community.'
   },
   hero: {
     eyebrow: 'Events & Education',

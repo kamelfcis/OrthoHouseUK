@@ -6,7 +6,7 @@ export const teamPage = {
       name: 'James Mitchell',
       role: 'UK Commercial Director',
       image: '/assets/images/team-1.jpg',
-      bio: 'James leads OrthoHouse UK\'s commercial strategy, building partnerships with NHS trusts and private hospitals. With over 18 years in orthopaedic medical device distribution, he specialises in trauma and arthroplasty portfolio development.',
+      bio: 'James leads ORTHOHOUSE UK\'s commercial strategy, building partnerships with NHS trusts and private hospitals. With over 18 years in orthopaedic medical device distribution, he specialises in trauma and arthroplasty portfolio development.',
       credentials: 'MBA, BSc Biomedical Sciences',
       experience: '18+ years',
       social: {
@@ -30,7 +30,7 @@ export const teamPage = {
       name: 'David Okonkwo',
       role: 'Regulatory & Quality Lead',
       image: '/assets/images/team-3.jpg',
-      bio: 'David oversees MHRA compliance and UK Responsible Person services for OrthoHouse UK\'s partner portfolio. He ensures every product meets post-Brexit regulatory requirements for UK distribution.',
+      bio: 'David oversees MHRA compliance and UK Responsible Person services for ORTHOHOUSE UK\'s partner portfolio. He ensures every product meets post-Brexit regulatory requirements for UK distribution.',
       credentials: 'MSc Regulatory Affairs, RAC',
       experience: '14+ years',
       social: {
@@ -66,7 +66,7 @@ export const teamPage = {
       name: 'Dr Priya Sharma',
       role: 'Education & Events Coordinator',
       image: '/assets/images/team-6.jpg',
-      bio: 'Dr Sharma coordinates OrthoHouse UK\'s educational events programme — from BOA Congress to regional training workshops. She develops CPD-accredited content for surgeons and clinical teams.',
+      bio: 'Dr Sharma coordinates ORTHOHOUSE UK\'s educational events programme — from BOA Congress to regional training workshops. She develops CPD-accredited content for surgeons and clinical teams.',
       credentials: 'PhD Biomedical Engineering',
       experience: '11+ years',
       social: {

@@ -1,26 +1,187 @@
+/* —— Testimonials — futuristic reactive slider ————————————————————————————— */
+
+.home-testimonials {
+  --tst-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tst-duration: 0.3s;
+  --tst-accent: var(--ds-brand-400);
+  --tst-accent-strong: var(--ds-brand-600);
+  --tst-glow-a: rgba(45, 173, 213, 0.32);
+  --tst-glow-b: rgba(0, 95, 154, 0.26);
+}
+
 .home-testimonials__panel {
   max-width: 760px;
   margin-inline: auto;
   text-align: center;
 }
 
-.home-testimonials__quote {
-  margin: 0;
-  padding: clamp(var(--ds-space-8), 4vw, var(--ds-space-12));
-  background: var(--ds-surface);
-  border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-xl);
-  box-shadow: var(--ds-shadow-sm);
+/* —— Stage — tilt/parallax host + ambient glow ————————————————————————————— */
+
+.home-testimonials__stage {
+  position: relative;
+  perspective: 1400px;
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 500ms var(--tst-ease);
+  will-change: transform;
 }
 
-.home-testimonials__quote p {
-  font-size: var(--ds-text-lg);
-  line-height: var(--ds-leading-relaxed);
-  color: var(--ds-text);
-  margin: 0 0 var(--ds-space-6);
-  text-wrap: pretty;
-  font-style: normal;
+.home-testimonials__glow {
+  position: absolute;
+  z-index: 0;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: 0.4;
+  pointer-events: none;
+  animation: tst-glow-pulse 6.5s ease-in-out infinite;
 }
+
+.home-testimonials__glow--a {
+  top: -12%;
+  left: -10%;
+  background: radial-gradient(circle, var(--tst-glow-a) 0%, transparent 70%);
+}
+
+.home-testimonials__glow--b {
+  bottom: -16%;
+  right: -8%;
+  background: radial-gradient(circle, var(--tst-glow-b) 0%, transparent 70%);
+  animation-delay: 3.2s;
+}
+
+@keyframes tst-glow-pulse {
+  0%, 100% { opacity: 0.32; transform: scale(1); }
+  50% { opacity: 0.56; transform: scale(1.14); }
+}
+
+/* —— Card — gradient border + HUD corner brackets ——————————————————————————— */
+
+.home-testimonials__quote {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: clamp(2.5rem, 4.5vw, 3.5rem) clamp(1.75rem, 4vw, 3rem) clamp(2.25rem, 4vw, 3rem);
+  background:
+    linear-gradient(180deg, var(--ds-surface) 0%, var(--ds-surface-muted) 100%) padding-box,
+    linear-gradient(150deg, rgba(45, 173, 213, 0.55) 0%, rgba(0, 95, 154, 0.1) 45%, rgba(45, 173, 213, 0.45) 100%) border-box;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-xl);
+  box-shadow: var(--ds-shadow-md);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: box-shadow var(--tst-duration) var(--tst-ease);
+}
+
+.home-testimonials__stage:hover .home-testimonials__quote,
+.home-testimonials__stage:focus-within .home-testimonials__quote {
+  box-shadow: var(--ds-shadow-lg), 0 0 28px rgba(45, 173, 213, 0.18);
+}
+
+/* HUD corner brackets */
+.home-testimonials__quote::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  background:
+    linear-gradient(to right, var(--tst-accent-strong) 2px, transparent 2px) top 14px left 14px / 18px 2px no-repeat,
+    linear-gradient(to bottom, var(--tst-accent-strong) 2px, transparent 2px) top 14px left 14px / 2px 18px no-repeat,
+    linear-gradient(to left, var(--tst-accent-strong) 2px, transparent 2px) top 14px right 14px / 18px 2px no-repeat,
+    linear-gradient(to bottom, var(--tst-accent-strong) 2px, transparent 2px) top 14px right 14px / 2px 18px no-repeat,
+    linear-gradient(to right, var(--tst-accent-strong) 2px, transparent 2px) bottom 14px left 14px / 18px 2px no-repeat,
+    linear-gradient(to top, var(--tst-accent-strong) 2px, transparent 2px) bottom 14px left 14px / 2px 18px no-repeat,
+    linear-gradient(to left, var(--tst-accent-strong) 2px, transparent 2px) bottom 14px right 14px / 18px 2px no-repeat,
+    linear-gradient(to top, var(--tst-accent-strong) 2px, transparent 2px) bottom 14px right 14px / 2px 18px no-repeat;
+  opacity: 0.32;
+  pointer-events: none;
+  transition: opacity var(--tst-duration) var(--tst-ease);
+}
+
+.home-testimonials__stage:hover .home-testimonials__quote::before,
+.home-testimonials__stage:focus-within .home-testimonials__quote::before {
+  opacity: 0.85;
+}
+
+/* Faint scanline texture */
+.home-testimonials__quote::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0, 95, 154, 0.03) 0px,
+    rgba(0, 95, 154, 0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Slide + fade + scale + subtle 3D entrance, direction-aware via --dir */
+.home-testimonials__quote.is-animated {
+  animation: tst-card-in 650ms var(--tst-ease) both;
+}
+
+@keyframes tst-card-in {
+  0% {
+    opacity: 0;
+    transform: translateX(calc(var(--dir, 1) * 34px)) scale(0.95) rotateY(calc(var(--dir, 1) * -5deg));
+    filter: blur(5px);
+  }
+  60% {
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotateY(0deg);
+    filter: blur(0);
+  }
+}
+
+.home-testimonials__content {
+  position: relative;
+  z-index: 1;
+}
+
+/* —— Quote glyph —————————————————————————————————————————————————————————— */
+
+.home-testimonials__quote-glyph {
+  position: absolute;
+  top: clamp(0.75rem, 2vw, 1.25rem);
+  left: clamp(1rem, 2.5vw, 1.75rem);
+  z-index: 1;
+  font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+  line-height: 1;
+  background: linear-gradient(135deg, var(--ds-brand-400), var(--ds-brand-700));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0.18;
+  pointer-events: none;
+  user-select: none;
+}
+
+.home-testimonials__quote.is-animated .home-testimonials__quote-glyph {
+  animation:
+    tst-fade-up 500ms ease-out 60ms both,
+    tst-glyph-pulse 5s ease-in-out 750ms infinite;
+}
+
+@keyframes tst-glyph-pulse {
+  0%, 100% { opacity: 0.16; }
+  50% { opacity: 0.28; }
+}
+
+@keyframes tst-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* —— Rating stars — sequential pop-in + gentle glow ————————————————————————— */
 
 .home-testimonials__rating {
   display: flex;
@@ -31,10 +192,80 @@
   margin-bottom: var(--ds-space-5);
 }
 
+.home-testimonials__quote.is-animated .home-testimonials__rating .fa-star {
+  opacity: 0;
+  animation:
+    tst-star-pop 420ms cubic-bezier(0.34, 1.56, 0.64, 1) both,
+    tst-star-glow 3.2s ease-in-out 900ms infinite;
+  animation-delay: calc(160ms + (var(--i, 0) * 80ms)), calc(900ms + (var(--i, 0) * 80ms));
+}
+
+@keyframes tst-star-pop {
+  0% { opacity: 0; transform: scale(0.2) rotate(-30deg); }
+  65% { opacity: 1; transform: scale(1.25) rotate(8deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes tst-star-glow {
+  0%, 100% { text-shadow: 0 0 0 rgba(230, 168, 23, 0); }
+  50% { text-shadow: 0 0 8px rgba(230, 168, 23, 0.55); }
+}
+
+/* —— Quote text ——————————————————————————————————————————————————————————— */
+
+.home-testimonials__quote p {
+  font-size: var(--ds-text-lg);
+  line-height: var(--ds-leading-relaxed);
+  color: var(--ds-text);
+  margin: 0 0 var(--ds-space-6);
+  text-wrap: pretty;
+  font-style: normal;
+}
+
+.home-testimonials__quote.is-animated p {
+  opacity: 0;
+  animation: tst-fade-up 520ms ease-out 260ms both;
+}
+
+/* —— Laser underline divider ————————————————————————————————————————————— */
+
+.home-testimonials__divider {
+  display: block;
+  width: 56px;
+  height: 2px;
+  margin: 0 auto var(--ds-space-5);
+  border-radius: var(--ds-radius-pill);
+  background: linear-gradient(90deg, transparent, var(--tst-accent-strong), transparent);
+  background-size: 220% 100%;
+  transform-origin: center;
+}
+
+.home-testimonials__quote.is-animated .home-testimonials__divider {
+  animation:
+    tst-divider-grow 480ms var(--tst-ease) 340ms both,
+    tst-divider-sweep 2.6s linear 1s infinite;
+}
+
+@keyframes tst-divider-grow {
+  to { transform: scaleX(1); }
+}
+
+@keyframes tst-divider-sweep {
+  0% { background-position: 220% 0; }
+  100% { background-position: -220% 0; }
+}
+
+/* —— Author ——————————————————————————————————————————————————————————————— */
+
 .home-testimonials__author {
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-1);
+}
+
+.home-testimonials__quote.is-animated .home-testimonials__author {
+  opacity: 0;
+  animation: tst-fade-up 520ms ease-out 420ms both;
 }
 
 .home-testimonials__name {
@@ -49,14 +280,18 @@
   color: var(--ds-text-muted);
 }
 
+/* —— Dot navigation — progress ring + glow pulse ———————————————————————————— */
+
 .home-testimonials__nav {
   display: flex;
   justify-content: center;
-  gap: var(--ds-space-2);
+  align-items: center;
+  gap: var(--ds-space-4);
   margin-top: var(--ds-space-6);
 }
 
 .home-testimonials__dot {
+  position: relative;
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -64,22 +299,126 @@
   padding: 0;
   background: var(--ds-ink-300);
   cursor: pointer;
+  overflow: visible;
   transition:
     background var(--ds-duration) var(--ds-ease-out),
-    transform var(--ds-duration) var(--ds-ease-out);
+    transform var(--ds-duration) var(--ds-ease-out),
+    box-shadow var(--ds-duration) var(--ds-ease-out);
 }
 
 .home-testimonials__dot.is-active {
   background: var(--ds-brand-600);
   transform: scale(1.25);
+  animation: tst-dot-glow 2.4s ease-out infinite;
 }
 
 .home-testimonials__dot:hover:not(.is-active) {
   background: var(--ds-brand-300);
+  transform: scale(1.15);
+  box-shadow: 0 0 0 4px rgba(45, 173, 213, 0.16);
 }
 
+.home-testimonials__dot:focus-visible {
+  outline: 2px solid var(--ds-brand-500);
+  outline-offset: 3px;
+}
+
+@keyframes tst-dot-glow {
+  0% { box-shadow: 0 0 0 0 rgba(0, 95, 154, 0.35); }
+  70% { box-shadow: 0 0 0 7px rgba(0, 95, 154, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 95, 154, 0); }
+}
+
+.home-testimonials__dot-ring {
+  position: absolute;
+  inset: -6px;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  transform: rotate(-90deg);
+}
+
+.home-testimonials__dot-ring-track {
+  fill: none;
+  stroke: var(--ds-ink-200);
+  stroke-width: 1.5;
+  opacity: 0.6;
+}
+
+.home-testimonials__dot-ring-fill {
+  fill: none;
+  stroke: var(--tst-accent-strong);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  animation: tst-ring-fill linear forwards;
+}
+
+@keyframes tst-ring-fill {
+  to { stroke-dashoffset: 0; }
+}
+
+/* —— Mobile — simpler, tasteful animation ——————————————————————————————————— */
+
+@media (max-width: 767px) {
+  .home-testimonials__glow {
+    filter: blur(32px);
+    opacity: 0.3;
+  }
+
+  .home-testimonials__quote::before {
+    background-size: 13px 2px, 2px 13px, 13px 2px, 2px 13px, 13px 2px, 2px 13px, 13px 2px, 2px 13px;
+  }
+
+  .home-testimonials__quote.is-animated {
+    animation-duration: 500ms;
+  }
+
+  @keyframes tst-card-in {
+    0% {
+      opacity: 0;
+      transform: translateY(10px) scale(0.97);
+      filter: blur(3px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+}
+
+/* —— Reduced motion — disable all non-essential animation ——————————————————— */
+
 @media (prefers-reduced-motion: reduce) {
+  .home-testimonials__stage {
+    transition: none;
+    transform: none;
+  }
+
+  .home-testimonials__glow {
+    animation: none;
+    opacity: 0.24;
+  }
+
+  .home-testimonials__quote,
+  .home-testimonials__quote::before,
+  .home-testimonials__quote::after {
+    transition: none;
+  }
+
+  .home-testimonials__quote::before {
+    opacity: 0.5;
+  }
+
   .home-testimonials__dot {
     transition: none;
+  }
+
+  .home-testimonials__dot.is-active {
+    animation: none;
+  }
+
+  .home-testimonials__divider {
+    transform: scaleX(1);
   }
 }

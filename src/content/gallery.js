@@ -1,7 +1,7 @@
 export const galleryPage = {
   hero: {
     eyebrow: 'Visual Collection',
-    titleLine1: 'OrthoHouse UK',
+    titleLine1: 'ORTHOHOUSE UK',
     titleLine2: 'In the Field',
     subtitle:
       'Conference highlights, product showcases, and moments from the UK orthopaedic community — where clinicians and innovation meet.',

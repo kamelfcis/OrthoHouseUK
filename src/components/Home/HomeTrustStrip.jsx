@@ -38,7 +38,7 @@ const HomeTrustStrip = ({ branchData }) => {
     <section
       className="home-trust-strip"
       ref={ref}
-      aria-label="OrthoHouse UK at a glance"
+      aria-label="ORTHOHOUSE UK at a glance"
     >
       <div className="container">
         <motion.ul className="home-trust-strip__list" {...motionProps}>

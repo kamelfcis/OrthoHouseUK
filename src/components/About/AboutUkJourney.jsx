@@ -58,7 +58,6 @@ const AboutUkJourney = () => {
                     {milestone.date}
                   </time>
                   <h3 className="about-uk-journey__step-title">{milestone.title}</h3>
-                  <p className="about-uk-journey__step-desc">{milestone.description}</p>
                 </article>
               </li>
             ))}
