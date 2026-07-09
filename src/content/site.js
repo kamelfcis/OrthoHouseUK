@@ -36,13 +36,6 @@ export const footer = {
         { name: 'About Us', path: '/about' },
         { name: 'Contact Us', path: '/contact' }
       ]
-    },
-    resources: {
-      title: 'Resources',
-      links: [
-        { name: 'Blog', path: '/blog' },
-        { name: 'Partners', path: '/partners' }
-      ]
     }
   },
   contact: {

@@ -37,7 +37,6 @@ const HomeAccreditations = () => {
                 />
               </div>
               <h3 className="home-accreditations__title">{item.title}</h3>
-              <p className="home-accreditations__desc">{item.description}</p>
             </li>
           ))}
         </ul>

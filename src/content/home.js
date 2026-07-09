@@ -204,24 +204,18 @@ export const homeAccreditations = {
     {
       id: 'mhra',
       title: 'MHRA registered',
-      description:
-        'Registered as an MHRA distributor and UK Responsible Person (UKRP) for medical devices.',
       image: '/assets/images/accreditations/mhra-logo.png',
       imageAlt: 'MHRA logo'
     },
     {
       id: 'nhs-scotland',
       title: 'NHS Scotland approved',
-      description:
-        'Approved supplier on the NHS Scotland Orthopaedic Trauma & Extremity framework.',
       image: '/assets/images/accreditations/nhs-logo.png',
       imageAlt: 'NHS logo'
     },
     {
       id: 'ukrp',
       title: 'UK Responsible Person',
-      description:
-        'Full UKRP services ensuring post-Brexit regulatory compliance for our manufacturing partners.',
       image: '/assets/images/accreditations/iso-13485-badge.png',
       imageAlt: 'ISO 13485:2016 certification badge'
     }
