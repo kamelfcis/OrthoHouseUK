@@ -104,7 +104,6 @@ const HomeTestimonials = () => {
         <SectionHeading
           eyebrow={homeTestimonials.eyebrow}
           title={homeTestimonials.title}
-          subtitle={homeTestimonials.subtitle}
           titleId="home-testimonials-heading"
         />
 

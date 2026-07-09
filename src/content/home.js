@@ -225,8 +225,6 @@ export const homeAccreditations = {
 export const homeTestimonials = {
   eyebrow: 'What our partners say',
   title: 'Trusted by surgeons and hospital teams',
-  subtitle:
-    'Feedback from clinicians and procurement professionals who work with ORTHOHOUSE UK day to day.'
 }
 
 export const homeResources = {
