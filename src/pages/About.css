@@ -67,7 +67,8 @@
   z-index: 2;
   width: 100%;
   min-width: 0;
-  padding: clamp(96px, 12vw, 140px) 0 clamp(48px, 6vw, 72px);
+  /* padding-block only — preserves .container horizontal inset on desktop */
+  padding-block: clamp(96px, 12vw, 140px) clamp(48px, 6vw, 72px);
 }
 
 .about-hero__content {
@@ -116,7 +117,8 @@
   }
 
   .about-hero__container {
-    padding: clamp(76px, 16vw, 108px) 0 clamp(32px, 7vw, 48px);
+    padding-block: clamp(76px, 16vw, 108px) clamp(40px, 8vw, 52px);
+    padding-inline: var(--ds-space-6);
   }
 
   .about-hero__title {
@@ -148,7 +150,8 @@
   }
 
   .about-hero__container {
-    padding: clamp(68px, 20vw, 92px) 0 clamp(28px, 7vw, 40px);
+    padding-block: clamp(68px, 20vw, 92px) clamp(32px, 8vw, 44px);
+    padding-inline: var(--ds-space-5);
   }
 
   .about-hero__title {
@@ -157,6 +160,10 @@
 }
 
 @media (max-width: 380px) {
+  .about-hero__container {
+    padding-inline: var(--ds-space-4);
+  }
+
   .about-hero__title {
     font-size: clamp(1.6rem, 8.2vw, 1.9rem);
   }

@@ -1,6 +1,6 @@
 export const homeHero = {
   ariaLabel: 'ORTHOHOUSE UK — orthopaedic medical device distribution',
-  titleDefault: 'ORTHOHOUSE UK',
+  titleDefault: 'ORTHOHOUSE\nUK',
   titleFallback: 'Orthopaedic solutions for UK surgeons and hospitals'
 }
 

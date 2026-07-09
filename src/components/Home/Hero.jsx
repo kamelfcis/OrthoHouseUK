@@ -8,6 +8,24 @@ import { brandLogos } from '../../data/localAssets'
 import HeroSlider from './HeroSlider'
 import './Hero.css'
 
+const normalizeHeroTitle = (rawTitle) => {
+  if (!rawTitle) return null
+
+  const normalized = rawTitle
+    .replace(/Ortho\s*House/gi, 'ORTHOHOUSE')
+    .replace(/OrthoHouse/g, 'ORTHOHOUSE')
+    .replace(/ORTHO\s+HOUSE/gi, 'ORTHOHOUSE')
+    .trim()
+
+  if (!normalized) return null
+
+  if (/^ORTHOHOUSE\s+UK$/i.test(normalized)) {
+    return 'ORTHOHOUSE\nUK'
+  }
+
+  return normalized
+}
+
 const Hero = ({ branchData }) => {
   const [slides, setSlides] = useState(HERO_SLIDES)
   const [scrolled, setScrolled] = useState(false)
@@ -33,10 +51,8 @@ const Hero = ({ branchData }) => {
   }, [])
 
   const heroContent = branchData?.pageContent?.hero || {}
-  const branchName = branchData?.branch?.branch_name
   const title =
-    heroContent.content_title ||
-    (branchName ? `ORTHOHOUSE ${branchName}` : homeHero.titleFallback)
+    normalizeHeroTitle(heroContent.content_title) || homeHero.titleDefault
 
   const [motionRef, motionInView] = useInView({ triggerOnce: true, threshold: 0.35 })
 

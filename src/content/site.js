@@ -41,7 +41,6 @@ export const footer = {
       title: 'Resources',
       links: [
         { name: 'Blog', path: '/blog' },
-        { name: 'Gallery', path: '/gallery' },
         { name: 'Partners', path: '/partners' }
       ]
     }
