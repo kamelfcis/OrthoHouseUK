@@ -6,7 +6,7 @@ export const homeHero = {
 
 export const homePartners = {
   eyebrow: 'Manufacturing partners',
-  title: 'Trusted by leading',
+  title: 'Trusted by Leading',
   titleHighlight: 'orthopaedic brands'
 }
 
@@ -140,7 +140,7 @@ export const homeMission = {
 export const homeStats = {
   eyebrow: 'Measurable outcomes',
   title: 'ORTHOHOUSE UK by the numbers',
-  subtitle: 'Trusted by surgeons, hospitals, and manufacturing partners across the United Kingdom.',
+  subtitle: 'Trusted by Surgeons, hospitals, and manufacturing partners across the United Kingdom.',
   items: [
     { key: 'employees', icon: 'fa-users-gear', number: 25, suffix: '', label: 'Employees' },
     { key: 'surgeons', icon: 'fa-user-doctor', number: 100, suffix: '+', label: 'Surgeons supported' },
@@ -196,14 +196,14 @@ export const homeUkJourney = {
 }
 
 export const homeAccreditations = {
-  eyebrow: 'Trust and compliance',
-  title: 'Accreditations and approvals',
+  eyebrow: 'Trust and Compliance',
+  title: 'Accreditations and Approvals',
   subtitle:
     'Committed to the highest standards of regulatory compliance and quality assurance in medical device distribution.',
   items: [
     {
       id: 'mhra',
-      title: 'MHRA registered',
+      title: 'MHRA Registered',
       image: '/assets/images/accreditations/mhra-logo.png',
       imageAlt: 'MHRA logo'
     },
@@ -224,7 +224,7 @@ export const homeAccreditations = {
 
 export const homeTestimonials = {
   eyebrow: 'What our partners say',
-  title: 'Trusted by surgeons and hospital teams',
+  title: 'Trusted by Surgeons and Hospital teams',
 }
 
 export const homeResources = {

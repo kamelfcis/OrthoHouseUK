@@ -1,6 +1,6 @@
 export const testimonialsPage = {
   heading: 'Testimonials',
-  subheading: 'Trusted by surgeons and hospital leaders across the UK',
+  subheading: 'Trusted by Surgeons and Hospital leaders across the UK',
   items: [
     {
       name: 'Mr Andrew Clarke',

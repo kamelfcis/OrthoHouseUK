@@ -46,6 +46,19 @@ const CATEGORY_SVG_MAP = {
   upperlimb: '/assets/upperlimb.svg'
 }
 
+const CATEGORY_SORT_ORDER = ['footankle', 'shoulder', 'bonegraft', 'upperlimb']
+
+const CATEGORY_SORT_INDEX = Object.fromEntries(
+  CATEGORY_SORT_ORDER.map((variant, index) => [variant, index])
+)
+
+const CATEGORY_DISPLAY_LABELS = {
+  footankle: 'Foot & Ankle',
+  shoulder: 'Shoulder Arthroplasty',
+  bonegraft: 'Bone Graft',
+  upperlimb: 'Upper Limb Trauma'
+}
+
 const getCategoryVariant = (category) => {
   const codeKey = normalizeCategoryKey(category.category_code || '')
   const nameKey = normalizeCategoryKey(category.category_name || '')
@@ -60,6 +73,22 @@ const getCategoryVariant = (category) => {
 }
 
 const getCategorySvg = (variant) => CATEGORY_SVG_MAP[variant] ?? null
+
+const getCategoryDisplayName = (category) => {
+  const variant = getCategoryVariant(category)
+  return CATEGORY_DISPLAY_LABELS[variant] ?? category.category_name
+}
+
+const sortProductCategories = (categories) =>
+  [...categories].sort((a, b) => {
+    const aOrder =
+      CATEGORY_SORT_INDEX[getCategoryVariant(a)] ?? Number.MAX_SAFE_INTEGER
+    const bOrder =
+      CATEGORY_SORT_INDEX[getCategoryVariant(b)] ?? Number.MAX_SAFE_INTEGER
+
+    if (aOrder !== bOrder) return aOrder - bOrder
+    return String(a.category_name || '').localeCompare(String(b.category_name || ''))
+  })
 
 const resolveCategoryFromParam = (param, categories) => {
   if (!param || categories.length === 0) return null
@@ -250,7 +279,7 @@ const Products = () => {
       if (productsResult.error) throw productsResult.error
       if (imagesResult.error) throw imagesResult.error
 
-      setCategories(categoriesResult.data || [])
+      setCategories(sortProductCategories(categoriesResult.data || []))
       setCategoryImages(buildCategoryImageMap(categoryImagesResult.data))
       setFailedCategoryImages(new Set())
 
@@ -328,7 +357,7 @@ const Products = () => {
                       className={`category-filter-card${isActive ? ' active' : ''}`}
                       onClick={() => handleCategoryClick(category.category_id)}
                       aria-pressed={isActive}
-                      aria-label={`Filter by ${category.category_name}`}
+                      aria-label={`Filter by ${getCategoryDisplayName(category)}`}
                     >
                       {isActive && (
                         <span className="category-active-indicator" aria-hidden="true">
@@ -366,7 +395,9 @@ const Products = () => {
                           )
                         )}
                       </div>
-                      <span className="category-filter-name">{category.category_name}</span>
+                      <span className="category-filter-name">
+                        {getCategoryDisplayName(category)}
+                      </span>
                     </button>
                   )
                 })}
@@ -412,7 +443,9 @@ const Products = () => {
                 <div className="filter-info">
                   {productsPage.filterInfo(
                     filteredProducts.length,
-                    categories.find((category) => category.category_id === selectedCategory)?.category_name
+                    getCategoryDisplayName(
+                      categories.find((category) => category.category_id === selectedCategory) ?? {}
+                    )
                   )}
                 </div>
                 <div className="products-grid" role="list">

@@ -73,7 +73,7 @@ export const aboutPage = {
       {
         title: 'Regulatory Integrity',
         icon: 'fas fa-shield-halved',
-        text: 'MHRA registration and UKRP services ensuring compliant device distribution post-Brexit.'
+        text: 'MHRA Registration and UKRP services ensuring compliant device distribution post-Brexit.'
       },
       {
         title: 'Partnership Focus',
