@@ -6,8 +6,8 @@ export const homeHero = {
 
 export const homePartners = {
   eyebrow: 'Manufacturing partners',
-  title: 'Trusted by Leading',
-  titleHighlight: 'orthopaedic brands'
+  title: 'Trusted by Global',
+  titleHighlight: 'Orthopaedic Leaders'
 }
 
 export const homeProducts = {
@@ -224,7 +224,7 @@ export const homeAccreditations = {
 
 export const homeTestimonials = {
   eyebrow: 'What our partners say',
-  title: 'Trusted by Surgeons and Hospital teams',
+  title: 'Trusted by Surgeons and Private Hospitals',
 }
 
 export const homeResources = {
