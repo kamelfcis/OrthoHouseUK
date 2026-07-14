@@ -813,6 +813,14 @@
   width: 100%;
 }
 
+.products-section .featured-category-product {
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+}
+
+.products-section .featured-category-product + .filter-info {
+  margin-top: 0.25rem;
+}
+
 .products-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

@@ -12,13 +12,6 @@ export const aboutPage = {
       'https://images.unsplash.com/photo-1631815582920-54d7714370ab?w=1920&h=1080&fit=crop&q=80',
     useLocalOnly: true
   },
-  philosophy: {
-    heading: 'Our Philosophy',
-    paragraphs: [
-      'ORTHOHOUSE UK was established to bring world-class orthopaedic innovation to British surgeons and hospitals. We specialise in trauma fixation, arthroplasty, foot & ankle, and bone graft solutions — distributed with full MHRA compliance.',
-      'We combine advanced orthopaedic technology with dedicated clinical support to deliver exceptional outcomes for surgeons and patients across the United Kingdom.'
-    ]
-  },
   ukJourney: {
     eyebrow: '',
     title: 'ORTHOHOUSE UK journey',
@@ -59,29 +52,34 @@ export const aboutPage = {
         date: 'Oct 2025',
         dateTime: '2025-10',
         title: 'NHS Scotland framework'
+      },
+      {
+        date: 'Nov 2025',
+        dateTime: '2025-11',
+        title: 'Scotland headquarters'
       }
     ]
   },
   values: {
-    heading: 'What Guides Us',
+    heading: 'Core Values',
     items: [
       {
         title: 'Clinical Excellence',
         icon: 'fas fa-user-doctor',
-        text: 'Supporting surgeons with evidence-based products and specialist education programmes.'
+        text: 'Supporting surgeons with evidence-based products.'
       },
       {
-        title: 'Regulatory Integrity',
-        icon: 'fas fa-shield-halved',
-        text: 'MHRA Registration and UKRP services ensuring compliant device distribution post-Brexit.'
+        title: 'Education Excellence',
+        icon: 'fas fa-graduation-cap',
+        text: 'Provides World Class Continous Medical Education For Junior Surgeons.'
       },
       {
-        title: 'Partnership Focus',
+        title: 'Partnership Trust',
         icon: 'fas fa-handshake',
-        text: 'Long-term relationships with manufacturers, hospitals, and the wider orthopaedic community.'
+        text: 'Long-term Partnership with manufacturers, hospitals, and the wider orthopaedic community.'
       },
       {
-        title: 'Patient Outcomes',
+        title: 'Patient Centered',
         icon: 'fas fa-heart-pulse',
         text: 'Every decision measured against its impact on the patients we ultimately serve.'
       }
@@ -112,9 +110,9 @@ export const ceoVisionMission = {
     },
     mission: {
       title: 'Mission',
-      text: 'Delivering innovative Orthopaedic solutions aligned with industry needs through strategic partnerships, premium products, and value-driven healthcare services.',
+      text: 'We are committed to deliver innovative Orthopaedic solutions aligned with industry needs through strategic partnerships, premium products, and value-driven healthcare services.',
       brandLine: 'ORTHOHOUSE',
-      author: null
+      author: null  
     }
   },
   ceoImageAlt: 'Waleed Emad, chief executive and founder of ORTHOHOUSE UK'

@@ -20,16 +20,6 @@ const About = () => {
     window.scrollTo(0, 0)
   }, [])
 
-  const [ref1, inView1] = useInView({
-    triggerOnce: true,
-    threshold: 0.2
-  })
-
-  const [ref2, inView2] = useInView({
-    triggerOnce: true,
-    threshold: 0.2
-  })
-
   const [ref3, inView3] = useInView({
     triggerOnce: true,
     threshold: 0.2
@@ -124,23 +114,7 @@ const About = () => {
           <div className="row centered">
             <div className="col-xl-12">
               <article className="entry-content clearfix">
-                    {/* About Section 1 */}
-                    <motion.div
-                      className="about-section-content"
-                      ref={ref1}
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={inView1 ? { opacity: 1, y: 0 } : {}}
-                      transition={{ duration: 0.8 }}
-                    >
-                      <div className="about-intro">
-                        <h2>{aboutPage.philosophy.heading}</h2>
-                        {aboutPage.philosophy.paragraphs.map((paragraph) => (
-                          <p key={paragraph.slice(0, 40)}>{paragraph}</p>
-                        ))}
-                      </div>
-                    </motion.div>
-
-                {/* About Section 3 - Values */}
+                {/* Core Values */}
                 <motion.div
                   className="about-values"
                   ref={ref3}

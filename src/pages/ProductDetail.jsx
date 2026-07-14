@@ -62,9 +62,6 @@ const ProductDetail = () => {
           .eq('is_public', true)
           .single()
 
-        console.log('Branch Product Data:', branchProduct)
-        console.log('Product Error:', productError)
-
         if (productError) {
           console.error('Supabase error:', productError)
           // If product not found, try to fetch just the product without branch filter
@@ -98,11 +95,6 @@ const ProductDetail = () => {
             return
           }
 
-          console.log('Setting product:', {
-            ...branchProduct.products,
-            branchProduct: branchProduct
-          })
-
           setProduct({
             ...branchProduct.products,
             branchProduct: branchProduct
@@ -118,20 +110,20 @@ const ProductDetail = () => {
           .order('is_primary', { ascending: false })
           .order('image_order', { ascending: true })
 
-        console.log('Product Images:', images)
-        console.log('Images Error:', imagesError)
-
         if (!imagesError && images && images.length > 0) {
-          const imageUrls = images.map(img => {
-            const url = getProductImageUrl(img.image_url)
-            console.log('Image URL:', url, 'from path:', img.image_url)
-            return url
-          }).filter(url => url !== null)
-          setProductImages(imageUrls.length > 0 ? imageUrls : [`/assets/images/product-${productId % 6 + 1}.jpg`])
+          const imageObjects = images
+            .map(img => ({
+              url: getProductImageUrl(img.image_url),
+              specifications: img.image_specifications,
+              alt: img.image_alt_text,
+            }))
+            .filter(img => img.url !== null)
+          setProductImages(imageObjects.length > 0
+            ? imageObjects
+            : [{ url: `/assets/images/product-${productId % 6 + 1}.jpg`, specifications: null, alt: null }])
         } else {
           // Use fallback image if no images found
-          console.log('No images found, using fallback')
-          setProductImages([`/assets/images/product-${productId % 6 + 1}.jpg`])
+          setProductImages([{ url: `/assets/images/product-${productId % 6 + 1}.jpg`, specifications: null, alt: null }])
         }
 
         setLoading(false)
@@ -187,12 +179,10 @@ const ProductDetail = () => {
     )
   }
 
-  console.log('Rendering product:', product)
-  console.log('Product images:', productImages)
-
   const categoryName = product.product_categories?.category_name || 'General'
   const partnerName = product.partners?.partner_name
   const summaryText = product.branchProduct?.local_description || product.description
+  const activeSpecs = productImages[selectedImageIndex]?.specifications?.trim() || product.specifications
 
   const siteUrl = typeof window !== 'undefined' ? window.location.origin : ''
   const breadcrumbs = generateBreadcrumbSchema([
@@ -203,7 +193,7 @@ const ProductDetail = () => {
 
   const productSchema = generateProductSchema({
     ...product,
-    image: productImages.length > 0 ? productImages[0] : null
+    image: productImages[0]?.url || null
   }, ukBranch)
   
   const structuredData = {
@@ -217,11 +207,15 @@ const ProductDetail = () => {
         title={product.product_name}
         description={summaryText || product.description || productDetail.seoFallback(product.product_name, categoryName)}
         keywords={`${product.product_name}, ${categoryName}, orthopaedic implants, trauma systems, ${partnerName || ''}`}
-        image={productImages.length > 0 ? productImages[0] : null}
+        image={productImages[0]?.url || null}
         url={`${siteUrl}/products/${product.product_id}`}
         structuredData={structuredData}
       />
       <div className="product-detail-hero">
+        <span className="product-hero-grid" aria-hidden="true"></span>
+        <span className="product-hero-scanline" aria-hidden="true"></span>
+        <span className="product-hero-corner product-hero-corner--tl" aria-hidden="true"></span>
+        <span className="product-hero-corner product-hero-corner--br" aria-hidden="true"></span>
         <div className="container">
           <Link to="/products" className="product-back-link">
             <i className="fas fa-arrow-left"></i>
@@ -231,28 +225,15 @@ const ProductDetail = () => {
           <div className="product-hero-tags">
             {categoryName && <span className="product-tag">{categoryName}</span>}
             {partnerName && <span className="product-tag tag-partner">{partnerName}</span>}
-            {product.product_code && <span className="product-tag tag-code">{productDetail.labels.code}: {product.product_code}</span>}
           </div>
 
           <h1 className="product-hero-title">{product.product_name}</h1>
-
-          {summaryText && (
-            <p className="product-hero-summary">
-              {summaryText.length > 280 ? `${summaryText.slice(0, 280)}…` : summaryText}
-            </p>
-          )}
 
           <div className="product-hero-stats">
             {ukBranch?.branch_name && (
               <div className="hero-stat">
                 <i className="fas fa-map-marker-alt"></i>
                 <span>{productDetail.stats.availableIn(ukBranch.branch_name)}</span>
-              </div>
-            )}
-            {productImages.length > 0 && (
-              <div className="hero-stat">
-                <i className="fas fa-images"></i>
-                <span>{productDetail.stats.imageCount(productImages.length)}</span>
               </div>
             )}
             {partnerName && (
@@ -275,16 +256,12 @@ const ProductDetail = () => {
                   <div className="product-main-image-container">
                     <div className="product-image-zoom-container">
                       <img
-                        src={productImages[selectedImageIndex]}
+                        src={productImages[selectedImageIndex]?.url}
                         alt={`${product.product_name} - Image ${selectedImageIndex + 1}`}
                         className="product-detail-image"
                         loading="lazy"
                         onError={(e) => {
-                          console.error('Image failed to load:', productImages[selectedImageIndex])
                           e.target.src = `https://via.placeholder.com/600x600/64d9b9/ffffff?text=${encodeURIComponent(product.product_name || 'Product')}`
-                        }}
-                        onLoad={() => {
-                          console.log('Image loaded successfully:', productImages[selectedImageIndex])
                         }}
                       />
                     </div>
@@ -320,7 +297,7 @@ const ProductDetail = () => {
                           onClick={() => setSelectedImageIndex(index)}
                         >
                           <img
-                            src={image}
+                            src={image.url}
                             alt={`${product.product_name} - Thumbnail ${index + 1}`}
                             className="product-thumb-image"
                             loading="lazy"
@@ -345,22 +322,16 @@ const ProductDetail = () => {
             <div className="product-info-section">
               <div className="product-content">
                 <div className="product-info-cards">
-                  {product.product_code && (
+                  {categoryName && (
                     <div className="info-card">
-                      <span className="info-card-label">{productDetail.labels.productCode}</span>
-                      <span className="info-card-value">{product.product_code}</span>
+                      <span className="info-card-label">{productDetail.labels.category}</span>
+                      <span className="info-card-value">{categoryName}</span>
                     </div>
                   )}
                   {partnerName && (
                     <div className="info-card">
                       <span className="info-card-label">{productDetail.labels.partner}</span>
                       <span className="info-card-value">{partnerName}</span>
-                    </div>
-                  )}
-                  {categoryName && (
-                    <div className="info-card">
-                      <span className="info-card-label">{productDetail.labels.category}</span>
-                      <span className="info-card-value">{categoryName}</span>
                     </div>
                   )}
                 </div>
@@ -377,14 +348,14 @@ const ProductDetail = () => {
                   </div>
                 )}
 
-                {product.specifications && (
+                {activeSpecs && (
                   <div className="content-block">
                     <h3 className="content-title">
                       <i className="fas fa-list-ul"></i>
                       {productDetail.labels.specifications}
                     </h3>
                     <ul className="specifications-list">
-                      {product.specifications.split('\n').filter(spec => spec.trim()).map((spec, index) => (
+                      {activeSpecs.split('\n').filter(spec => spec.trim()).map((spec, index) => (
                         <li key={index}>{spec.trim()}</li>
                       ))}
                     </ul>

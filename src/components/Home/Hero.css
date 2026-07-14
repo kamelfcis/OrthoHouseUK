@@ -141,29 +141,6 @@
 }
 
 /* =============================================================================
-   UNSPLASH CREDIT
-   ============================================================================= */
-
-.hero-slide-credit {
-  position: absolute;
-  bottom: 8px;
-  right: 12px;
-  z-index: 3;
-  font-size: 0.6rem;
-  color: rgba(255, 255, 255, 0.45);
-  text-decoration: none;
-  opacity: 0;
-  transition: opacity var(--ds-duration) var(--ds-ease-out);
-  pointer-events: none;
-}
-
-.hero-section:hover .hero-slide-credit,
-.hero-slide-credit:focus-visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* =============================================================================
    SLIDE DOTS (no prev/next arrows)
    ============================================================================= */
 

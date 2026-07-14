@@ -165,8 +165,6 @@ const HeroSlider = ({ slides, videoSlides = [], onSlideChange }) => {
   }, [])
 
   const fadeDuration = reduced ? 0 : FADE_MS
-  const activeSlide = slideList[activeIdx]
-  const creditSource = isVideoCarousel ? 'Pexels' : 'Unsplash'
 
   return (
     <>
@@ -225,18 +223,6 @@ const HeroSlider = ({ slides, videoSlides = [], onSlideChange }) => {
             </button>
           ))}
         </div>
-      )}
-
-      {activeSlide?.credit && (
-        <a
-          href={activeSlide.credit.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hero-slide-credit"
-          aria-label={`${isVideoCarousel ? 'Video' : 'Photo'} by ${activeSlide.credit.name} on ${creditSource}`}
-        >
-          {isVideoCarousel ? 'Video' : 'Photo'} by {activeSlide.credit.name} on {creditSource}
-        </a>
       )}
     </>
   )

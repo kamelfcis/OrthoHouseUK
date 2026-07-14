@@ -2,7 +2,7 @@
   padding-top: 0;
 }
 
-/* Hero — full-bleed trade-show photography (about-1200.webp ~1.66:1) */
+/* Hero — full-bleed trade-show photography (about.png ~1.66:1) */
 @keyframes aboutKenBurns {
   0% {
     transform: scale(1.02);
@@ -426,20 +426,6 @@
   margin-bottom: 0;
 }
 
-/* About Intro Section */
-.about-intro {
-  margin-bottom: 60px;
-}
-
-.about-intro h2 {
-  margin-bottom: 24px;
-}
-
-.about-intro p {
-  margin-bottom: 24px;
-  font-size: 18px;
-}
-
 /* Mission & Vision */
 .about-mission-vision {
   margin-bottom: 60px;
@@ -654,7 +640,6 @@
     font-size: 1.25em;
   }
 
-  .about-intro,
   .about-mission-vision,
   .about-values,
   .about-why-choose {
@@ -714,7 +699,6 @@
     font-size: 1.375em;
   }
 
-  .about-intro,
   .about-mission-vision,
   .about-values,
   .about-why-choose {

@@ -48,7 +48,48 @@ const Products = () => {
     special_notes: '',
     is_public: true,
     is_available: true,
+    is_category_featured: false,
   })
+
+  const getEmptyFormData = () => ({
+    product_name: '',
+    product_code: '',
+    category_id: '',
+    partner_id: '',
+    description: '',
+    specifications: '',
+    is_active: true,
+    branch_id: isBranchManager ? appUser?.branch_id : '',
+    local_description: '',
+    special_notes: '',
+    is_public: true,
+    is_available: true,
+    is_category_featured: false,
+  })
+
+  const clearSiblingCategoryFeatured = async (branchId, categoryId, excludeBranchProductId) => {
+    const { data: siblings, error } = await supabase
+      .from('branch_products')
+      .select('branch_product_id, products!inner(category_id)')
+      .eq('branch_id', branchId)
+      .eq('products.category_id', categoryId)
+      .eq('is_category_featured', true)
+
+    if (error) throw error
+
+    const idsToClear = (siblings || [])
+      .map((row) => row.branch_product_id)
+      .filter((id) => id !== excludeBranchProductId)
+
+    if (idsToClear.length === 0) return
+
+    const { error: clearError } = await supabase
+      .from('branch_products')
+      .update({ is_category_featured: false })
+      .in('branch_product_id', idsToClear)
+
+    if (clearError) throw clearError
+  }
 
   const [categories, setCategories] = useState([])
   const [partners, setPartners] = useState([])
@@ -378,6 +419,7 @@ const Products = () => {
       special_notes: item.special_notes || '',
       is_public: item.is_public ?? true,
       is_available: item.is_available ?? true,
+      is_category_featured: item.is_category_featured ?? false,
     })
 
     // Fetch existing images
@@ -431,6 +473,7 @@ const Products = () => {
           image_type: 'gallery',
           image_order: productImages.filter(img => !img.toDelete).length + 1,
           is_primary: productImages.filter(img => !img.toDelete).length === 0,
+          image_specifications: '',
           file: file, // Store file reference for preview
           isNew: true, // Flag to indicate this is a new upload
         }
@@ -500,6 +543,12 @@ const Products = () => {
     setProductImages(newImages)
   }
 
+  const handleImageSpecChange = (index, value) => {
+    setProductImages(prev => prev.map((img, i) => (
+      i === index ? { ...img, image_specifications: value } : img
+    )))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -534,10 +583,19 @@ const Products = () => {
             special_notes: formData.special_notes,
             is_public: formData.is_public,
             is_available: formData.is_available,
+            is_category_featured: formData.is_category_featured,
           })
           .eq('branch_product_id', editingProduct.branch_product_id)
 
         if (branchError) throw branchError
+
+        if (formData.is_category_featured) {
+          await clearSiblingCategoryFeatured(
+            branchId,
+            parseInt(formData.category_id),
+            editingProduct.branch_product_id
+          )
+        }
 
         // Handle images
         // Delete images marked for deletion
@@ -573,6 +631,7 @@ const Products = () => {
               image_type: img.image_type,
               image_order: img.image_order,
               is_primary: img.is_primary,
+              image_specifications: img.image_specifications,
             })))
         }
 
@@ -586,6 +645,7 @@ const Products = () => {
                 image_order: img.image_order,
                 is_primary: img.is_primary,
                 image_alt_text: img.image_alt_text,
+                image_specifications: img.image_specifications,
               })
               .eq('image_id', img.image_id)
           } catch (imgError) {
@@ -615,7 +675,7 @@ const Products = () => {
         productId = newProduct.product_id
 
         // Link to branch
-        const { error: branchError } = await supabase
+        const { data: newBranchProduct, error: branchError } = await supabase
           .from('branch_products')
           .insert({
             product_id: productId,
@@ -624,9 +684,20 @@ const Products = () => {
             is_public: formData.is_public,
             special_notes: formData.special_notes,
             local_description: formData.local_description,
+            is_category_featured: formData.is_category_featured,
           })
+          .select('branch_product_id')
+          .single()
 
         if (branchError) throw branchError
+
+        if (formData.is_category_featured && newBranchProduct?.branch_product_id) {
+          await clearSiblingCategoryFeatured(
+            branchId,
+            parseInt(formData.category_id),
+            newBranchProduct.branch_product_id
+          )
+        }
 
         // Add images
         if (productImages.length > 0) {
@@ -640,6 +711,7 @@ const Products = () => {
               image_type: img.image_type,
               image_order: img.image_order,
               is_primary: img.is_primary,
+              image_specifications: img.image_specifications,
             })))
         }
 
@@ -649,20 +721,7 @@ const Products = () => {
       setShowModal(false)
       setEditingProduct(null)
       setProductImages([])
-      setFormData({
-        product_name: '',
-        product_code: '',
-        category_id: '',
-        partner_id: '',
-        description: '',
-        specifications: '',
-        is_active: true,
-        branch_id: isBranchManager ? appUser.branch_id : '',
-        local_description: '',
-        special_notes: '',
-        is_public: true,
-        is_available: true,
-      })
+      setFormData(getEmptyFormData())
       // Refresh products and images
       await fetchProducts()
     } catch (error) {
@@ -818,20 +877,7 @@ const Products = () => {
                 onClick={() => {
                   setEditingProduct(null)
                   setProductImages([])
-                  setFormData({
-                    product_name: '',
-                    product_code: '',
-                    category_id: '',
-                    partner_id: '',
-                    description: '',
-                    specifications: '',
-                    is_active: true,
-                    branch_id: isBranchManager ? appUser?.branch_id : '',
-                    local_description: '',
-                    special_notes: '',
-                    is_public: true,
-                    is_available: true,
-                  })
+                  setFormData(getEmptyFormData())
                   setShowModal(true)
                 }}
               >
@@ -852,20 +898,7 @@ const Products = () => {
                 onClick={() => {
                   setEditingProduct(null)
                   setProductImages([])
-                  setFormData({
-                    product_name: '',
-                    product_code: '',
-                    category_id: '',
-                    partner_id: '',
-                    description: '',
-                    specifications: '',
-                    is_active: true,
-                    branch_id: isBranchManager ? appUser?.branch_id : '',
-                    local_description: '',
-                    special_notes: '',
-                    is_public: true,
-                    is_available: true,
-                  })
+                  setFormData(getEmptyFormData())
                   setShowModal(true)
                 }}
               >
@@ -903,20 +936,7 @@ const Products = () => {
               onClick={() => {
                 setEditingProduct(null)
                 setProductImages([])
-                setFormData({
-                  product_name: '',
-                  product_code: '',
-                  category_id: '',
-                  partner_id: '',
-                  description: '',
-                  specifications: '',
-                  is_active: true,
-                  branch_id: isBranchManager ? appUser?.branch_id : '',
-                  local_description: '',
-                  special_notes: '',
-                  is_public: true,
-                  is_available: true,
-                })
+                setFormData(getEmptyFormData())
                 setShowModal(true)
               }}
             >
@@ -1209,36 +1229,46 @@ const Products = () => {
                       
                       return (
                         <div key={img.image_id || `new-${index}`} className="image-preview-card">
-                          <img
-                            src={img.isNew ? URL.createObjectURL(img.file) : getImageUrl(img.image_url)}
-                            alt={img.image_alt_text}
-                            className="preview-image"
-                          />
-                          {img.is_primary && (
-                            <div className="primary-badge">
-                              <i className="fas fa-star"></i> Primary
-                            </div>
-                          )}
-                          <div className="image-actions">
-                            {!img.is_primary && (
+                          <div className="image-preview-media">
+                            <img
+                              src={img.isNew ? URL.createObjectURL(img.file) : getImageUrl(img.image_url)}
+                              alt={img.image_alt_text}
+                              className="preview-image"
+                            />
+                            {img.is_primary && (
+                              <div className="primary-badge">
+                                <i className="fas fa-star"></i> Primary
+                              </div>
+                            )}
+                            <div className="image-actions">
+                              {!img.is_primary && (
+                                <button
+                                  type="button"
+                                  className="image-action-btn"
+                                  onClick={() => handleSetPrimary(index)}
+                                  title="Set as primary"
+                                >
+                                  <i className="fas fa-star"></i>
+                                </button>
+                              )}
                               <button
                                 type="button"
-                                className="image-action-btn"
-                                onClick={() => handleSetPrimary(index)}
-                                title="Set as primary"
+                                className="image-action-btn delete"
+                                onClick={() => handleRemoveImage(index)}
+                                title="Remove"
                               >
-                                <i className="fas fa-star"></i>
+                                <i className="fas fa-trash"></i>
                               </button>
-                            )}
-                            <button
-                              type="button"
-                              className="image-action-btn delete"
-                              onClick={() => handleRemoveImage(index)}
-                              title="Remove"
-                            >
-                              <i className="fas fa-trash"></i>
-                            </button>
+                            </div>
                           </div>
+                          <label className="image-spec-label">Image specifications</label>
+                          <textarea
+                            className="image-spec-input"
+                            value={img.image_specifications || ''}
+                            onChange={(e) => handleImageSpecChange(index, e.target.value)}
+                            placeholder="One spec per line (optional)"
+                            rows={2}
+                          />
                         </div>
                       )
                     })}
@@ -1275,6 +1305,16 @@ const Products = () => {
                       onChange={(e) => setFormData({ ...formData, is_available: e.target.checked })}
                     />
                     <span>Available</span>
+                  </label>
+                </div>
+                <div className="form-group">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={formData.is_category_featured}
+                      onChange={(e) => setFormData({ ...formData, is_category_featured: e.target.checked })}
+                    />
+                    <span>Featured in category</span>
                   </label>
                 </div>
               </div>

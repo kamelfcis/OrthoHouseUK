@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase'
 import { getBranchDataSnapshot } from '../lib/branchDataCache'
 import { toPublicStorageUrl } from '../lib/storageUrl'
 import ProductCard from '../components/common/ProductCard'
+import FeaturedCategoryProduct from '../components/common/FeaturedCategoryProduct'
 import EmptyState from '../components/common/EmptyState'
 import SEO from '../components/SEO/SEO'
 import { pageSeo } from '../content/seo'
@@ -158,7 +159,8 @@ const transformBranchProducts = (branchProducts, productImagesMap) =>
         category: product.product_categories?.category_name || '',
         categoryId: product.category_id,
         partner: product.partners?.partner_name || '',
-        image: productImage
+        image: productImage,
+        isCategoryFeatured: Boolean(bp.is_category_featured)
       }
     })
     .filter(Boolean)
@@ -329,6 +331,14 @@ const Products = () => {
     ? products.filter((product) => product.categoryId === selectedCategory)
     : []
 
+  const featuredProduct = hasSelectedFilter
+    ? filteredProducts.find((product) => product.isCategoryFeatured)
+    : null
+
+  const gridProducts = hasSelectedFilter
+    ? filteredProducts.filter((product) => !product.isCategoryFeatured)
+    : []
+
   return (
       <div className="products-page">
       <SEO
@@ -440,6 +450,15 @@ const Products = () => {
               />
             ) : (
               <div className="products-section">
+                {featuredProduct && (
+                  <FeaturedCategoryProduct
+                    id={featuredProduct.id}
+                    name={featuredProduct.name}
+                    category={featuredProduct.category}
+                    partner={featuredProduct.partner}
+                    image={featuredProduct.image}
+                  />
+                )}
                 <div className="filter-info">
                   {productsPage.filterInfo(
                     filteredProducts.length,
@@ -448,19 +467,21 @@ const Products = () => {
                     )
                   )}
                 </div>
-                <div className="products-grid" role="list">
-                  {filteredProducts.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      id={product.id}
-                      name={product.name}
-                      category={product.category}
-                      partner={product.partner}
-                      image={product.image}
-                      className="home-product-card--grid"
-                    />
-                  ))}
-                </div>
+                {gridProducts.length > 0 && (
+                  <div className="products-grid" role="list">
+                    {gridProducts.map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        id={product.id}
+                        name={product.name}
+                        category={product.category}
+                        partner={product.partner}
+                        image={product.image}
+                        className="home-product-card--grid"
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
