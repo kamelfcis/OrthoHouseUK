@@ -1,11 +1,15 @@
 export const productsPage = {
   filterTitle: 'Filter by Category',
   clearFilter: 'Clear filter',
+  backToParent: (parentName) => `Back to ${parentName}`,
   filterInfo: (count, category) =>
     `Showing ${count} product${count !== 1 ? 's' : ''} in ${category}`,
   selectCategoryTitle: 'Browse by category',
   selectCategoryPrompt:
     'Select a category above to view products from our UK catalogue.',
+  selectSubcategoryTitle: 'Choose a subcategory',
+  selectSubcategoryPrompt: (parentName) =>
+    `Select a subcategory under ${parentName} to view products.`,
   emptyAll:
     'No products are currently available. Please check back soon or speak with our team.',
   emptyCategory:

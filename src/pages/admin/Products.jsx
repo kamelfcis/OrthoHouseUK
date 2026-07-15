@@ -95,6 +95,54 @@ const Products = () => {
   const [partners, setPartners] = useState([])
   const [branches, setBranches] = useState([])
 
+  /** Build optgroup structure: parents with children, then orphan roots alone */
+  const renderCategoryOptions = () => {
+    const roots = categories.filter((c) => c.parent_id == null)
+    const childrenByParent = {}
+    categories.forEach((c) => {
+      if (c.parent_id == null) return
+      if (!childrenByParent[c.parent_id]) childrenByParent[c.parent_id] = []
+      childrenByParent[c.parent_id].push(c)
+    })
+
+    const nodes = []
+    roots.forEach((root) => {
+      const children = childrenByParent[root.category_id] || []
+      if (children.length === 0) {
+        nodes.push(
+          <option key={root.category_id} value={root.category_id}>
+            {root.category_name}
+          </option>
+        )
+        return
+      }
+      nodes.push(
+        <optgroup key={`og-${root.category_id}`} label={root.category_name}>
+          <option value={root.category_id}>{root.category_name}</option>
+          {children.map((child) => (
+            <option key={child.category_id} value={child.category_id}>
+              {`↳ ${child.category_name}`}
+            </option>
+          ))}
+        </optgroup>
+      )
+    })
+
+    // Orphan subcategories whose parent is missing from the list
+    const rootIds = new Set(roots.map((r) => r.category_id))
+    categories
+      .filter((c) => c.parent_id != null && !rootIds.has(c.parent_id))
+      .forEach((orphan) => {
+        nodes.push(
+          <option key={orphan.category_id} value={orphan.category_id}>
+            {orphan.category_name}
+          </option>
+        )
+      })
+
+    return nodes
+  }
+
   useEffect(() => {
     if (appUser) {
       // Only fetch if we haven't loaded data yet (avoid refetching on tab switch)
@@ -812,11 +860,7 @@ const Products = () => {
                 onChange={(e) => setFilters({ ...filters, category_id: e.target.value })}
               >
                 <option value="">All Categories</option>
-                {categories.map(cat => (
-                  <option key={cat.category_id} value={cat.category_id}>
-                    {cat.category_name}
-                  </option>
-                ))}
+                {renderCategoryOptions()}
               </select>
             </div>
 
@@ -1123,11 +1167,7 @@ const Products = () => {
                     required
                   >
                     <option value="">Select Category</option>
-                    {categories.map((cat) => (
-                      <option key={cat.category_id} value={cat.category_id}>
-                        {cat.category_name}
-                      </option>
-                    ))}
+                    {renderCategoryOptions()}
                   </select>
                 </div>
                 <div className="form-group">

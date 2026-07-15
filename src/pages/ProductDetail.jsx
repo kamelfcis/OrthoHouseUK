@@ -14,16 +14,45 @@ const ProductDetail = () => {
   const [error, setError] = useState(null)
   const [ukBranch, setUkBranch] = useState(null)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
+  const [parentCategoryName, setParentCategoryName] = useState(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
   useEffect(() => {
+    const resolveParentCategory = async (category) => {
+      if (!category?.parent_id) {
+        setParentCategoryName(null)
+        return
+      }
+      try {
+        const { data, error: parentError } = await supabase
+          .from('product_categories')
+          .select('category_name')
+          .eq('category_id', category.parent_id)
+          .maybeSingle()
+
+        if (parentError) throw parentError
+        setParentCategoryName(data?.category_name || null)
+      } catch (err) {
+        console.error('Error fetching parent category:', err)
+        setParentCategoryName(null)
+      }
+    }
+
+    const getProductImageUrl = (imagePath) => {
+      if (!imagePath) return null
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ljfkmtuxqaznnmmxeydf.supabase.co'
+      const projectRef = supabaseUrl.replace('https://', '').replace('.supabase.co', '')
+      return `https://${projectRef}.supabase.co/storage/v1/object/public/product-images/${imagePath}`
+    }
+
     const fetchProductDetails = async () => {
       try {
         setLoading(true)
         setError(null)
+        setParentCategoryName(null)
         
         const productId = parseInt(id)
         if (isNaN(productId)) {
@@ -88,6 +117,7 @@ const ProductDetail = () => {
               special_notes: null
             }
           })
+          await resolveParentCategory(productData.product_categories)
         } else {
           if (!branchProduct || !branchProduct.products) {
             setError('Product not found for UK branch')
@@ -99,6 +129,7 @@ const ProductDetail = () => {
             ...branchProduct.products,
             branchProduct: branchProduct
           })
+          await resolveParentCategory(branchProduct.products.product_categories)
         }
 
         // Fetch all product images for UK branch
@@ -179,7 +210,10 @@ const ProductDetail = () => {
     )
   }
 
-  const categoryName = product.product_categories?.category_name || 'General'
+  const leafCategoryName = product.product_categories?.category_name || 'General'
+  const categoryName = parentCategoryName
+    ? `${parentCategoryName} › ${leafCategoryName}`
+    : leafCategoryName
   const partnerName = product.partners?.partner_name
   const summaryText = product.branchProduct?.local_description || product.description
   const activeSpecs = productImages[selectedImageIndex]?.specifications?.trim() || product.specifications

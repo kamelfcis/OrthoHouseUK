@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react'
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { getBranchDataSnapshot } from '../lib/branchDataCache'
@@ -76,6 +76,7 @@ const getCategoryVariant = (category) => {
 const getCategorySvg = (variant) => CATEGORY_SVG_MAP[variant] ?? null
 
 const getCategoryDisplayName = (category) => {
+  if (!category) return ''
   const variant = getCategoryVariant(category)
   return CATEGORY_DISPLAY_LABELS[variant] ?? category.category_name
 }
@@ -97,19 +98,19 @@ const resolveCategoryFromParam = (param, categories) => {
   const trimmed = String(param).trim()
   if (/^\d+$/.test(trimmed)) {
     const categoryId = Number(trimmed)
-    return categories.find((category) => category.category_id === categoryId)?.category_id ?? null
+    return categories.find((category) => category.category_id === categoryId) ?? null
   }
 
   const aliasKey =
     CATEGORY_PARAM_ALIASES[trimmed.toLowerCase()] ?? normalizeCategoryKey(trimmed)
 
-  const match = categories.find((category) => {
-    const codeKey = normalizeCategoryKey(category.category_code)
-    const nameKey = normalizeCategoryKey(category.category_name)
-    return codeKey === aliasKey || nameKey === aliasKey
-  })
-
-  return match?.category_id ?? null
+  return (
+    categories.find((category) => {
+      const codeKey = normalizeCategoryKey(category.category_code)
+      const nameKey = normalizeCategoryKey(category.category_name)
+      return codeKey === aliasKey || nameKey === aliasKey
+    }) ?? null
+  )
 }
 
 const buildProductImageMap = (rows) => {
@@ -166,16 +167,19 @@ const transformBranchProducts = (branchProducts, productImagesMap) =>
     .filter(Boolean)
 
 const Products = () => {
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const categoryParam = searchParams.get('category')
+  const subcategoryParam = searchParams.get('subcategory')
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [categoryImages, setCategoryImages] = useState({})
   const [failedCategoryImages, setFailedCategoryImages] = useState(() => new Set())
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null)
   const [loading, setLoading] = useState(true)
   const [ukBranch, setUkBranch] = useState(null)
   const productsSectionRef = useRef(null)
+  const urlSyncedRef = useRef(false)
 
   const scrollToProductsSection = useCallback(() => {
     setTimeout(() => {
@@ -192,22 +196,92 @@ const Products = () => {
     }, 100)
   }, [])
 
+  const rootCategories = useMemo(
+    () => categories.filter((c) => c.parent_id == null),
+    [categories]
+  )
+
+  const getChildren = useCallback(
+    (parentId) => categories.filter((c) => c.parent_id === parentId),
+    [categories]
+  )
+
+  const selectedRoot = useMemo(
+    () => categories.find((c) => c.category_id === selectedCategory) ?? null,
+    [categories, selectedCategory]
+  )
+
+  const selectedLeaf = useMemo(
+    () => categories.find((c) => c.category_id === selectedSubcategory) ?? null,
+    [categories, selectedSubcategory]
+  )
+
+  const childCategories = useMemo(
+    () => (selectedCategory ? getChildren(selectedCategory) : []),
+    [selectedCategory, getChildren]
+  )
+
+  const hasChildren = childCategories.length > 0
+
+  const syncUrlParams = useCallback(
+    (rootId, leafId) => {
+      const next = {}
+      if (rootId) next.category = String(rootId)
+      if (leafId) next.subcategory = String(leafId)
+      setSearchParams(next, { replace: true })
+    },
+    [setSearchParams]
+  )
+
   useEffect(() => {
-    if (!categoryParam) {
+    if (!categoryParam && !subcategoryParam) {
       window.scrollTo(0, 0)
     }
     fetchData()
   }, [])
 
   useEffect(() => {
-    if (loading || !categoryParam || categories.length === 0) return
+    if (loading || categories.length === 0 || urlSyncedRef.current) return
 
-    const categoryId = resolveCategoryFromParam(categoryParam, categories)
-    if (categoryId) {
-      setSelectedCategory(categoryId)
-      scrollToProductsSection()
+    let rootId = null
+    let leafId = null
+
+    if (subcategoryParam) {
+      const leaf = resolveCategoryFromParam(subcategoryParam, categories)
+      if (leaf) {
+        leafId = leaf.category_id
+        rootId = leaf.parent_id ?? leaf.category_id
+      }
     }
-  }, [loading, categoryParam, categories, scrollToProductsSection])
+
+    if (categoryParam) {
+      const cat = resolveCategoryFromParam(categoryParam, categories)
+      if (cat) {
+        if (cat.parent_id != null) {
+          // Legacy / deep link to a leaf via ?category=
+          leafId = leafId ?? cat.category_id
+          rootId = cat.parent_id
+        } else {
+          rootId = cat.category_id
+        }
+      }
+    }
+
+    if (rootId) {
+      setSelectedCategory(rootId)
+      setSelectedSubcategory(leafId)
+      urlSyncedRef.current = true
+      scrollToProductsSection()
+    } else if (!categoryParam && !subcategoryParam) {
+      urlSyncedRef.current = true
+    }
+  }, [
+    loading,
+    categoryParam,
+    subcategoryParam,
+    categories,
+    scrollToProductsSection
+  ])
 
   const fetchData = async () => {
     try {
@@ -303,17 +377,45 @@ const Products = () => {
   }
 
   const handleCategoryClick = (categoryId) => {
-    if (selectedCategory === categoryId) {
+    const children = getChildren(categoryId)
+
+    if (selectedCategory === categoryId && !selectedSubcategory) {
       setSelectedCategory(null)
+      setSelectedSubcategory(null)
+      syncUrlParams(null, null)
       return
     }
 
     setSelectedCategory(categoryId)
+    setSelectedSubcategory(null)
+    syncUrlParams(categoryId, null)
+
+    if (children.length === 0) {
+      scrollToProductsSection()
+    }
+  }
+
+  const handleSubcategoryClick = (subcategoryId) => {
+    if (selectedSubcategory === subcategoryId) {
+      setSelectedSubcategory(null)
+      syncUrlParams(selectedCategory, null)
+      return
+    }
+
+    setSelectedSubcategory(subcategoryId)
+    syncUrlParams(selectedCategory, subcategoryId)
     scrollToProductsSection()
   }
 
   const handleClearFilter = () => {
     setSelectedCategory(null)
+    setSelectedSubcategory(null)
+    syncUrlParams(null, null)
+  }
+
+  const handleBackToParent = () => {
+    setSelectedSubcategory(null)
+    syncUrlParams(selectedCategory, null)
   }
 
   const handleCategoryImageError = (categoryId) => {
@@ -325,10 +427,16 @@ const Products = () => {
     })
   }
 
-  const hasSelectedFilter = selectedCategory !== null
+  // Products show when: leaf selected, OR root without children selected
+  const activeProductCategoryId =
+    selectedSubcategory ??
+    (selectedCategory && !hasChildren ? selectedCategory : null)
+
+  const hasSelectedFilter = activeProductCategoryId !== null
+  const showingSubcategoryPicker = Boolean(selectedCategory && hasChildren && !selectedSubcategory)
 
   const filteredProducts = hasSelectedFilter
-    ? products.filter((product) => product.categoryId === selectedCategory)
+    ? products.filter((product) => product.categoryId === activeProductCategoryId)
     : []
 
   const featuredProduct = hasSelectedFilter
@@ -339,8 +447,93 @@ const Products = () => {
     ? filteredProducts.filter((product) => !product.isCategoryFeatured)
     : []
 
+  const filterLabelCategory =
+    selectedLeaf ||
+    (selectedRoot && !hasChildren ? selectedRoot : null) ||
+    {}
+
+  const cardsToShow = showingSubcategoryPicker ? childCategories : rootCategories
+  const cardsAreSubcategories = showingSubcategoryPicker
+
+  const renderCategoryCard = (category, { isSubcard = false } = {}) => {
+    const isActive = isSubcard
+      ? selectedSubcategory === category.category_id
+      : selectedCategory === category.category_id && !selectedSubcategory
+    const variant = getCategoryVariant(
+      isSubcard && selectedRoot ? selectedRoot : category
+    )
+    const supabaseImage = failedCategoryImages.has(category.category_id)
+      ? null
+      : categoryImages[category.category_id] ||
+        (isSubcard && selectedRoot
+          ? categoryImages[selectedRoot.category_id]
+          : null)
+    const svgSrc = supabaseImage
+      ? null
+      : getCategorySvg(isSubcard && selectedRoot ? getCategoryVariant(selectedRoot) : variant)
+    const hasPhoto = Boolean(supabaseImage)
+    const displayName = isSubcard
+      ? category.category_name
+      : getCategoryDisplayName(category)
+
+    return (
+      <button
+        key={category.category_id}
+        type="button"
+        className={`category-filter-card${isActive ? ' active' : ''}${
+          isSubcard ? ' category-filter-card--sub' : ''
+        }`}
+        onClick={() =>
+          isSubcard
+            ? handleSubcategoryClick(category.category_id)
+            : handleCategoryClick(category.category_id)
+        }
+        aria-pressed={isActive}
+        aria-label={`Filter by ${displayName}`}
+      >
+        {isActive && (
+          <span className="category-active-indicator" aria-hidden="true">
+            <i className="fas fa-check" />
+          </span>
+        )}
+        <div
+          className={`category-watermark category-watermark--${variant}${
+            hasPhoto
+              ? ' category-watermark--has-photo'
+              : svgSrc
+                ? ' category-watermark--has-svg'
+                : ''
+          }`}
+          aria-hidden="true"
+        >
+          {hasPhoto ? (
+            <img
+              src={supabaseImage}
+              alt=""
+              className="category-watermark-photo"
+              loading="lazy"
+              decoding="async"
+              onError={() => handleCategoryImageError(category.category_id)}
+            />
+          ) : (
+            svgSrc && (
+              <img
+                src={svgSrc}
+                alt=""
+                className="category-watermark-svg"
+                loading="lazy"
+                decoding="async"
+              />
+            )
+          )}
+        </div>
+        <span className="category-filter-name">{displayName}</span>
+      </button>
+    )
+  }
+
   return (
-      <div className="products-page">
+    <div className="products-page">
       <SEO
         title={pageSeo.products.title}
         description={pageSeo.products.description}
@@ -350,76 +543,70 @@ const Products = () => {
         <div className="container">
           {categories.length > 0 && (
             <div className="categories-filter-section" role="group" aria-label={productsPage.filterTitle}>
-              <div className="categories-grid">
-                {categories.map((category) => {
-                  const isActive = selectedCategory === category.category_id
-                  const variant = getCategoryVariant(category)
-                  const supabaseImage = failedCategoryImages.has(category.category_id)
-                    ? null
-                    : categoryImages[category.category_id]
-                  const svgSrc = supabaseImage ? null : getCategorySvg(variant)
-                  const hasPhoto = Boolean(supabaseImage)
-
-                  return (
-                    <button
-                      key={category.category_id}
-                      type="button"
-                      className={`category-filter-card${isActive ? ' active' : ''}`}
-                      onClick={() => handleCategoryClick(category.category_id)}
-                      aria-pressed={isActive}
-                      aria-label={`Filter by ${getCategoryDisplayName(category)}`}
-                    >
-                      {isActive && (
-                        <span className="category-active-indicator" aria-hidden="true">
-                          <i className="fas fa-check" />
+              {(selectedCategory || selectedSubcategory) && (
+                <div className="category-nav-trail" aria-label="Category navigation">
+                  <button
+                    type="button"
+                    className="category-nav-link"
+                    onClick={handleClearFilter}
+                  >
+                    All categories
+                  </button>
+                  {selectedRoot && (
+                    <>
+                      <span className="category-nav-sep" aria-hidden="true">›</span>
+                      {selectedSubcategory ? (
+                        <button
+                          type="button"
+                          className="category-nav-link"
+                          onClick={handleBackToParent}
+                        >
+                          {getCategoryDisplayName(selectedRoot)}
+                        </button>
+                      ) : (
+                        <span className="category-nav-current">
+                          {getCategoryDisplayName(selectedRoot)}
                         </span>
                       )}
-                      <div
-                        className={`category-watermark category-watermark--${variant}${
-                          hasPhoto
-                            ? ' category-watermark--has-photo'
-                            : svgSrc
-                              ? ' category-watermark--has-svg'
-                              : ''
-                        }`}
-                        aria-hidden="true"
-                      >
-                        {hasPhoto ? (
-                          <img
-                            src={supabaseImage}
-                            alt=""
-                            className="category-watermark-photo"
-                            loading="lazy"
-                            decoding="async"
-                            onError={() => handleCategoryImageError(category.category_id)}
-                          />
-                        ) : (
-                          svgSrc && (
-                            <img
-                              src={svgSrc}
-                              alt=""
-                              className="category-watermark-svg"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          )
-                        )}
-                      </div>
-                      <span className="category-filter-name">
-                        {getCategoryDisplayName(category)}
+                    </>
+                  )}
+                  {selectedLeaf && (
+                    <>
+                      <span className="category-nav-sep" aria-hidden="true">›</span>
+                      <span className="category-nav-current">
+                        {selectedLeaf.category_name}
                       </span>
-                    </button>
-                  )
-                })}
+                    </>
+                  )}
+                </div>
+              )}
+
+              <div className="categories-grid">
+                {cardsToShow.map((category) =>
+                  renderCategoryCard(category, { isSubcard: cardsAreSubcategories })
+                )}
               </div>
-              {selectedCategory && (
-                <button
-                  type="button"
-                  className="ds-btn ds-btn--ghost clear-category-filter"
-                  onClick={handleClearFilter}
-                >
-                  <i className="fas fa-times" aria-hidden="true" /> {productsPage.clearFilter}
-                </button>
+
+              {(selectedCategory || selectedSubcategory) && (
+                <div className="category-filter-actions">
+                  {selectedSubcategory && (
+                    <button
+                      type="button"
+                      className="ds-btn ds-btn--ghost clear-category-filter"
+                      onClick={handleBackToParent}
+                    >
+                      <i className="fas fa-arrow-left" aria-hidden="true" />{' '}
+                      {productsPage.backToParent(getCategoryDisplayName(selectedRoot))}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="ds-btn ds-btn--ghost clear-category-filter"
+                    onClick={handleClearFilter}
+                  >
+                    <i className="fas fa-times" aria-hidden="true" /> {productsPage.clearFilter}
+                  </button>
+                </div>
               )}
             </div>
           )}
@@ -436,6 +623,14 @@ const Products = () => {
                   <div key={n} className="products-skeleton-card" />
                 ))}
               </div>
+            ) : showingSubcategoryPicker ? (
+              <EmptyState
+                icon="fa-layer-group"
+                title={productsPage.selectSubcategoryTitle}
+                message={productsPage.selectSubcategoryPrompt(
+                  getCategoryDisplayName(selectedRoot)
+                )}
+              />
             ) : !hasSelectedFilter ? (
               <EmptyState
                 icon="fa-hand-pointer"
@@ -462,9 +657,11 @@ const Products = () => {
                 <div className="filter-info">
                   {productsPage.filterInfo(
                     filteredProducts.length,
-                    getCategoryDisplayName(
-                      categories.find((category) => category.category_id === selectedCategory) ?? {}
-                    )
+                    selectedLeaf
+                      ? selectedLeaf.category_name
+                      : getCategoryDisplayName(filterLabelCategory) ||
+                          filterLabelCategory.category_name ||
+                          ''
                   )}
                 </div>
                 {gridProducts.length > 0 && (
@@ -492,4 +689,3 @@ const Products = () => {
 }
 
 export default Products
-

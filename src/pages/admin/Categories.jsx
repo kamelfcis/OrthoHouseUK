@@ -31,8 +31,27 @@ const Categories = () => {
     category_name: '',
     category_code: '',
     description: '',
+    parent_id: '',
     is_active: true,
   })
+
+  const emptyFormData = () => ({
+    category_name: '',
+    category_code: '',
+    description: '',
+    parent_id: '',
+    is_active: true,
+  })
+
+  const rootCategories = categories.filter((c) => c.parent_id == null)
+
+  const getParentName = (parentId) => {
+    if (!parentId) return null
+    return categories.find((c) => c.category_id === parentId)?.category_name || null
+  }
+
+  const hasChildCategories = (categoryId) =>
+    categories.some((c) => c.parent_id === categoryId)
 
   useEffect(() => {
     if (appUser) {
@@ -361,6 +380,11 @@ const Categories = () => {
   }
 
   const handleDelete = async (categoryId) => {
+    if (hasChildCategories(categoryId)) {
+      toast.error('Cannot delete a category that has subcategories. Remove or reassign its children first.')
+      return
+    }
+
     if (!confirm('Are you sure you want to delete this category? This will also delete all associated images.')) return
 
     try {
@@ -390,38 +414,50 @@ const Categories = () => {
     e.preventDefault()
 
     try {
-      let categoryId
+      const payload = {
+        category_name: formData.category_name,
+        category_code: formData.category_code,
+        description: formData.description || null,
+        is_active: formData.is_active,
+        parent_id: formData.parent_id ? parseInt(formData.parent_id, 10) : null,
+      }
+
+      if (
+        editingCategory &&
+        payload.parent_id &&
+        payload.parent_id === editingCategory.category_id
+      ) {
+        toast.error('A category cannot be its own parent.')
+        return
+      }
+
+      if (editingCategory && payload.parent_id && hasChildCategories(editingCategory.category_id)) {
+        toast.error('A category with subcategories cannot become a subcategory (one level only).')
+        return
+      }
 
       if (editingCategory) {
-        // Update existing category
         const { error } = await supabase
           .from('product_categories')
-          .update(formData)
+          .update(payload)
           .eq('category_id', editingCategory.category_id)
 
         if (error) throw error
         toast.success('Category updated successfully')
       } else {
-        // Create new category
-        const { data: newCategory, error: categoryError } = await supabase
+        const { error: categoryError } = await supabase
           .from('product_categories')
-          .insert(formData)
+          .insert(payload)
           .select()
           .single()
 
         if (categoryError) throw categoryError
-        categoryId = newCategory.category_id
         toast.success('Category created successfully')
       }
 
       setShowModal(false)
       setEditingCategory(null)
-      setFormData({
-        category_name: '',
-        category_code: '',
-        description: '',
-        is_active: true,
-      })
+      setFormData(emptyFormData())
       fetchCategories()
     } catch (error) {
       toast.error('Error saving category: ' + error.message)
@@ -567,7 +603,7 @@ const Categories = () => {
   }
 
   // Component for category image row - simplified without loading spinner
-  const CategoryImageRow = ({ category, primaryImage, getImageUrl, setEditingCategory, setFormData, setShowModal, handleOpenImageModal, handleDelete }) => {
+  const CategoryImageRow = ({ category, primaryImage, getImageUrl, parentName, setEditingCategory, setFormData, setShowModal, handleOpenImageModal, handleDelete }) => {
     const handleImageError = (e) => {
       e.target.style.display = 'none'
       // Show placeholder on error
@@ -596,7 +632,16 @@ const Categories = () => {
             )}
           </div>
         </td>
-        <td>{category.category_name}</td>
+        <td>
+          <div className="category-name-cell">
+            <span>{category.category_name}</span>
+            {parentName && (
+              <span className="status-badge parent-badge" title={`Subcategory of ${parentName}`}>
+                {parentName}
+              </span>
+            )}
+          </div>
+        </td>
         <td>{category.category_code}</td>
         <td>
           <span className={`status-badge ${category.is_active ? 'active' : 'inactive'}`}>
@@ -609,7 +654,13 @@ const Categories = () => {
               className="action-btn edit"
               onClick={() => {
                 setEditingCategory(category)
-                setFormData(category)
+                setFormData({
+                  category_name: category.category_name || '',
+                  category_code: category.category_code || '',
+                  description: category.description || '',
+                  parent_id: category.parent_id != null ? String(category.parent_id) : '',
+                  is_active: category.is_active !== false,
+                })
                 setShowModal(true)
               }}
               title="Edit Category"
@@ -692,12 +743,7 @@ const Categories = () => {
             <div className="filter-group">
               <button className="lte-btn" onClick={() => {
                 setEditingCategory(null)
-                setFormData({
-                  category_name: '',
-                  category_code: '',
-                  description: '',
-                  is_active: true,
-                })
+                setFormData(emptyFormData())
                 setShowModal(true)
               }}>
                 <i className="fas fa-plus"></i> Add Category
@@ -714,12 +760,7 @@ const Categories = () => {
             <div className="filter-group">
               <button className="lte-btn" onClick={() => {
                 setEditingCategory(null)
-                setFormData({
-                  category_name: '',
-                  category_code: '',
-                  description: '',
-                  is_active: true,
-                })
+                setFormData(emptyFormData())
                 setShowModal(true)
               }}>
                 <i className="fas fa-plus"></i> Add Category
@@ -754,12 +795,14 @@ const Categories = () => {
             <tbody>
               {filteredCategories.map((category) => {
                 const primaryImage = getPrimaryImage(category.category_id)
-                
+                const parentName = getParentName(category.parent_id)
+
                 return (
                   <CategoryImageRow
                     key={category.category_id}
                     category={category}
                     primaryImage={primaryImage}
+                    parentName={parentName}
                     getImageUrl={getImageUrl}
                     setEditingCategory={setEditingCategory}
                     setFormData={setFormData}
@@ -814,6 +857,36 @@ const Categories = () => {
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows="4"
                 />
+              </div>
+
+              <div className="form-group">
+                <label>Parent category</label>
+                <select
+                  value={formData.parent_id}
+                  onChange={(e) => setFormData({ ...formData, parent_id: e.target.value })}
+                  disabled={
+                    Boolean(
+                      editingCategory && hasChildCategories(editingCategory.category_id)
+                    )
+                  }
+                >
+                  <option value="">None (top-level)</option>
+                  {rootCategories
+                    .filter(
+                      (cat) =>
+                        !editingCategory || cat.category_id !== editingCategory.category_id
+                    )
+                    .map((cat) => (
+                      <option key={cat.category_id} value={cat.category_id}>
+                        {cat.category_name}
+                      </option>
+                    ))}
+                </select>
+                {editingCategory && hasChildCategories(editingCategory.category_id) && (
+                  <small className="form-hint">
+                    This category has subcategories, so it must remain top-level.
+                  </small>
+                )}
               </div>
 
               <div className="form-group">

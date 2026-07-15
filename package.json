@@ -15,6 +15,7 @@
     "extract-astrolabe": "python scripts/extract_astrolabe_catalog.py",
     "extract-orthosintex": "python scripts/extract_orthosintex_catalog.py",
     "extract-mirai": "python scripts/extract_mirai_catalog.py",
+    "import-mirai": "python scripts/import_mirai_catalog.py",
     "extract-portfolio": "python scripts/extract_portfolio.py",
     "optimize-portfolio": "node scripts/optimize_portfolio_assets.mjs",
     "seed-portfolio": "python scripts/seed_portfolio_to_supabase.py",
