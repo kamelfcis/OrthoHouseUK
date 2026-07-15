@@ -433,7 +433,7 @@ const Products = () => {
     (selectedCategory && !hasChildren ? selectedCategory : null)
 
   const hasSelectedFilter = activeProductCategoryId !== null
-  const showingSubcategoryPicker = Boolean(selectedCategory && hasChildren && !selectedSubcategory)
+  const showingSubcategoryCards = Boolean(selectedCategory && hasChildren)
 
   const filteredProducts = hasSelectedFilter
     ? products.filter((product) => product.categoryId === activeProductCategoryId)
@@ -452,8 +452,8 @@ const Products = () => {
     (selectedRoot && !hasChildren ? selectedRoot : null) ||
     {}
 
-  const cardsToShow = showingSubcategoryPicker ? childCategories : rootCategories
-  const cardsAreSubcategories = showingSubcategoryPicker
+  const cardsToShow = showingSubcategoryCards ? childCategories : rootCategories
+  const cardsAreSubcategories = showingSubcategoryCards
 
   const renderCategoryCard = (category, { isSubcard = false } = {}) => {
     const isActive = isSubcard
@@ -623,7 +623,7 @@ const Products = () => {
                   <div key={n} className="products-skeleton-card" />
                 ))}
               </div>
-            ) : showingSubcategoryPicker ? (
+            ) : showingSubcategoryCards && !selectedSubcategory ? (
               <EmptyState
                 icon="fa-layer-group"
                 title={productsPage.selectSubcategoryTitle}
