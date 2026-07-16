@@ -44,7 +44,7 @@ export const footer = {
     phoneHref: 'tel:+442033683036',
     email: 'info@ortho-house.com',
     emailHref: 'mailto:info@ortho-house.com',
-    addressLines: ['2 Kingdom Street, W2 6BD London ', 'United Kingdom']
+    addressLines: ['2 Kingdom Street, W2 6BD London,', 'United Kingdom']
   },
   social: socialLinks
 }

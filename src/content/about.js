@@ -69,7 +69,7 @@ export const aboutPage = {
         text: 'Supporting surgeons with evidence-based products.'
       },
       {
-        title: 'Education Excellence',
+        title: 'Education',
         icon: 'fas fa-graduation-cap',
         text: 'Provides World Class Continous Medical Education For Junior Surgeons.'
       },

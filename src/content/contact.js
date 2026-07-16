@@ -21,12 +21,12 @@ export const contactPage = {
   },
   officesSection: {
     eyebrow: 'Our locations',
-    title: 'England Offices'
+    title: 'UK Offices'
   },
   offices: [
     {
       id: 'uk',
-      heading: 'UK office',
+      heading: 'England Office',
       ...SHARED_CONTACT,
       addressLines: ['2 Kingdom St, W2 6BD London', 'United Kingdom']
     },

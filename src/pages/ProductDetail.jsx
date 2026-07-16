@@ -48,7 +48,7 @@ const ProductDetail = () => {
     const getProductImageUrl = (img) => {
       if (!img?.image_url) return null
       return toPublicStorageUrl('product-images', img.image_url, {
-        cacheKey: img.image_id ?? img.updated_at ?? img.image_url
+        cacheKey: img.image_id ?? img.created_at ?? img.image_url
       })
     }
 
@@ -57,11 +57,12 @@ const ProductDetail = () => {
         setLoading(true)
         setError(null)
         setParentCategoryName(null)
+        setProductImages([])
+        setSelectedImageIndex(0)
         
         const productId = parseInt(id)
         if (isNaN(productId)) {
           setError('Invalid product ID')
-          setLoading(false)
           return
         }
 
@@ -73,7 +74,7 @@ const ProductDetail = () => {
             .select('branch_id, branch_code, branch_name, is_active')
             .eq('branch_code', 'UK')
             .eq('is_active', true)
-            .single()
+            .maybeSingle()
 
           if (branchError) throw branchError
           if (!data) throw new Error('UK branch not found')
@@ -105,20 +106,26 @@ const ProductDetail = () => {
           .eq('product_id', productId)
           .eq('is_available', true)
           .eq('is_public', true)
-          .single()
+          .maybeSingle()
 
-        if (productError) {
-          console.error('Supabase error:', productError)
+        if (productError || !branchProduct?.products) {
+          if (productError) {
+            console.error('Supabase error:', productError)
+          }
           // If product not found, try to fetch just the product without branch filter
           const { data: productData, error: directProductError } = await supabase
             .from('products')
             .select(productSelect)
             .eq('product_id', productId)
             .eq('is_active', true)
-            .single()
+            .maybeSingle()
 
           if (directProductError || !productData) {
-            throw productError
+            const message =
+              productError?.message ||
+              directProductError?.message ||
+              'Product not found for UK branch'
+            throw new Error(message)
           }
 
           // Use product data even if not in branch_products
@@ -131,12 +138,6 @@ const ProductDetail = () => {
           })
           await resolveParentCategory(productData.product_categories)
         } else {
-          if (!branchProduct || !branchProduct.products) {
-            setError('Product not found for UK branch')
-            setLoading(false)
-            return
-          }
-
           setProduct({
             ...branchProduct.products,
             branchProduct: branchProduct
@@ -148,14 +149,17 @@ const ProductDetail = () => {
         const { data: images, error: imagesError } = await supabase
           .from('product_images')
           .select(
-            'image_id, image_url, image_alt_text, image_specifications, is_primary, image_order, updated_at'
+            'image_id, image_url, image_alt_text, image_specifications, is_primary, image_order, created_at'
           )
           .eq('branch_id', branch.branch_id)
           .eq('product_id', productId)
           .order('is_primary', { ascending: false })
           .order('image_order', { ascending: true })
 
-        if (!imagesError && images && images.length > 0) {
+        if (imagesError) {
+          console.error('Error fetching product images:', imagesError)
+          setProductImages([])
+        } else if (images && images.length > 0) {
           const imageObjects = images
             .map(img => ({
               url: getProductImageUrl(img),
@@ -163,18 +167,14 @@ const ProductDetail = () => {
               alt: img.image_alt_text,
             }))
             .filter(img => img.url !== null)
-          setProductImages(imageObjects.length > 0
-            ? imageObjects
-            : [{ url: `/assets/images/product-${productId % 6 + 1}.jpg`, specifications: null, alt: null }])
+          setProductImages(imageObjects)
         } else {
-          // Use fallback image if no images found
-          setProductImages([{ url: `/assets/images/product-${productId % 6 + 1}.jpg`, specifications: null, alt: null }])
+          setProductImages([])
         }
-
-        setLoading(false)
       } catch (err) {
         console.error('Error fetching product details:', err)
         setError(err.message || 'Failed to load product information')
+      } finally {
         setLoading(false)
       }
     }
