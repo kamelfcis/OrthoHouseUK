@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { supabase } from '../../lib/supabase'
+import { invalidatePublicCache } from '../../lib/invalidatePublicCache'
 import toast from 'react-hot-toast'
 import './Branches.css'
 
@@ -114,6 +115,7 @@ const Branches = () => {
 
       if (error) throw error
       toast.success('Branch deleted successfully')
+      invalidatePublicCache('UK')
       fetchBranches()
     } catch (error) {
       toast.error('Error deleting branch: ' + error.message)
@@ -141,6 +143,7 @@ const Branches = () => {
         toast.success('Branch created successfully')
       }
 
+      invalidatePublicCache('UK')
       setShowModal(false)
       setEditingBranch(null)
       setFormData({

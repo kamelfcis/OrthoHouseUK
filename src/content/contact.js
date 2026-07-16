@@ -1,24 +1,47 @@
+const SHARED_CONTACT = {
+  email: 'infoUK@ortho-house.com',
+  phone: '+44 20 3368 3036',
+  phoneDial: '+442033683036',
+  hours: 'Monday to Friday, 9:00–17:00',
+  directionsUrl: 'https://maps.app.goo.gl/Xa8cgaQMRUqE5AZw9?g_st=iw',
+  callUs: 'Call us',
+  directions: 'Get directions',
+  emailLabel: 'Email',
+  phoneLabel: 'Telephone',
+  addressLabel: 'Address',
+  hoursLabel: 'Opening hours'
+}
+
 export const contactPage = {
   hero: {
     eyebrow: 'ORTHOHOUSE UK',
     headline: 'Contact us',
     intro:
-      'For product enquiries, partnership discussions, or clinical support across the United Kingdom, our UK team is ready to help.'
+      'For product enquiries, partnership discussions, or clinical support, our UK and Scotland offices are ready to help.'
   },
-  office: {
-    heading: 'UK office',
-    email: 'infoUK@ortho-house.com',
-    phone: '+44 20 3368 3036',
-    phoneDial: '+442033683036',
-    addressLines: ['2 Kingdom St, W2 6BD London ', 'United Kingdom'],
-    hours: 'Monday to Friday, 9:00–17:00',
-    callUs: 'Call us',
-    directions: 'Get directions',
-    emailLabel: 'Email',
-    phoneLabel: 'Telephone',
-    addressLabel: 'Address',
-    hoursLabel: 'Opening hours'
+  officesSection: {
+    eyebrow: 'Our locations',
+    title: 'England Offices'
   },
+  offices: [
+    {
+      id: 'uk',
+      heading: 'UK office',
+      ...SHARED_CONTACT,
+      addressLines: ['2 Kingdom St, W2 6BD London', 'United Kingdom']
+    },
+    {
+      id: 'scotland',
+      heading: 'Scotland office',
+      ...SHARED_CONTACT,
+      addressLines: [
+        'Maxim Business Park, Maxim 1 - 1st floor',
+        '2 Parklands Way, Eurocentral',
+        'Lanarkshire / Dumfries & Galloway Region, ML1 4WR',
+        'United Kingdom'
+      ]
+    }
+  ],
   form: {
     heading: 'Send a message',
     intro: 'Complete the form below and our UK team will respond within one business day.',

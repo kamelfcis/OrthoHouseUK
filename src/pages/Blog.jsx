@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { useInView } from 'react-intersection-observer'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
+import { getBranchDataSnapshot } from '../lib/branchDataCache'
 import SEO from '../components/SEO/SEO'
 import { pageSeo } from '../content/seo'
 import { blogPage } from '../content/blog'
@@ -86,15 +87,19 @@ const Blog = () => {
       setLoading(true)
       setError(null)
 
-      const { data: branch, error: branchError } = await supabase
-        .from('branches')
-        .select('*')
-        .eq('branch_code', 'UK')
-        .eq('is_active', true)
-        .single()
+      let branch = getBranchDataSnapshot('UK').data?.branch
+      if (!branch) {
+        const { data, error: branchError } = await supabase
+          .from('branches')
+          .select('branch_id, branch_code, is_active')
+          .eq('branch_code', 'UK')
+          .eq('is_active', true)
+          .single()
 
-      if (branchError) throw branchError
-      if (!branch) throw new Error('UK branch not found')
+        if (branchError) throw branchError
+        if (!data) throw new Error('UK branch not found')
+        branch = data
+      }
 
       const [blogsRes, categoriesRes] = await Promise.all([
         supabase
@@ -103,7 +108,6 @@ const Blog = () => {
             blog_id,
             title,
             excerpt,
-            content,
             featured_image,
             author_id,
             published_at,

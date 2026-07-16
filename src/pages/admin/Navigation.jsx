@@ -12,6 +12,7 @@ import {
   mergeHomeStatRowsWithDefaults,
   saveHomeStatsForAdmin,
 } from '../../lib/homeStats'
+import { invalidatePublicCache } from '../../lib/invalidatePublicCache'
 import toast from 'react-hot-toast'
 import './Navigation.css'
 
@@ -172,6 +173,7 @@ const Navigation = () => {
       await saveHomeStatsForAdmin(branchId, homeStats)
 
       toast.success('Navigation settings saved.')
+      invalidatePublicCache('UK')
       hasLoadedRef.current = false
       await loadSettings(branchId)
     } catch (error) {

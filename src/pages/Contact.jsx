@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
+import { getBranchDataSnapshot } from '../lib/branchDataCache'
 import { CONTACT_HERO_FALLBACK } from '../data/contactHero'
 import HeroBackground from '../components/common/HeroBackground'
 import { formatPhoneNumber } from '../utils/validation'
@@ -15,6 +16,84 @@ const initialFormState = {
   phone: '',
   subject: '',
   message: ''
+}
+
+const OfficeCard = ({ office, index }) => {
+  const headingId = `contact-office-heading-${office.id}`
+
+  return (
+    <motion.aside
+      className="contact-office ds-card"
+      role="listitem"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.05 + index * 0.05 }}
+      aria-labelledby={headingId}
+    >
+      <h2 id={headingId} className="contact-office__heading">
+        <i className="fas fa-map-marker-alt" aria-hidden="true" />
+        {office.heading}
+      </h2>
+
+      <dl className="contact-office__list">
+        <div className="contact-office__item">
+          <dt>
+            <i className="fas fa-envelope" aria-hidden="true" />
+            {office.emailLabel}
+          </dt>
+          <dd>
+            <a href={`mailto:${office.email}`}>{office.email}</a>
+          </dd>
+        </div>
+
+        <div className="contact-office__item">
+          <dt>
+            <i className="fas fa-phone" aria-hidden="true" />
+            {office.phoneLabel}
+          </dt>
+          <dd>
+            <a href={`tel:${office.phoneDial}`}>{office.phone}</a>
+          </dd>
+        </div>
+
+        <div className="contact-office__item">
+          <dt>
+            <i className="fas fa-map-marker-alt" aria-hidden="true" />
+            {office.addressLabel}
+          </dt>
+          <dd>
+            {office.addressLines.map((line) => (
+              <span key={line}>{line}</span>
+            ))}
+          </dd>
+        </div>
+
+        <div className="contact-office__item">
+          <dt>
+            <i className="fas fa-clock" aria-hidden="true" />
+            {office.hoursLabel}
+          </dt>
+          <dd>{office.hours}</dd>
+        </div>
+      </dl>
+
+      <div className="contact-office__actions">
+        <a className="ds-btn ds-btn--primary" href={`tel:${office.phoneDial}`}>
+          <i className="fas fa-phone" aria-hidden="true" />
+          {office.callUs}
+        </a>
+        <a
+          className="ds-btn ds-btn--secondary"
+          href={office.directionsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i className="fas fa-directions" aria-hidden="true" />
+          {office.directions}
+        </a>
+      </div>
+    </motion.aside>
+  )
 }
 
 const Contact = () => {
@@ -32,6 +111,12 @@ const Contact = () => {
 
   const fetchUkBranch = async () => {
     try {
+      const cachedBranch = getBranchDataSnapshot('UK').data?.branch
+      if (cachedBranch?.branch_id) {
+        setBranchId(cachedBranch.branch_id)
+        return
+      }
+
       const { data, error } = await supabase
         .from('branches')
         .select('branch_id')
@@ -201,82 +286,26 @@ const Contact = () => {
 
       <section className="contact-main ds-section ds-section--muted" aria-label="Contact details and enquiry form">
         <div className="container">
-          <div className="contact-grid">
-            <motion.aside
-              className="contact-office ds-card"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
-              aria-labelledby="contact-office-heading"
-            >
-              <h2 id="contact-office-heading" className="contact-office__heading">
-                {contactPage.office.heading}
-              </h2>
-
-              <dl className="contact-office__list">
-                <div className="contact-office__item">
-                  <dt>
-                    <i className="fas fa-envelope" aria-hidden="true" />
-                    {contactPage.office.emailLabel}
-                  </dt>
-                  <dd>
-                    <a href={`mailto:${contactPage.office.email}`}>{contactPage.office.email}</a>
-                  </dd>
-                </div>
-
-                <div className="contact-office__item">
-                  <dt>
-                    <i className="fas fa-phone" aria-hidden="true" />
-                    {contactPage.office.phoneLabel}
-                  </dt>
-                  <dd>
-                    <a href={`tel:${contactPage.office.phoneDial}`}>{contactPage.office.phone}</a>
-                  </dd>
-                </div>
-
-                <div className="contact-office__item">
-                  <dt>
-                    <i className="fas fa-map-marker-alt" aria-hidden="true" />
-                    {contactPage.office.addressLabel}
-                  </dt>
-                  <dd>
-                    {contactPage.office.addressLines.map((line) => (
-                      <span key={line}>{line}</span>
-                    ))}
-                  </dd>
-                </div>
-
-                <div className="contact-office__item">
-                  <dt>
-                    <i className="fas fa-clock" aria-hidden="true" />
-                    {contactPage.office.hoursLabel}
-                  </dt>
-                  <dd>{contactPage.office.hours}</dd>
-                </div>
-              </dl>
-
-              <div className="contact-office__actions">
-                <a className="ds-btn ds-btn--primary" href={`tel:${contactPage.office.phoneDial}`}>
-                  <i className="fas fa-phone" aria-hidden="true" />
-                  {contactPage.office.callUs}
-                </a>
-                <a
-                  className="ds-btn ds-btn--secondary"
-                  href="https://maps.app.goo.gl/Xa8cgaQMRUqE5AZw9?g_st=iw"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <i className="fas fa-directions" aria-hidden="true" />
-                  {contactPage.office.directions}
-                </a>
+          <div className="contact-layout">
+            <div className="contact-offices-section">
+              <header className="contact-offices__header" aria-labelledby="contact-offices-heading">
+                <span className="contact-offices__eyebrow">{contactPage.officesSection.eyebrow}</span>
+                <h2 id="contact-offices-heading" className="contact-offices__title">
+                  {contactPage.officesSection.title}
+                </h2>
+              </header>
+              <div className="contact-offices" role="list">
+                {contactPage.offices.map((office, index) => (
+                  <OfficeCard key={office.id} office={office} index={index} />
+                ))}
               </div>
-            </motion.aside>
+            </div>
 
             <motion.div
               className="contact-form ds-card"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
               aria-labelledby="contact-form-heading"
             >
               <header className="contact-form__header">

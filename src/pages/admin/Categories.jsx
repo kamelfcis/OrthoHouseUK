@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { getPublicBranch, getPublicBranchId } from '../../lib/branchDefaults'
+import { invalidatePublicCache } from '../../lib/invalidatePublicCache'
 import toast from 'react-hot-toast'
 import './Categories.css'
 
@@ -323,6 +324,7 @@ const Categories = () => {
         return [...demoted, newImage]
       })
       toast.success('Image uploaded successfully')
+      invalidatePublicCache('UK')
     } catch (error) {
       toast.error('Error uploading image: ' + error.message)
     } finally {
@@ -404,6 +406,7 @@ const Categories = () => {
 
       if (error) throw error
       toast.success('Category deleted successfully')
+      invalidatePublicCache('UK')
       fetchCategories()
     } catch (error) {
       toast.error('Error deleting category: ' + error.message)
@@ -455,6 +458,7 @@ const Categories = () => {
         toast.success('Category created successfully')
       }
 
+      invalidatePublicCache('UK')
       setShowModal(false)
       setEditingCategory(null)
       setFormData(emptyFormData())
@@ -552,6 +556,7 @@ const Categories = () => {
       }
 
       toast.success('Category images saved successfully')
+      invalidatePublicCache('UK')
       
       // Refresh images for the specific category and branch before clearing state
       const images = await fetchCategoryImages(categoryId, branchId)

@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { getBranchDataSnapshot } from '../lib/branchDataCache'
+import { toPublicStorageUrl } from '../lib/storageUrl'
 import SEO from '../components/SEO/SEO'
 import { productDetail } from '../content/products'
 import { generateProductSchema, generateBreadcrumbSchema } from '../utils/seoData'
 import './ProductDetail.css'
+
+const PSI_PRODUCT_ID = 76
 
 const ProductDetail = () => {
   const { id } = useParams()
@@ -41,11 +45,11 @@ const ProductDetail = () => {
       }
     }
 
-    const getProductImageUrl = (imagePath) => {
-      if (!imagePath) return null
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ljfkmtuxqaznnmmxeydf.supabase.co'
-      const projectRef = supabaseUrl.replace('https://', '').replace('.supabase.co', '')
-      return `https://${projectRef}.supabase.co/storage/v1/object/public/product-images/${imagePath}`
+    const getProductImageUrl = (img) => {
+      if (!img?.image_url) return null
+      return toPublicStorageUrl('product-images', img.image_url, {
+        cacheKey: img.image_id ?? img.updated_at ?? img.image_url
+      })
     }
 
     const fetchProductDetails = async () => {
@@ -61,29 +65,41 @@ const ProductDetail = () => {
           return
         }
 
-        // Fetch UK branch
-        const { data: branch, error: branchError } = await supabase
-          .from('branches')
-          .select('*')
-          .eq('branch_code', 'UK')
-          .eq('is_active', true)
-          .single()
+        // Prefer shared branch snapshot; fall back to a trimmed query
+        let branch = getBranchDataSnapshot('UK').data?.branch
+        if (!branch) {
+          const { data, error: branchError } = await supabase
+            .from('branches')
+            .select('branch_id, branch_code, branch_name, is_active')
+            .eq('branch_code', 'UK')
+            .eq('is_active', true)
+            .single()
 
-        if (branchError) throw branchError
-        if (!branch) throw new Error('UK branch not found')
+          if (branchError) throw branchError
+          if (!data) throw new Error('UK branch not found')
+          branch = data
+        }
         
         setUkBranch(branch)
+
+        const productSelect = `
+          product_id,
+          product_name,
+          product_code,
+          description,
+          specifications,
+          category_id,
+          product_categories (category_id, category_name, parent_id),
+          partners (partner_id, partner_name)
+        `
 
         // Fetch product details with category and partner
         const { data: branchProduct, error: productError } = await supabase
           .from('branch_products')
           .select(`
-            *,
-            products (
-              *,
-              product_categories (*),
-              partners (*)
-            )
+            local_description,
+            special_notes,
+            products (${productSelect})
           `)
           .eq('branch_id', branch.branch_id)
           .eq('product_id', productId)
@@ -96,11 +112,7 @@ const ProductDetail = () => {
           // If product not found, try to fetch just the product without branch filter
           const { data: productData, error: directProductError } = await supabase
             .from('products')
-            .select(`
-              *,
-              product_categories (*),
-              partners (*)
-            `)
+            .select(productSelect)
             .eq('product_id', productId)
             .eq('is_active', true)
             .single()
@@ -135,7 +147,9 @@ const ProductDetail = () => {
         // Fetch all product images for UK branch
         const { data: images, error: imagesError } = await supabase
           .from('product_images')
-          .select('*')
+          .select(
+            'image_id, image_url, image_alt_text, image_specifications, is_primary, image_order, updated_at'
+          )
           .eq('branch_id', branch.branch_id)
           .eq('product_id', productId)
           .order('is_primary', { ascending: false })
@@ -144,7 +158,7 @@ const ProductDetail = () => {
         if (!imagesError && images && images.length > 0) {
           const imageObjects = images
             .map(img => ({
-              url: getProductImageUrl(img.image_url),
+              url: getProductImageUrl(img),
               specifications: img.image_specifications,
               alt: img.image_alt_text,
             }))
@@ -172,13 +186,6 @@ const ProductDetail = () => {
       setLoading(false)
     }
   }, [id])
-
-  const getProductImageUrl = (imagePath) => {
-    if (!imagePath) return null
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://ljfkmtuxqaznnmmxeydf.supabase.co'
-    const projectRef = supabaseUrl.replace('https://', '').replace('.supabase.co', '')
-    return `https://${projectRef}.supabase.co/storage/v1/object/public/product-images/${imagePath}`
-  }
 
   if (loading) {
     return (
@@ -217,6 +224,7 @@ const ProductDetail = () => {
   const partnerName = product.partners?.partner_name
   const summaryText = product.branchProduct?.local_description || product.description
   const activeSpecs = productImages[selectedImageIndex]?.specifications?.trim() || product.specifications
+  const showPsiContact = product.product_id === PSI_PRODUCT_ID
 
   const siteUrl = typeof window !== 'undefined' ? window.location.origin : ''
   const breadcrumbs = generateBreadcrumbSchema([
@@ -412,6 +420,12 @@ const ProductDetail = () => {
                   <i className="fas fa-arrow-left"></i>
                   <span>{productDetail.backToProducts}</span>
                 </Link>
+                {showPsiContact && (
+                  <Link to="/contact" className="psi-contact-button">
+                    <i className="fas fa-envelope"></i>
+                    <span>Contact Us For PSI</span>
+                  </Link>
+                )}
               </div>
             </div>
           </div>

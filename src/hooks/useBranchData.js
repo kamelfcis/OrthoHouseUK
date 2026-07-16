@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react'
-import { getBranchDataSnapshot, subscribeBranchData } from '../lib/branchDataCache'
+import {
+  getBranchDataSnapshot,
+  subscribeBranchData,
+  requestBranchData
+} from '../lib/branchDataCache'
 
 const useBranchData = (branchCode = 'UK') => {
   const initialSnapshot = getBranchDataSnapshot(branchCode)
@@ -31,7 +35,27 @@ const useBranchData = (branchCode = 'UK') => {
       }
     )
 
-    return unsubscribe
+    let lastFocusRefresh = 0
+    const refreshIfVisible = () => {
+      if (typeof document !== 'undefined' && document.visibilityState !== 'visible') {
+        return
+      }
+      const now = Date.now()
+      if (now - lastFocusRefresh < 1000) return
+      lastFocusRefresh = now
+      requestBranchData(branchCode, { force: true }).catch((err) => {
+        setError(err?.message || 'Failed to refresh branch data')
+      })
+    }
+
+    document.addEventListener('visibilitychange', refreshIfVisible)
+    window.addEventListener('focus', refreshIfVisible)
+
+    return () => {
+      unsubscribe()
+      document.removeEventListener('visibilitychange', refreshIfVisible)
+      window.removeEventListener('focus', refreshIfVisible)
+    }
   }, [branchCode])
 
   return { branchData, loading, error }

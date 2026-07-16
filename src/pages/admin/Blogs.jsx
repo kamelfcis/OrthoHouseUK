@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { supabase } from '../../lib/supabase'
+import { invalidatePublicCache } from '../../lib/invalidatePublicCache'
 import toast from 'react-hot-toast'
 import './Blogs.css'
 
@@ -170,6 +171,7 @@ const Blogs = () => {
       // Update form data with the image URL
       setFormData({ ...formData, featured_image: filePath })
       toast.success('Featured image uploaded successfully')
+      invalidatePublicCache('UK')
     } catch (error) {
       toast.error('Error uploading image: ' + error.message)
     } finally {
@@ -211,6 +213,7 @@ const Blogs = () => {
 
       if (error) throw error
       toast.success('Blog post deleted successfully')
+      invalidatePublicCache('UK')
       fetchBlogs()
     } catch (error) {
       toast.error('Error deleting blog: ' + error.message)
@@ -273,6 +276,7 @@ const Blogs = () => {
         toast.success('Blog post created successfully')
       }
 
+      invalidatePublicCache('UK')
       setShowModal(false)
       setEditingBlog(null)
       setFormData({

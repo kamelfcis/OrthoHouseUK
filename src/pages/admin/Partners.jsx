@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { supabase } from '../../lib/supabase'
+import { invalidatePublicCache } from '../../lib/invalidatePublicCache'
 import toast from 'react-hot-toast'
 import './Partners.css'
 
@@ -133,6 +134,7 @@ const Partners = () => {
       if (linkError) throw linkError
 
       toast.success('Partner linked to branch successfully')
+      invalidatePublicCache('UK')
       setShowLinkModal(false)
       setSelectedPartnerId('')
       fetchPartners()
@@ -324,6 +326,7 @@ const Partners = () => {
       // Update form data with the logo URL
       setFormData({ ...formData, logo_url: filePath })
       toast.success('Logo uploaded successfully')
+      invalidatePublicCache('UK')
     } catch (error) {
       toast.error('Error uploading logo: ' + error.message)
     } finally {
@@ -353,6 +356,7 @@ const Partners = () => {
 
         if (error) throw error
         toast.success('Partner removed from branch successfully')
+        invalidatePublicCache('UK')
         fetchPartners()
       } catch (error) {
         toast.error('Error removing partner: ' + error.message)
@@ -390,6 +394,7 @@ const Partners = () => {
 
         if (error) throw error
         toast.success('Partner deleted successfully')
+        invalidatePublicCache('UK')
         fetchPartners()
       } catch (error) {
         toast.error('Error deleting partner: ' + error.message)
@@ -482,6 +487,7 @@ const Partners = () => {
         toast.success('Partner created successfully')
       }
 
+      invalidatePublicCache('UK')
       setShowModal(false)
       setEditingPartner(null)
       setSelectedBranches([])

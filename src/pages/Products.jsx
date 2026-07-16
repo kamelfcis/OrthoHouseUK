@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
-import { getBranchDataSnapshot } from '../lib/branchDataCache'
+import { getBranchDataSnapshot, requestBranchData } from '../lib/branchDataCache'
 import { toPublicStorageUrl } from '../lib/storageUrl'
 import ProductCard from '../components/common/ProductCard'
 import FeaturedCategoryProduct from '../components/common/FeaturedCategoryProduct'
@@ -117,7 +117,9 @@ const buildProductImageMap = (rows) => {
   const map = {}
   rows?.forEach((img) => {
     if (!map[img.product_id]) {
-      map[img.product_id] = toPublicStorageUrl('product-images', img.image_url)
+      map[img.product_id] = toPublicStorageUrl('product-images', img.image_url, {
+        cacheKey: img.image_id ?? img.updated_at ?? img.image_url
+      })
     }
   })
   return map
@@ -156,7 +158,7 @@ const transformBranchProducts = (branchProducts, productImagesMap) =>
         id: product.product_id,
         name: product.product_name,
         code: product.product_code,
-        description: product.description || product.local_description || '',
+        description: product.description || bp.local_description || '',
         category: product.product_categories?.category_name || '',
         categoryId: product.category_id,
         partner: product.partners?.partner_name || '',
@@ -241,6 +243,25 @@ const Products = () => {
   }, [])
 
   useEffect(() => {
+    let lastFocusRefresh = 0
+    const refreshIfVisible = () => {
+      if (document.visibilityState !== 'visible') return
+      const now = Date.now()
+      if (now - lastFocusRefresh < 1000) return
+      lastFocusRefresh = now
+      requestBranchData('UK', { force: true })
+        .catch(() => {})
+        .finally(() => fetchData({ soft: true }))
+    }
+    document.addEventListener('visibilitychange', refreshIfVisible)
+    window.addEventListener('focus', refreshIfVisible)
+    return () => {
+      document.removeEventListener('visibilitychange', refreshIfVisible)
+      window.removeEventListener('focus', refreshIfVisible)
+    }
+  }, [])
+
+  useEffect(() => {
     if (loading || categories.length === 0 || urlSyncedRef.current) return
 
     let rootId = null
@@ -283,9 +304,9 @@ const Products = () => {
     scrollToProductsSection
   ])
 
-  const fetchData = async () => {
+  const fetchData = async ({ soft = false } = {}) => {
     try {
-      setLoading(true)
+      if (!soft) setLoading(true)
 
       const snapshot = getBranchDataSnapshot('UK')
       const cached = snapshot.data
@@ -294,7 +315,7 @@ const Products = () => {
       if (!branch) {
         const { data, error: branchError } = await supabase
           .from('branches')
-          .select('*')
+          .select('branch_id, branch_code, is_active')
           .eq('branch_code', 'UK')
           .eq('is_active', true)
           .single()
@@ -313,7 +334,9 @@ const Products = () => {
         await Promise.all([
           supabase
             .from('product_categories')
-            .select('*')
+            .select(
+              'category_id, category_name, category_code, parent_id, description, is_active'
+            )
             .eq('is_active', true)
             .order('category_name'),
 
@@ -329,11 +352,16 @@ const Products = () => {
             : supabase
                 .from('branch_products')
                 .select(`
-                  *,
+                  local_description,
+                  is_category_featured,
                   products (
-                    *,
-                    product_categories (*),
-                    partners (*)
+                    product_id,
+                    product_name,
+                    product_code,
+                    description,
+                    category_id,
+                    product_categories (category_id, category_name, category_code, parent_id),
+                    partners (partner_id, partner_name)
                   )
                 `)
                 .eq('branch_id', branch.branch_id)
@@ -344,7 +372,7 @@ const Products = () => {
             ? Promise.resolve({ data: null, error: null })
             : supabase
                 .from('product_images')
-                .select('*')
+                .select('image_id, product_id, image_url, is_primary, image_order')
                 .eq('branch_id', branch.branch_id)
                 .order('is_primary', { ascending: false })
                 .order('image_order', { ascending: true })
@@ -372,7 +400,7 @@ const Products = () => {
     } catch (error) {
       console.error('Error fetching products:', error)
     } finally {
-      setLoading(false)
+      if (!soft) setLoading(false)
     }
   }
 

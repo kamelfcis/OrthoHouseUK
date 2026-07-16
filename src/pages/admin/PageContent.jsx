@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { supabase } from '../../lib/supabase'
+import { invalidatePublicCache } from '../../lib/invalidatePublicCache'
 import toast from 'react-hot-toast'
 import './PageContent.css'
 
@@ -125,6 +126,7 @@ const PageContent = () => {
         toast.success('Page content created successfully')
       }
 
+      invalidatePublicCache('UK')
       setShowModal(false)
       setEditingContent(null)
       setFormData({

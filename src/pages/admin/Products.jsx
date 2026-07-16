@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { supabase } from '../../lib/supabase'
+import { invalidatePublicCache } from '../../lib/invalidatePublicCache'
 import toast from 'react-hot-toast'
 import './Products.css'
 
@@ -446,6 +447,7 @@ const Products = () => {
       }
 
       toast.success('Product deleted successfully')
+      invalidatePublicCache('UK')
       fetchProducts()
     } catch (error) {
       toast.error('Error deleting product: ' + error.message)
@@ -528,6 +530,7 @@ const Products = () => {
 
       setProductImages([...productImages, newImage])
       toast.success('Image uploaded successfully')
+      invalidatePublicCache('UK')
     } catch (error) {
       toast.error('Error uploading image: ' + error.message)
     } finally {
@@ -766,6 +769,7 @@ const Products = () => {
         toast.success('Product created successfully')
       }
 
+      invalidatePublicCache('UK')
       setShowModal(false)
       setEditingProduct(null)
       setProductImages([])

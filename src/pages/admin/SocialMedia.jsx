@@ -6,6 +6,7 @@ import {
   fetchSocialLinksForAdmin,
   mergeSocialRowsWithDefaults,
 } from '../../lib/socialLinks'
+import { invalidatePublicCache } from '../../lib/invalidatePublicCache'
 import toast from 'react-hot-toast'
 import './SocialMedia.css'
 
@@ -130,6 +131,7 @@ const SocialMedia = () => {
       if (error) throw error
 
       toast.success('Social media links saved.')
+      invalidatePublicCache('UK')
       hasLoadedRef.current = false
       await loadLinks(branchId)
     } catch (error) {

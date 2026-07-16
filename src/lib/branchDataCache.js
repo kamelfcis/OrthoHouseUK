@@ -1,7 +1,8 @@
 import { toPublicStorageUrl } from './storageUrl'
 
-const CACHE_TTL_MS = 5 * 60 * 1000
-const STALE_TTL_MS = 30 * 60 * 1000
+const CACHE_TTL_MS = 30 * 1000
+const STALE_TTL_MS = 2 * 60 * 1000
+const BROADCAST_CHANNEL_NAME = 'orthohouse-cache'
 
 const memoryCache = new Map()
 const inflightRequests = new Map()
@@ -32,6 +33,14 @@ const writeSessionCache = (branchCode, data) => {
   }
 }
 
+const clearSessionCache = (branchCode) => {
+  try {
+    sessionStorage.removeItem(getCacheKey(branchCode))
+  } catch {
+    // sessionStorage may be unavailable
+  }
+}
+
 const getCachedEntry = (branchCode) => {
   const memory = memoryCache.get(branchCode)
   if (memory) return memory
@@ -59,7 +68,9 @@ const buildProductImageMap = (rows) => {
   const map = {}
   rows?.forEach((img) => {
     if (!map[img.product_id]) {
-      map[img.product_id] = toPublicStorageUrl('product-images', img.image_url)
+      map[img.product_id] = toPublicStorageUrl('product-images', img.image_url, {
+        cacheKey: img.image_id ?? img.updated_at ?? img.image_url
+      })
     }
   })
   return map
@@ -70,7 +81,7 @@ const fetchBranchDataFromApi = async (branchCode) => {
 
   const { data: branch, error: branchError } = await supabase
     .from('branches')
-    .select('*')
+    .select('branch_id, branch_code, branch_name, country_code, currency, timezone, is_active')
     .eq('branch_code', branchCode)
     .eq('is_active', true)
     .single()
@@ -122,7 +133,9 @@ const fetchBranchDataFromApi = async (branchCode) => {
 
     supabase
       .from('blogs')
-      .select('*')
+      .select(
+        'blog_id, title, excerpt, featured_image, author_id, published_at, status, is_public, branch_id'
+      )
       .eq('branch_id', branch.branch_id)
       .eq('status', 'published')
       .eq('is_public', true)
@@ -136,7 +149,7 @@ const fetchBranchDataFromApi = async (branchCode) => {
 
     supabase
       .from('product_images')
-      .select('product_id, image_url, is_primary, image_order')
+      .select('image_id, product_id, image_url, is_primary, image_order')
       .eq('branch_id', branch.branch_id)
       .order('is_primary', { ascending: false })
       .order('image_order', { ascending: true })
@@ -198,7 +211,7 @@ const fetchBranchDataFromApi = async (branchCode) => {
   }
 }
 
-const requestBranchData = async (branchCode, { force = false } = {}) => {
+export const requestBranchData = async (branchCode, { force = false } = {}) => {
   if (!force) {
     const existing = inflightRequests.get(branchCode)
     if (existing) return existing
@@ -229,6 +242,37 @@ export const getBranchDataSnapshot = (branchCode) => {
     data: entry.data,
     isFresh: age <= CACHE_TTL_MS,
     isStale: age > CACHE_TTL_MS && age <= STALE_TTL_MS
+  }
+}
+
+export const invalidateBranchData = (branchCode = 'UK') => {
+  memoryCache.delete(branchCode)
+  clearSessionCache(branchCode)
+  inflightRequests.delete(branchCode)
+  return requestBranchData(branchCode, { force: true })
+}
+
+export const broadcastBranchInvalidation = (branchCode = 'UK') => {
+  if (typeof BroadcastChannel === 'undefined') return
+  try {
+    const channel = new BroadcastChannel(BROADCAST_CHANNEL_NAME)
+    channel.postMessage({ type: 'invalidate', branchCode })
+    channel.close()
+  } catch {
+    // BroadcastChannel unavailable
+  }
+}
+
+if (typeof BroadcastChannel !== 'undefined') {
+  try {
+    const cacheChannel = new BroadcastChannel(BROADCAST_CHANNEL_NAME)
+    cacheChannel.onmessage = (event) => {
+      if (event?.data?.type === 'invalidate') {
+        invalidateBranchData(event.data.branchCode || 'UK').catch(() => {})
+      }
+    }
+  } catch {
+    // BroadcastChannel unavailable
   }
 }
 
