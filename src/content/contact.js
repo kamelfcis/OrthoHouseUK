@@ -28,7 +28,7 @@ export const contactPage = {
       id: 'uk',
       heading: 'England Office',
       ...SHARED_CONTACT,
-      addressLines: ['2 Kingdom St, W2 6BD London', 'United Kingdom']
+      addressLines: ['2 Kingdom St, W2 6BD London,United Kingdom']
     },
     {
       id: 'scotland',

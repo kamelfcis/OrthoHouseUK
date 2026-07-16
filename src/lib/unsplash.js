@@ -10,7 +10,12 @@ import {
 import { readMediaCache, writeMediaCache } from './mediaCache'
 
 const ACCESS_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY
-const HERO_SLIDES_CACHE_KEY = 'unsplash_hero_slides_v4'
+const HERO_SLIDES_CACHE_KEY = 'unsplash_hero_slides_v5'
+
+/** Hero slides that must never appear (broken, off-brand, or retired). */
+const EXCLUDED_HERO_PHOTO_SLUGS = new Set([
+  'photo-1597764690523-15bea4c581c9'
+])
 const isUnsplashConfigured = () => Boolean(ACCESS_KEY)
 
 /** Warn in all environments — helps diagnose missing VITE_UNSPLASH_ACCESS_KEY in prod bundles. */
@@ -45,6 +50,14 @@ const ensureHomepageFallbacksReserved = () => {
   getHomepageReservedPhotoIds().forEach((id) => sessionUsedPhotoIds.add(id))
   homepageFallbacksReserved = true
 }
+
+const isExcludedHeroPhoto = (photoOrSrc) => {
+  const keys = getPhotoKeys(photoOrSrc)
+  return [...keys].some((key) => EXCLUDED_HERO_PHOTO_SLUGS.has(key))
+}
+
+const filterExcludedHeroSlides = (slides) =>
+  slides.filter((slide) => !isExcludedHeroPhoto(slide))
 
 const getPhotoKeys = (photoOrSrc) => {
   const keys = new Set()
@@ -120,6 +133,7 @@ const mapPhotoToSectionImage = (photo, altFallback, width = 960) => ({
 /** Pick the first API result whose photo id is not already used on the homepage. */
 const pickUniquePhoto = (photos, mapper) => {
   for (const photo of photos) {
+    if (isExcludedHeroPhoto(photo)) continue
     if (claimPhoto(photo)) {
       return mapper(photo)
     }
@@ -297,7 +311,10 @@ export async function fetchHeroSlides() {
   ensureHomepageFallbacksReserved()
 
   const cached = readMediaCache(HERO_SLIDES_CACHE_KEY)
-  if (cached?.length) return cached
+  if (cached?.length) {
+    const filtered = filterExcludedHeroSlides(cached)
+    if (filtered.length) return fillSlidesToTarget(filtered)
+  }
 
   if (!isUnsplashConfigured()) {
     warnMissingUnsplashKey('hero slides')
@@ -313,13 +330,14 @@ export async function fetchHeroSlides() {
     photoBatches.forEach((photos, index) => {
       const { eyebrow } = SEARCH_QUERIES[index]
       const batch = photos
+        .filter((photo) => !isExcludedHeroPhoto(photo))
         .map((photo) => mapPhotoToSlide(photo, eyebrow))
         .filter((slide) => claimPhoto(slide))
       candidates.push(...batch)
     })
 
     const uniqueSlides = dedupeSlidesByPhotoId(candidates)
-    const slides = fillSlidesToTarget(uniqueSlides)
+    const slides = fillSlidesToTarget(filterExcludedHeroSlides(uniqueSlides))
     const result = slides.length > 0 ? slides : FALLBACK_SLIDES
 
     writeMediaCache(HERO_SLIDES_CACHE_KEY, result)
