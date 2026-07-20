@@ -3,6 +3,9 @@ import react from '@vitejs/plugin-react'
 import viteCompression from 'vite-plugin-compression'
 
 export default defineConfig({
+  resolve: {
+    dedupe: ['react', 'react-dom']
+  },
   plugins: [
     react(),
     viteCompression({
@@ -41,13 +44,16 @@ export default defineConfig({
         manualChunks: (id) => {
           // Vendor chunks - split React libraries separately for better caching
           if (id.includes('node_modules')) {
-            // React core - smallest, most stable
-            if (id.includes('/react/') || id.includes('/react/index') || id.includes('/react/jsx-runtime')) {
-              return 'react-core'
-            }
-            // React DOM - larger but stable
-            if (id.includes('react-dom')) {
-              return 'react-dom'
+            // Keep react, react-dom, and scheduler in one chunk to avoid
+            // circular imports (react-dom -> scheduler in vendor-misc -> react-dom).
+            if (
+              id.includes('/react-dom/') ||
+              id.includes('/react/') ||
+              id.includes('/react/index') ||
+              id.includes('/react/jsx-runtime') ||
+              id.includes('/scheduler/')
+            ) {
+              return 'react-vendor'
             }
             // React Router - separate for better caching
             if (id.includes('react-router')) {
@@ -75,6 +81,9 @@ export default defineConfig({
                 id.includes('react-countup') || 
                 id.includes('react-masonry-css')) {
               return 'react-utils'
+            }
+            if (id.includes('yet-another-react-lightbox')) {
+              return 'lightbox-vendor'
             }
             // Other small node_modules
             return 'vendor-misc'
@@ -173,7 +182,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
+    include: ['react', 'react-dom', 'react-router-dom', 'scheduler'],
     exclude: ['framer-motion', 'swiper', 'three']
   },
   esbuild: {
