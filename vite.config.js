@@ -42,50 +42,43 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Vendor chunks - split React libraries separately for better caching
           if (id.includes('node_modules')) {
-            // Keep react, react-dom, and scheduler in one chunk to avoid
-            // circular imports (react-dom -> scheduler in vendor-misc -> react-dom).
-            if (
+            // Large non-React vendors — safe to split independently.
+            if (id.includes('@supabase')) {
+              return 'supabase-vendor'
+            }
+            if (id.includes('three')) {
+              return 'three-vendor'
+            }
+            if (id.includes('swiper')) {
+              return 'swiper-vendor'
+            }
+
+            // Keep the entire React ecosystem in one chunk. Splitting react-router,
+            // framer-motion, react-hot-toast, etc. into separate chunks created
+            // circular imports (react-vendor <-> react-utils <-> vendor-misc) and
+            // runtime "Cannot read properties of undefined (reading 'memo')" errors.
+            const isReactEcosystem =
               id.includes('/react-dom/') ||
               id.includes('/react/') ||
               id.includes('/react/index') ||
               id.includes('/react/jsx-runtime') ||
-              id.includes('/scheduler/')
-            ) {
+              id.includes('/scheduler/') ||
+              id.includes('react-router') ||
+              id.includes('@remix-run/router') ||
+              id.includes('framer-motion') ||
+              id.includes('react-hot-toast') ||
+              id.includes('goober') ||
+              id.includes('react-intersection-observer') ||
+              id.includes('react-countup') ||
+              id.includes('countup.js') ||
+              id.includes('react-masonry-css') ||
+              id.includes('yet-another-react-lightbox')
+
+            if (isReactEcosystem) {
               return 'react-vendor'
             }
-            // React Router - separate for better caching
-            if (id.includes('react-router')) {
-              return 'react-router'
-            }
-            // Animation library - large, can be lazy loaded
-            if (id.includes('framer-motion')) {
-              return 'animation-vendor'
-            }
-            // UI libraries
-            if (id.includes('swiper')) {
-              return 'swiper-vendor'
-            }
-            // Database client - can be lazy loaded
-            if (id.includes('@supabase')) {
-              return 'supabase-vendor'
-            }
-            // 3D library - large, lazy load if possible
-            if (id.includes('three')) {
-              return 'three-vendor'
-            }
-            // Small utility libraries - bundle together
-            if (id.includes('react-hot-toast') || 
-                id.includes('react-intersection-observer') || 
-                id.includes('react-countup') || 
-                id.includes('react-masonry-css')) {
-              return 'react-utils'
-            }
-            if (id.includes('yet-another-react-lightbox')) {
-              return 'lightbox-vendor'
-            }
-            // Other small node_modules
+
             return 'vendor-misc'
           }
           // Shared hooks — must not live only inside component-Home-core (SectionMedia
@@ -160,7 +153,6 @@ export default defineConfig({
       resolveDependencies: (_filename, deps) =>
         deps.filter(
           (dep) =>
-            !dep.includes('animation-vendor') &&
             !dep.includes('three-vendor') &&
             !dep.includes('three-background') &&
             !dep.includes('swiper-vendor') &&
