@@ -16,6 +16,7 @@
     "extract-orthosintex": "python scripts/extract_orthosintex_catalog.py",
     "extract-mirai": "python scripts/extract_mirai_catalog.py",
     "import-mirai": "python scripts/import_mirai_catalog.py",
+    "import-astrolabe": "python scripts/import_astrolabe_catalog.py",
     "extract-portfolio": "python scripts/extract_portfolio.py",
     "optimize-portfolio": "node scripts/optimize_portfolio_assets.mjs",
     "seed-portfolio": "python scripts/seed_portfolio_to_supabase.py",
@@ -32,7 +33,8 @@
     "react-masonry-css": "^1.0.16",
     "react-router-dom": "^6.20.0",
     "swiper": "^12.0.3",
-    "three": "^0.181.0"
+    "three": "^0.181.0",
+    "yet-another-react-lightbox": "^3.32.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

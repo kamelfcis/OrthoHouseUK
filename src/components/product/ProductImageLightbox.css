@@ -1,0 +1,182 @@
+/* Premium product image lightbox — YARL overrides */
+
+.product-image-lightbox {
+  --yarl__color_backdrop: rgba(0, 0, 0, 0.93);
+  --yarl__container_background_color: rgba(0, 0, 0, 0.93);
+  --yarl__color_button: rgba(255, 255, 255, 0.88);
+  --yarl__color_button_active: #ffffff;
+  --yarl__color_button_disabled: rgba(255, 255, 255, 0.35);
+  --yarl__button_filter: none;
+  --yarl__icon_size: 22px;
+  --yarl__toolbar_padding: 14px;
+  --yarl__navigation_button_padding: 20px 12px;
+  --yarl__thumbnails_container_background_color: rgba(8, 12, 18, 0.55);
+  --yarl__thumbnails_container_padding: 14px 20px 18px;
+  --yarl__thumbnails_thumbnail_background: rgba(255, 255, 255, 0.04);
+  --yarl__thumbnails_thumbnail_border_color: rgba(255, 255, 255, 0.18);
+  --yarl__thumbnails_thumbnail_active_border_color: #2dadd5;
+  --yarl__thumbnails_thumbnail_border_radius: 10px;
+  --yarl__counter_color: rgba(255, 255, 255, 0.92);
+  --yarl__counter_filter: none;
+  --yarl__fade_animation_duration: 0.32s;
+  --yarl__fade_animation_timing_function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-image-lightbox .yarl__container {
+  backdrop-filter: blur(28px) saturate(120%);
+  -webkit-backdrop-filter: blur(28px) saturate(120%);
+}
+
+/* Frosted glass controls */
+.product-image-lightbox .yarl__button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition:
+    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.product-image-lightbox .yarl__button:hover,
+.product-image-lightbox .yarl__button:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(45, 173, 213, 0.55);
+  transform: scale(1.06);
+}
+
+.product-image-lightbox .yarl__toolbar {
+  gap: 8px;
+}
+
+.product-image-lightbox .pil-reset-zoom-button {
+  position: absolute;
+  top: var(--yarl__toolbar_padding, 14px);
+  right: calc(var(--yarl__toolbar_padding, 14px) + 52px);
+  z-index: 2;
+}
+
+.product-image-lightbox .pil-nav-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.product-image-lightbox .yarl__navigation_prev,
+.product-image-lightbox .yarl__navigation_next {
+  opacity: 1;
+}
+
+.product-image-lightbox .yarl__navigation_prev .yarl__button,
+.product-image-lightbox .yarl__navigation_next .yarl__button {
+  width: 48px;
+  height: 48px;
+}
+
+.product-image-lightbox .yarl__counter {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  margin: 14px;
+}
+
+.product-image-lightbox .yarl__thumbnails_container {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.product-image-lightbox .yarl__thumbnails_thumbnail {
+  transition:
+    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+  opacity: 0.72;
+}
+
+.product-image-lightbox .yarl__thumbnails_thumbnail:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.product-image-lightbox .yarl__thumbnails_thumbnail_active {
+  opacity: 1;
+  box-shadow: 0 0 0 1px rgba(45, 173, 213, 0.35), 0 8px 20px rgba(45, 173, 213, 0.18);
+}
+
+/* Auto-hide chrome after inactivity */
+.product-image-lightbox .yarl__toolbar,
+.product-image-lightbox .pil-reset-zoom-button,
+.product-image-lightbox .yarl__navigation_prev,
+.product-image-lightbox .yarl__navigation_next,
+.product-image-lightbox .yarl__counter,
+.product-image-lightbox .yarl__thumbnails_container {
+  transition:
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-image-lightbox:not(.pil-controls-visible) .yarl__toolbar,
+.product-image-lightbox:not(.pil-controls-visible) .pil-reset-zoom-button,
+.product-image-lightbox:not(.pil-controls-visible) .yarl__navigation_prev,
+.product-image-lightbox:not(.pil-controls-visible) .yarl__navigation_next,
+.product-image-lightbox:not(.pil-controls-visible) .yarl__counter,
+.product-image-lightbox:not(.pil-controls-visible) .yarl__thumbnails_container {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+}
+
+.product-image-lightbox:not(.pil-controls-visible) .yarl__navigation_prev,
+.product-image-lightbox:not(.pil-controls-visible) .yarl__navigation_next {
+  transform: translateY(-50%) scale(0.96);
+}
+
+.product-image-lightbox.pil-controls-visible .yarl__navigation_prev,
+.product-image-lightbox.pil-controls-visible .yarl__navigation_next {
+  transform: translateY(-50%);
+}
+
+@media (max-width: 640px) {
+  .product-image-lightbox {
+    --yarl__thumbnails_thumbnail_width: 72px;
+    --yarl__thumbnails_thumbnail_height: 54px;
+    --yarl__navigation_button_padding: 12px 6px;
+  }
+
+  .product-image-lightbox .yarl__button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .product-image-lightbox .pil-reset-zoom-button {
+    right: calc(var(--yarl__toolbar_padding, 14px) + 48px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-image-lightbox .yarl__button,
+  .product-image-lightbox .yarl__thumbnails_thumbnail,
+  .product-image-lightbox .yarl__toolbar,
+  .product-image-lightbox .pil-reset-zoom-button,
+  .product-image-lightbox .yarl__navigation_prev,
+  .product-image-lightbox .yarl__navigation_next,
+  .product-image-lightbox .yarl__counter,
+  .product-image-lightbox .yarl__thumbnails_container {
+    transition: none;
+  }
+}

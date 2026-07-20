@@ -324,8 +324,50 @@
 }
 
 .product-image-zoom-container:hover .product-detail-image {
-  transform: scale(1.5);
-  cursor: zoom-out;
+  transform: scale(1.08);
+  cursor: zoom-in;
+}
+
+.product-image-expand-hint {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 4;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 14px;
+  background: rgba(9, 27, 49, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgba(6, 22, 42, 0.28);
+  opacity: 0;
+  transform: scale(0.92);
+  transition:
+    opacity var(--ds-duration, 0.3s) var(--ds-ease-out),
+    transform var(--ds-duration, 0.3s) var(--ds-ease-out);
+  pointer-events: none;
+}
+
+.product-image-zoom-container:hover .product-image-expand-hint,
+.product-image-zoom-container:focus-visible .product-image-expand-hint {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.product-image-zoom-container:focus-visible {
+  outline: 2px solid rgba(45, 173, 213, 0.85);
+  outline-offset: -2px;
+}
+
+.thumbnail-item:focus-visible {
+  outline: 2px solid rgba(45, 173, 213, 0.85);
+  outline-offset: 2px;
 }
 
 /* Image navigation pill */

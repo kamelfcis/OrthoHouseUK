@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { getBranchDataSnapshot } from '../lib/branchDataCache'
@@ -6,6 +6,7 @@ import { toPublicStorageUrl } from '../lib/storageUrl'
 import SEO from '../components/SEO/SEO'
 import { productDetail } from '../content/products'
 import { generateProductSchema, generateBreadcrumbSchema } from '../utils/seoData'
+import ProductImageLightbox from '../components/product/ProductImageLightbox'
 import './ProductDetail.css'
 
 const PSI_PRODUCT_ID = 76
@@ -18,7 +19,22 @@ const ProductDetail = () => {
   const [error, setError] = useState(null)
   const [ukBranch, setUkBranch] = useState(null)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
+  const [lightboxOpen, setLightboxOpen] = useState(false)
   const [parentCategoryName, setParentCategoryName] = useState(null)
+  const lightboxFocusReturnRef = useRef(null)
+
+  const openLightboxAt = useCallback((index, event) => {
+    lightboxFocusReturnRef.current = event?.currentTarget || document.activeElement
+    setSelectedImageIndex(index)
+    setLightboxOpen(true)
+  }, [])
+
+  const handleLightboxKeyOpen = useCallback((event, index) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      openLightboxAt(index, event)
+    }
+  }, [openLightboxAt])
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -59,6 +75,7 @@ const ProductDetail = () => {
         setParentCategoryName(null)
         setProductImages([])
         setSelectedImageIndex(0)
+        setLightboxOpen(false)
         
         const productId = parseInt(id)
         if (isNaN(productId)) {
@@ -296,19 +313,30 @@ const ProductDetail = () => {
               {productImages && productImages.length > 0 ? (
                 <>
                   <div className="product-main-image-container">
-                    <div className="product-image-zoom-container">
+                    <div
+                      className="product-image-zoom-container"
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`View ${product.product_name} image ${selectedImageIndex + 1} fullscreen`}
+                      onClick={(event) => openLightboxAt(selectedImageIndex, event)}
+                      onKeyDown={(event) => handleLightboxKeyOpen(event, selectedImageIndex)}
+                    >
                       <img
                         src={productImages[selectedImageIndex]?.url}
                         alt={`${product.product_name} - Image ${selectedImageIndex + 1}`}
                         className="product-detail-image"
                         loading="lazy"
+                        draggable={false}
                         onError={(e) => {
                           e.target.src = `https://via.placeholder.com/600x600/64d9b9/ffffff?text=${encodeURIComponent(product.product_name || 'Product')}`
                         }}
                       />
+                      <span className="product-image-expand-hint" aria-hidden="true">
+                        <i className="fas fa-expand"></i>
+                      </span>
                     </div>
                     {productImages.length > 1 && (
-                      <div className="image-navigation">
+                      <div className="image-navigation" onClick={(event) => event.stopPropagation()}>
                         <button
                           className="nav-button prev"
                           onClick={() => setSelectedImageIndex((prev) => (prev === 0 ? productImages.length - 1 : prev - 1))}
@@ -335,14 +363,20 @@ const ProductDetail = () => {
                       {productImages.map((image, index) => (
                         <div
                           key={index}
+                          role="button"
+                          tabIndex={0}
                           className={`thumbnail-item ${selectedImageIndex === index ? 'active' : ''}`}
-                          onClick={() => setSelectedImageIndex(index)}
+                          aria-label={`View ${product.product_name} image ${index + 1} fullscreen`}
+                          aria-current={selectedImageIndex === index ? 'true' : undefined}
+                          onClick={(event) => openLightboxAt(index, event)}
+                          onKeyDown={(event) => handleLightboxKeyOpen(event, index)}
                         >
                           <img
                             src={image.url}
                             alt={`${product.product_name} - Thumbnail ${index + 1}`}
                             className="product-thumb-image"
                             loading="lazy"
+                            draggable={false}
                             onError={(e) => {
                               e.target.src = `https://via.placeholder.com/150x150/64d9b9/ffffff?text=${encodeURIComponent(product.product_name || 'Product')}`
                             }}
@@ -351,6 +385,16 @@ const ProductDetail = () => {
                       ))}
                     </div>
                   )}
+
+                  <ProductImageLightbox
+                    open={lightboxOpen}
+                    onClose={() => setLightboxOpen(false)}
+                    index={selectedImageIndex}
+                    onIndexChange={setSelectedImageIndex}
+                    productImages={productImages}
+                    productName={product.product_name}
+                    focusReturnRef={lightboxFocusReturnRef}
+                  />
                 </>
               ) : (
                 <div className="product-image-placeholder">
