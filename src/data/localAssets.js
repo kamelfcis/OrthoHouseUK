@@ -154,7 +154,9 @@ export const homeEventImages = {
 // —— Brand logos —————————————————————————————————————————————————————————————
 
 export const brandLogos = {
-  nav: '/assets/brand/logo-svg-png.png',
+  // Optimized 400w WebP (~16 KB) of brand/logo-svg-png.png (1.7 MB) — the logo
+  // renders at ≤200px in the navbar/hero, so 400w covers 2x displays.
+  nav: '/assets/optimized/brand/logo-svg-png-400.webp',
   navSvg: '/assets/brand/logo-svg.svg',
   footer: '/assets/brand/logo-svg.svg',
   primary: '/assets/brand/logo-primary.png'

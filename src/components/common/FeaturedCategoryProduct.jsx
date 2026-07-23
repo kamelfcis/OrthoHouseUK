@@ -1,11 +1,19 @@
 import { Link } from 'react-router-dom'
+import { toOriginalStorageUrl } from '../../lib/storageUrl'
 import './FeaturedCategoryProduct.css'
 
 const FeaturedCategoryProduct = ({ id, name, category, partner, image }) => {
   const handleImageError = (e) => {
-    e.currentTarget.onerror = null
-    e.currentTarget.style.display = 'none'
-    const placeholder = e.currentTarget.parentElement?.querySelector(
+    const img = e.currentTarget
+    // If the resized rendition failed, retry the original once.
+    const original = toOriginalStorageUrl(img.src)
+    if (original) {
+      img.src = original
+      return
+    }
+    img.onerror = null
+    img.style.display = 'none'
+    const placeholder = img.parentElement?.querySelector(
       '.featured-category-product__placeholder'
     )
     if (placeholder) placeholder.style.display = 'flex'

@@ -101,7 +101,7 @@ const HeroPartnersCarousel = ({ branchData }) => {
                     draggable={false}
                     onError={(e) => {
                       e.currentTarget.onerror = null
-                      e.currentTarget.src = `https://via.placeholder.com/240x160/1f2a44/ffffff?text=${encodeURIComponent(logo.name)}`
+                      e.currentTarget.style.visibility = 'hidden'
                     }}
                   />
                 </Link>

@@ -49,7 +49,7 @@ export const formatSupabaseBlogPost = (post) => {
     title: post.title,
     excerpt: post.excerpt || post.content?.slice(0, 160) || blogPage.defaultExcerpt,
     content: post.content,
-    image: featuredImage || `https://via.placeholder.com/800x500/64d9b9/ffffff?text=${encodeURIComponent(post.title.substring(0, 30))}`,
+    image: featuredImage || null,
     date: post.published_at,
     category: firstCategory,
     categories,

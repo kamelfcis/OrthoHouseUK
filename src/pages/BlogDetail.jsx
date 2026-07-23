@@ -214,8 +214,10 @@ const BlogDetail = () => {
             <img
               src={blog.image}
               alt={blog.title}
+              decoding="async"
               onError={(e) => {
-                e.currentTarget.src = `https://via.placeholder.com/1200x700/64d9b9/ffffff?text=${encodeURIComponent(blog.title.substring(0, 40))}`
+                e.currentTarget.onerror = null
+                e.currentTarget.parentElement.style.display = 'none'
               }}
             />
           </motion.div>

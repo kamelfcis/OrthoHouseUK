@@ -16,7 +16,8 @@ const HeroSlideMedia = memo(function HeroSlideMedia({
   isNext,
   isVideo,
   reduced,
-  index
+  index,
+  mounted
 }) {
   const videoRef = useRef(null)
   const [videoReady, setVideoReady] = useState(false)
@@ -67,6 +68,13 @@ const HeroSlideMedia = memo(function HeroSlideMedia({
     )
   }
 
+  // Slides are stacked in-viewport, so loading="lazy" alone cannot defer them.
+  // Only mount images once a slide becomes active or upcoming; keep mounted
+  // slides in the DOM so the crossfade to/from them stays smooth.
+  if (!mounted) {
+    return <div className="hero-slide-media" />
+  }
+
   return (
     <div className="hero-slide-media">
       <img
@@ -111,9 +119,25 @@ const HeroSlider = ({ slides, videoSlides = [], onSlideChange }) => {
     [activeIdx, slideCount]
   )
 
+  // Indexes whose media has been mounted. Starts with the first slide plus the
+  // upcoming one (preloaded during the dwell time); grows as slides are shown
+  // and never shrinks, so crossfades to/from shown slides stay seamless.
+  const [mountedIdxs, setMountedIdxs] = useState(() => new Set([0, 1]))
+
+  useEffect(() => {
+    setMountedIdxs((prev) => {
+      if (prev.has(activeIdx) && prev.has(nextIdx)) return prev
+      const next = new Set(prev)
+      next.add(activeIdx)
+      next.add(nextIdx)
+      return next
+    })
+  }, [activeIdx, nextIdx])
+
   useEffect(() => {
     activeIdxRef.current = 0
     setActiveIdx(0)
+    setMountedIdxs(new Set([0, 1]))
     onSlideChange?.(0)
   }, [slideList, onSlideChange])
 
@@ -194,6 +218,7 @@ const HeroSlider = ({ slides, videoSlides = [], onSlideChange }) => {
                 isVideo={isVideoCarousel}
                 reduced={reduced}
                 index={index}
+                mounted={mountedIdxs.has(index)}
               />
             </div>
           )

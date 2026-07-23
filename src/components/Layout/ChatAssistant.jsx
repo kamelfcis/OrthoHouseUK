@@ -268,14 +268,14 @@ const ChatAssistant = () => {
 
             productList = products.map((product) => ({
               ...product,
-              image: productImagesMap[product.id] || `/assets/images/product-${product.id % 6 + 1}.jpg`
+              image: productImagesMap[product.id] || null
             }))
           }
         } catch (imageError) {
           console.error('ChatAssistant: failed to fetch product images', imageError)
           productList = products.map((product) => ({
             ...product,
-            image: `/assets/images/product-${product.id % 6 + 1}.jpg`
+            image: null
           }))
         }
 
@@ -579,14 +579,20 @@ const ChatAssistant = () => {
             {products.map((product) => (
               <li key={`product-${product.id}`} className="chat-product-card">
                 <div className="chat-product-image">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    loading="lazy"
-                    onError={(event) => {
-                      event.currentTarget.src = `https://via.placeholder.com/160x160/64d9b9/ffffff?text=${encodeURIComponent(product.name || 'Product')}`
-                    }}
-                  />
+                  {product.image ? (
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      loading="lazy"
+                      decoding="async"
+                      onError={(event) => {
+                        event.currentTarget.onerror = null
+                        event.currentTarget.style.display = 'none'
+                      }}
+                    />
+                  ) : (
+                    <i className="fas fa-box-medical" aria-hidden="true" />
+                  )}
                 </div>
                 <div className="chat-product-details">
                   <h4 className="chat-product-name">{product.name}</h4>

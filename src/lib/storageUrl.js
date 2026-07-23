@@ -31,3 +31,24 @@ export const toPublicStorageUrl = (bucket, path, options = {}) => {
 
   return base
 }
+
+/**
+ * Derive the full-resolution `object` URL from a resized `render/image` URL,
+ * preserving the cache-busting `v` param. Returns null when the URL is not a
+ * render URL, so error handlers can retry once before showing a placeholder.
+ */
+export const toOriginalStorageUrl = (url) => {
+  if (!url || !url.includes('/storage/v1/render/image/public/')) return null
+  try {
+    const parsed = new URL(url)
+    parsed.pathname = parsed.pathname.replace(
+      '/storage/v1/render/image/public/',
+      '/storage/v1/object/public/'
+    )
+    const cacheKey = parsed.searchParams.get('v')
+    parsed.search = cacheKey != null ? `?v=${encodeURIComponent(cacheKey)}` : ''
+    return parsed.toString()
+  } catch {
+    return null
+  }
+}

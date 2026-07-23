@@ -78,7 +78,7 @@ const HomeGallerySlider = ({ gallerySlides }) => {
                 height="600"
                 onError={(e) => {
                   e.currentTarget.onerror = null
-                  e.currentTarget.src = 'https://via.placeholder.com/800x600/13293d/eff8ff?text=Gallery+image'
+                  e.currentTarget.style.visibility = 'hidden'
                 }}
               />
               <p className="home-gallery-caption">{slide.label}</p>

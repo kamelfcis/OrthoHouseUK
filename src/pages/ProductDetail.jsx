@@ -21,7 +21,26 @@ const ProductDetail = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [parentCategoryName, setParentCategoryName] = useState(null)
+  const [failedImageUrls, setFailedImageUrls] = useState(() => new Set())
   const lightboxFocusReturnRef = useRef(null)
+
+  const markImageFailed = useCallback((url) => {
+    if (!url) return
+    setFailedImageUrls((prev) => {
+      if (prev.has(url)) return prev
+      const next = new Set(prev)
+      next.add(url)
+      return next
+    })
+  }, [])
+
+  const handleProductImageError = useCallback(
+    (event, url) => {
+      event.currentTarget.onerror = null
+      markImageFailed(url)
+    },
+    [markImageFailed]
+  )
 
   const openLightboxAt = useCallback((index, event) => {
     lightboxFocusReturnRef.current = event?.currentTarget || document.activeElement
@@ -68,6 +87,16 @@ const ProductDetail = () => {
       })
     }
 
+    // Small rendition for the thumbnail strip; main image + lightbox stay full-res.
+    const getProductThumbUrl = (img) => {
+      if (!img?.image_url) return null
+      return toPublicStorageUrl('product-images', img.image_url, {
+        width: 240,
+        quality: 70,
+        cacheKey: img.image_id ?? img.created_at ?? img.image_url
+      })
+    }
+
     const fetchProductDetails = async () => {
       try {
         setLoading(true)
@@ -76,6 +105,7 @@ const ProductDetail = () => {
         setProductImages([])
         setSelectedImageIndex(0)
         setLightboxOpen(false)
+        setFailedImageUrls(new Set())
         
         const productId = parseInt(id)
         if (isNaN(productId)) {
@@ -180,6 +210,7 @@ const ProductDetail = () => {
           const imageObjects = images
             .map(img => ({
               url: getProductImageUrl(img),
+              thumbUrl: getProductThumbUrl(img),
               specifications: img.image_specifications,
               alt: img.image_alt_text,
             }))
@@ -242,6 +273,8 @@ const ProductDetail = () => {
   const summaryText = product.branchProduct?.local_description || product.description
   const activeSpecs = productImages[selectedImageIndex]?.specifications?.trim() || product.specifications
   const showPsiContact = product.product_id === PSI_PRODUCT_ID
+  const activeImage = productImages[selectedImageIndex]
+  const activeImageFailed = activeImage?.url ? failedImageUrls.has(activeImage.url) : false
 
   const siteUrl = typeof window !== 'undefined' ? window.location.origin : ''
   const breadcrumbs = generateBreadcrumbSchema([
@@ -314,26 +347,41 @@ const ProductDetail = () => {
                 <>
                   <div className="product-main-image-container">
                     <div
-                      className="product-image-zoom-container"
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`View ${product.product_name} image ${selectedImageIndex + 1} fullscreen`}
-                      onClick={(event) => openLightboxAt(selectedImageIndex, event)}
-                      onKeyDown={(event) => handleLightboxKeyOpen(event, selectedImageIndex)}
+                      className={`product-image-zoom-container${activeImageFailed ? ' product-image-zoom-container--placeholder' : ''}`}
+                      role={activeImageFailed ? undefined : 'button'}
+                      tabIndex={activeImageFailed ? -1 : 0}
+                      aria-label={
+                        activeImageFailed
+                          ? `${product.product_name} image unavailable`
+                          : `View ${product.product_name} image ${selectedImageIndex + 1} fullscreen`
+                      }
+                      onClick={activeImageFailed ? undefined : (event) => openLightboxAt(selectedImageIndex, event)}
+                      onKeyDown={
+                        activeImageFailed
+                          ? undefined
+                          : (event) => handleLightboxKeyOpen(event, selectedImageIndex)
+                      }
                     >
-                      <img
-                        src={productImages[selectedImageIndex]?.url}
-                        alt={`${product.product_name} - Image ${selectedImageIndex + 1}`}
-                        className="product-detail-image"
-                        loading="lazy"
-                        draggable={false}
-                        onError={(e) => {
-                          e.target.src = `https://via.placeholder.com/600x600/64d9b9/ffffff?text=${encodeURIComponent(product.product_name || 'Product')}`
-                        }}
-                      />
-                      <span className="product-image-expand-hint" aria-hidden="true">
-                        <i className="fas fa-expand"></i>
-                      </span>
+                      {activeImageFailed ? (
+                        <div className="product-image-placeholder product-image-placeholder--inline" aria-hidden="true">
+                          <i className="fas fa-image"></i>
+                        </div>
+                      ) : (
+                        <img
+                          src={activeImage?.url}
+                          alt={`${product.product_name} - Image ${selectedImageIndex + 1}`}
+                          className="product-detail-image"
+                          fetchpriority="high"
+                          decoding="async"
+                          draggable={false}
+                          onError={(event) => handleProductImageError(event, activeImage?.url)}
+                        />
+                      )}
+                      {!activeImageFailed && (
+                        <span className="product-image-expand-hint" aria-hidden="true">
+                          <i className="fas fa-expand"></i>
+                        </span>
+                      )}
                     </div>
                     {productImages.length > 1 && (
                       <div className="image-navigation" onClick={(event) => event.stopPropagation()}>
@@ -360,29 +408,60 @@ const ProductDetail = () => {
 
                   {productImages.length > 1 && (
                     <div className="product-thumbnails-grid">
-                      {productImages.map((image, index) => (
-                        <div
-                          key={index}
-                          role="button"
-                          tabIndex={0}
-                          className={`thumbnail-item ${selectedImageIndex === index ? 'active' : ''}`}
-                          aria-label={`View ${product.product_name} image ${index + 1} fullscreen`}
-                          aria-current={selectedImageIndex === index ? 'true' : undefined}
-                          onClick={(event) => openLightboxAt(index, event)}
-                          onKeyDown={(event) => handleLightboxKeyOpen(event, index)}
-                        >
-                          <img
-                            src={image.url}
-                            alt={`${product.product_name} - Thumbnail ${index + 1}`}
-                            className="product-thumb-image"
-                            loading="lazy"
-                            draggable={false}
-                            onError={(e) => {
-                              e.target.src = `https://via.placeholder.com/150x150/64d9b9/ffffff?text=${encodeURIComponent(product.product_name || 'Product')}`
-                            }}
-                          />
-                        </div>
-                      ))}
+                      {productImages.map((image, index) => {
+                        const thumbFailed = image.url ? failedImageUrls.has(image.url) : false
+
+                        return (
+                          <div
+                            key={index}
+                            role={thumbFailed ? undefined : 'button'}
+                            tabIndex={thumbFailed ? -1 : 0}
+                            className={`thumbnail-item ${selectedImageIndex === index ? 'active' : ''}${thumbFailed ? ' thumbnail-item--placeholder' : ''}`}
+                            aria-label={
+                              thumbFailed
+                                ? `${product.product_name} thumbnail ${index + 1} unavailable`
+                                : `View ${product.product_name} image ${index + 1} fullscreen`
+                            }
+                            aria-current={selectedImageIndex === index ? 'true' : undefined}
+                            onClick={thumbFailed ? () => setSelectedImageIndex(index) : (event) => openLightboxAt(index, event)}
+                            onKeyDown={
+                              thumbFailed
+                                ? undefined
+                                : (event) => handleLightboxKeyOpen(event, index)
+                            }
+                          >
+                            {thumbFailed ? (
+                              <div
+                                className="product-image-placeholder product-image-placeholder--thumb"
+                                aria-hidden="true"
+                              >
+                                <i className="fas fa-image"></i>
+                              </div>
+                            ) : (
+                              <img
+                                src={image.thumbUrl || image.url}
+                                alt={`${product.product_name} - Thumbnail ${index + 1}`}
+                                className="product-thumb-image"
+                                loading="lazy"
+                                decoding="async"
+                                draggable={false}
+                                onError={(event) => {
+                                  // Retry the full-resolution image once if the
+                                  // resized thumbnail rendition fails.
+                                  if (
+                                    image.thumbUrl &&
+                                    event.currentTarget.src !== image.url
+                                  ) {
+                                    event.currentTarget.src = image.url
+                                    return
+                                  }
+                                  handleProductImageError(event, image.url)
+                                }}
+                              />
+                            )}
+                          </div>
+                        )
+                      })}
                     </div>
                   )}
 

@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { motion, useReducedMotion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { getBranchDataSnapshot, requestBranchData } from '../lib/branchDataCache'
-import { toPublicStorageUrl } from '../lib/storageUrl'
+import { toPublicStorageUrl, toOriginalStorageUrl } from '../lib/storageUrl'
 import ProductCard from '../components/common/ProductCard'
 import FeaturedCategoryProduct from '../components/common/FeaturedCategoryProduct'
 import EmptyState from '../components/common/EmptyState'
@@ -10,6 +11,31 @@ import SEO from '../components/SEO/SEO'
 import { pageSeo } from '../content/seo'
 import { productsPage } from '../content/products'
 import './Products.css'
+
+const PRODUCT_REVEAL_EASE = [0.22, 1, 0.36, 1]
+
+// Light per-column stagger so each row of cards settles in sequence as it
+// scrolls into view, without long waits for cards further down the grid.
+const GRID_STAGGER_STEP = 0.07
+const GRID_STAGGER_COLUMNS = 3
+
+const getGridItemRevealProps = (index) => ({
+  initial: { opacity: 0, y: -32 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: {
+    duration: 0.55,
+    ease: PRODUCT_REVEAL_EASE,
+    delay: (index % GRID_STAGGER_COLUMNS) * GRID_STAGGER_STEP
+  }
+})
+
+const featuredRevealProps = {
+  initial: { opacity: 0, y: -40 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.6, ease: PRODUCT_REVEAL_EASE }
+}
 
 const normalizeCategoryKey = (value) =>
   String(value).toLowerCase().replace(/[^a-z0-9]/g, '')
@@ -113,12 +139,18 @@ const resolveCategoryFromParam = (param, categories) => {
   )
 }
 
+// Card-sized renditions keep grid payloads small; ProductDetail loads full-res.
+const CARD_IMAGE_WIDTH = 640
+const CARD_IMAGE_QUALITY = 75
+
 const buildProductImageMap = (rows) => {
   const map = {}
   rows?.forEach((img) => {
     if (!map[img.product_id]) {
       map[img.product_id] = toPublicStorageUrl('product-images', img.image_url, {
-        cacheKey: img.image_id ?? img.updated_at ?? img.image_url
+        width: CARD_IMAGE_WIDTH,
+        quality: CARD_IMAGE_QUALITY,
+        cacheKey: img.image_id ?? img.created_at ?? img.image_url
       })
     }
   })
@@ -131,7 +163,9 @@ const buildCategoryImageMap = (rows) => {
   const assignImage = (img) => {
     if (map[img.category_id]) return
     const url = toPublicStorageUrl('category-images', img.image_url, {
-      cacheKey: img.image_id ?? img.updated_at ?? img.image_url
+      width: CARD_IMAGE_WIDTH,
+      quality: CARD_IMAGE_QUALITY,
+      cacheKey: img.image_id ?? img.created_at ?? img.image_url
     })
     if (url) map[img.category_id] = url
   }
@@ -150,9 +184,8 @@ const transformBranchProducts = (branchProducts, productImagesMap) =>
       const product = bp.products
       if (!product) return null
 
-      const productImage =
-        productImagesMap[product.product_id] ||
-        `/assets/images/product-${(product.product_id % 6) + 1}.jpg`
+      // No stock-photo fallback: a null image shows the local CSS placeholder.
+      const productImage = productImagesMap[product.product_id] || null
 
       return {
         id: product.product_id,
@@ -182,6 +215,7 @@ const Products = () => {
   const [ukBranch, setUkBranch] = useState(null)
   const productsSectionRef = useRef(null)
   const urlSyncedRef = useRef(false)
+  const prefersReducedMotion = useReducedMotion()
 
   const scrollToProductsSection = useCallback(() => {
     setTimeout(() => {
@@ -541,7 +575,15 @@ const Products = () => {
               className="category-watermark-photo"
               loading="lazy"
               decoding="async"
-              onError={() => handleCategoryImageError(category.category_id)}
+              onError={(e) => {
+                // Retry the full-resolution original once before the SVG fallback.
+                const original = toOriginalStorageUrl(e.currentTarget.src)
+                if (original) {
+                  e.currentTarget.src = original
+                  return
+                }
+                handleCategoryImageError(category.category_id)
+              }}
             />
           ) : (
             svgSrc && (
@@ -672,15 +714,20 @@ const Products = () => {
                 message={productsPage.emptyCategory}
               />
             ) : (
-              <div className="products-section">
+              <div className="products-section" key={activeProductCategoryId}>
                 {featuredProduct && (
-                  <FeaturedCategoryProduct
-                    id={featuredProduct.id}
-                    name={featuredProduct.name}
-                    category={featuredProduct.category}
-                    partner={featuredProduct.partner}
-                    image={featuredProduct.image}
-                  />
+                  <motion.div
+                    className="featured-product-reveal"
+                    {...(prefersReducedMotion ? {} : featuredRevealProps)}
+                  >
+                    <FeaturedCategoryProduct
+                      id={featuredProduct.id}
+                      name={featuredProduct.name}
+                      category={featuredProduct.category}
+                      partner={featuredProduct.partner}
+                      image={featuredProduct.image}
+                    />
+                  </motion.div>
                 )}
                 <div className="filter-info">
                   {productsPage.filterInfo(
@@ -694,16 +741,21 @@ const Products = () => {
                 </div>
                 {gridProducts.length > 0 && (
                   <div className="products-grid" role="list">
-                    {gridProducts.map((product) => (
-                      <ProductCard
+                    {gridProducts.map((product, index) => (
+                      <motion.div
                         key={product.id}
-                        id={product.id}
-                        name={product.name}
-                        category={product.category}
-                        partner={product.partner}
-                        image={product.image}
-                        className="home-product-card--grid"
-                      />
+                        className="product-card-reveal"
+                        {...(prefersReducedMotion ? {} : getGridItemRevealProps(index))}
+                      >
+                        <ProductCard
+                          id={product.id}
+                          name={product.name}
+                          category={product.category}
+                          partner={product.partner}
+                          image={product.image}
+                          className="home-product-card--grid"
+                        />
+                      </motion.div>
                     ))}
                   </div>
                 )}

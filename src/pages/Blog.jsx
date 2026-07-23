@@ -341,14 +341,18 @@ const Blog = () => {
                       whileHover={{ y: -6 }}
               >
                 <div className="blog-card-image">
-                  <img 
-                    src={post.image} 
-                    alt={post.title}
-                          loading="lazy"
-                    onError={(e) => {
-                            e.currentTarget.src = `https://via.placeholder.com/800x500/64d9b9/ffffff?text=${encodeURIComponent(post.title.substring(0, 30))}`
-                    }}
-                  />
+                  {post.image && (
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null
+                        e.currentTarget.style.display = 'none'
+                      }}
+                    />
+                  )}
                   <div className="blog-category">{post.category}</div>
                 </div>
                 <div className="blog-card-content">
