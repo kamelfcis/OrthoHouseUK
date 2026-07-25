@@ -72,6 +72,12 @@ export const testimonialsPage = {
   },
   items: [
     {
+      name: 'Mr Senthil Kumar',
+      role: 'Foot & Ankle Surgeon — 25+ years’ experience',
+      text: 'Having done foot and ankle surgery for over 25 years, I feel that I have seen many implants and techniques come and go! From time to time, you come across something that makes you think — “why didn’t anyone think of this before?” I came across one such implant recently: an opening wedge plate for fixation of the Cotton osteotomy of the medial cuneiform from OrthoHouse. Unlike some of their competitors, this is a simple wedge rather than a ‘spacer’ and gives a reliable and predictable level of plantar flexion of the 1st ray. I was also very impressed with their full portfolio of foot and ankle plates; I used the calcaneal step plate and the Evans’ osteotomy plate as well for correction of flat foot. It goes to show that with innovative products, any newcomer can make an impact at the present time, even in a crowded foot and ankle implant market!!',
+      rating: 5
+    },
+    {
       name: 'Mr Andrew Fletcher',
       role: 'Consultant Trauma Surgeon, NHS Trust',
       text: 'ORTHOHOUSE UK provides reliable access to quality trauma systems with responsive clinical support. Their regulatory expertise gives us confidence in every product we use.',
