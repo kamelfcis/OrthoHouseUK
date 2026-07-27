@@ -422,3 +422,9 @@
     transform: scaleX(1);
   }
 }
+
+@media (min-width: 1920px) {
+  .home-testimonials__panel {
+    max-width: min(860px, 90%);
+  }
+}

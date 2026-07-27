@@ -5,7 +5,7 @@
 .team-page .page-header {
   background: var(--main-gradient);
   color: var(--white);
-  padding: 180px 0;
+  padding: clamp(96px, min(10vw, 12vh), 140px) 0;
   text-align: center;
   position: relative;
   background-repeat: no-repeat;
@@ -29,8 +29,8 @@
 .team-page .page-header .container {
   position: relative;
   z-index: 2;
-  padding-top: 180px;
-  padding-bottom: 180px;
+  padding-top: clamp(96px, min(10vw, 12vh), 140px);
+  padding-bottom: clamp(96px, min(10vw, 12vh), 140px);
 }
 
 .team-page .page-header h1 {
@@ -268,5 +268,17 @@
 
   .team-info {
     padding: 1.25rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .team-grid {
+    gap: clamp(2rem, 2.5vw, 3rem);
+  }
+}
+
+@media (min-width: 1920px) {
+  .team-page .page-header h1 {
+    font-size: clamp(48px, 3vw + 1rem, 56px);
   }
 }

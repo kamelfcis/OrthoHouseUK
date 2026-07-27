@@ -478,3 +478,10 @@
     animation: none;
   }
 }
+
+@media (min-width: 1920px) {
+  .home-featured-products__slider-wrap {
+    max-width: var(--ds-content-max, 72rem);
+    margin-inline: auto;
+  }
+}

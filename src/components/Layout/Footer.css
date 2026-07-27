@@ -252,3 +252,23 @@
     font-size: var(--ds-text-xs, 0.8125rem);
   }
 }
+
+@media (min-width: 1440px) {
+  .footer-row {
+    gap: var(--ds-space-8, 2rem) clamp(var(--ds-space-10), 5vw, var(--ds-space-16));
+  }
+
+  .footer-col--about {
+    max-width: 22rem;
+  }
+
+  .footer-col--contact {
+    max-width: 20rem;
+  }
+}
+
+@media (min-width: 1920px) {
+  .site-footer__main {
+    padding-block: clamp(var(--ds-space-16), 6vw, var(--ds-space-24)) var(--ds-space-10);
+  }
+}

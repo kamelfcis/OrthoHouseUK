@@ -112,3 +112,11 @@
     transform: none;
   }
 }
+
+@media (min-width: 1920px) {
+  .stats-grid {
+    max-width: var(--ds-content-max, 72rem);
+    margin-inline: auto;
+    gap: var(--ds-grid-gap-lg, clamp(1.5rem, 2vw, 2.5rem));
+  }
+}

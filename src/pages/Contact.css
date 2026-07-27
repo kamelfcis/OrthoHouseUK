@@ -441,3 +441,26 @@
     transition: none;
   }
 }
+
+@media (min-width: 1440px) {
+  .contact-offices {
+    max-width: var(--ds-content-max, 72rem);
+    margin-inline: auto;
+  }
+
+  .contact-form {
+    max-width: var(--ds-content-max, 72rem);
+    margin-inline: auto;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1440px) and (max-height: 900px) {
+  .contact-hero {
+    padding-block: calc(var(--ds-header-height) + var(--ds-space-5)) var(--ds-space-8);
+  }
+
+  .contact-main {
+    padding-block: clamp(2rem, 4vh, 3rem);
+  }
+}

@@ -17,8 +17,8 @@
   overflow: hidden;
   display: flex;
   align-items: flex-end;
-  /* Match photo aspect so cover crops minimally; still fills the viewport edge-to-edge */
-  min-height: clamp(520px, calc(100vw / 1.66), 88vh);
+  /* Match photo aspect; cap by viewport height so short laptops don't overflow */
+  min-height: clamp(520px, min(calc(100vw / 1.66), 88vh), 88vh);
   color: var(--white);
   isolation: isolate;
 }
@@ -68,7 +68,7 @@
   width: 100%;
   min-width: 0;
   /* padding-block only — preserves .container horizontal inset on desktop */
-  padding-block: clamp(96px, 12vw, 140px) clamp(48px, 6vw, 72px);
+  padding-block: clamp(72px, min(8vw, 10vh), 120px) clamp(36px, min(4vw, 6vh), 56px);
 }
 
 .about-hero__content {
@@ -713,5 +713,21 @@
 
   .features-list li {
     font-size: 15px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .about-hero__content {
+    max-width: min(780px, 55%);
+  }
+
+  .about-hero {
+    min-height: clamp(520px, min(calc(100vw / 1.66), 78vh), 780px);
+  }
+}
+
+@media (min-width: 1920px) {
+  .about-hero__content {
+    max-width: min(820px, 50%);
   }
 }

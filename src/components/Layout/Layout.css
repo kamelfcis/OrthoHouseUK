@@ -9,6 +9,9 @@
 .main-content {
   flex: 1;
   padding-top: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .main-content:focus {

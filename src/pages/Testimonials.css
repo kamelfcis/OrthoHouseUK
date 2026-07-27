@@ -251,3 +251,20 @@
     font-size: 1rem;
   }
 }
+
+@media (min-width: 1440px) {
+  .testimonials-slider {
+    max-width: min(900px, 90%);
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 1920px) {
+  .testimonials-page .page-header h1 {
+    font-size: clamp(48px, 2.5vw + 1rem, 56px);
+  }
+
+  .testimonial-card {
+    padding: clamp(3.5rem, 4vw, 4.5rem);
+  }
+}

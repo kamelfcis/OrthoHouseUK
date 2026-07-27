@@ -708,3 +708,16 @@
     font-size: 1rem;
   }
 }
+
+@media (min-width: 1440px) {
+  .partner-detail-layout {
+    max-width: var(--ds-container-wide, 1320px);
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 1920px) {
+  .partner-detail-layout {
+    max-width: var(--ds-container-ultra, 1440px);
+  }
+}

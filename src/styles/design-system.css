@@ -143,9 +143,27 @@
   /* ---------------------------------------------------------------------------
      LAYOUT
      --------------------------------------------------------------------------- */
-  --ds-header-height:    72px;
-  --ds-container-max:  1280px;
-  --ds-container-wide: 1400px;
+  --ds-header-height:       72px;
+  --ds-container-max:       1280px;
+  --ds-container-wide:      1320px;
+  --ds-container-ultra:     1440px;
+  --ds-container-max-ultra: 1520px;
+  --ds-content-max:         72rem;
+  --ds-grid-gap-lg:         clamp(1.5rem, 2vw, 2.5rem);
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --ds-section-y:    clamp(5rem, 4rem + 3.5vw, 8.5rem);
+    --ds-section-y-sm: clamp(3rem, 2.5rem + 2vw, 5rem);
+    --ds-header-height: 80px;
+  }
+}
+
+@media (min-width: 2560px) {
+  :root {
+    --ds-section-y: clamp(5.5rem, 4.5rem + 2.5vw, 9rem);
+  }
 }
 
 /* =============================================================================

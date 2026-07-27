@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion, LayoutGroup } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { supabase } from '../lib/supabase'
 import { getBranchDataSnapshot } from '../lib/branchDataCache'
 import { CONTACT_HERO_FALLBACK } from '../data/contactHero'
 import HeroBackground from '../components/common/HeroBackground'
+import FaqAnswerContent from '../components/faqs/FaqAnswerContent'
 import SEO from '../components/SEO/SEO'
 import { pageSeo } from '../content/seo'
 import {
@@ -17,8 +18,9 @@ import './Faqs.css'
 
 const ease = [0.22, 1, 0.36, 1]
 
-const FaqAccordionItem = ({ item, isOpen, onToggle, prefersReducedMotion }) => {
+const FaqAccordionItem = ({ item, index, isOpen, onToggle, prefersReducedMotion }) => {
   const answerId = `faq-answer-${item.id}`
+  const number = String(index + 1).padStart(2, '0')
 
   return (
     <div className={`faqs-item${isOpen ? ' is-open' : ''}`}>
@@ -30,11 +32,13 @@ const FaqAccordionItem = ({ item, isOpen, onToggle, prefersReducedMotion }) => {
           aria-expanded={isOpen}
           aria-controls={answerId}
         >
-          <span>{item.question}</span>
-          <i
-            className={`fas fa-chevron-down faqs-item__icon${isOpen ? ' is-open' : ''}`}
-            aria-hidden="true"
-          />
+          <span className="faqs-item__index" aria-hidden="true">
+            {number}
+          </span>
+          <span className="faqs-item__question-text">{item.question}</span>
+          <span className="faqs-item__toggle" aria-hidden="true">
+            <i className={`fas fa-plus faqs-item__icon${isOpen ? ' is-open' : ''}`} />
+          </span>
         </button>
       </dt>
       <dd id={answerId}>
@@ -45,20 +49,13 @@ const FaqAccordionItem = ({ item, isOpen, onToggle, prefersReducedMotion }) => {
               initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
-              transition={{ duration: 0.28, ease }}
+              transition={{ duration: 0.32, ease }}
             >
               <div className="faqs-item__answer">
-                <p className="faqs-item__answer-text">{item.answer}</p>
-                {item.answer_image_url ? (
-                  <figure className="faqs-item__figure">
-                    <img
-                      src={item.answer_image_url}
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </figure>
-                ) : null}
+                <FaqAnswerContent
+                  answer={item.answer}
+                  imageUrl={item.answer_image_url}
+                />
               </div>
             </motion.div>
           )}
@@ -76,6 +73,7 @@ const Faqs = () => {
   const prefersReducedMotion = useReducedMotion()
   const [listRef, listInView] = useInView({ triggerOnce: true, threshold: 0.08 })
   const [ctaRef, ctaInView] = useInView({ triggerOnce: true, threshold: 0.2 })
+  const tabsRef = useRef(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -146,6 +144,7 @@ const Faqs = () => {
     .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
 
   const activeMeta = FAQ_CATEGORIES.find((c) => c.slug === activeCategory)
+  const activeTabIndex = FAQ_CATEGORIES.findIndex((c) => c.slug === activeCategory)
 
   return (
     <div className="faqs-page">
@@ -162,11 +161,12 @@ const Faqs = () => {
           alt={CONTACT_HERO_FALLBACK.alt}
         />
         <div className="faqs-hero__overlay" />
+        <div className="faqs-hero__grain" aria-hidden="true" />
         <div className="container faqs-hero__content">
           <motion.div
-            initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease }}
+            transition={{ duration: 0.55, ease }}
           >
             <span className="faqs-hero__eyebrow">{faqsPage.hero.eyebrow}</span>
             <h1 id="faqs-hero-heading">{faqsPage.hero.headline}</h1>
@@ -175,32 +175,45 @@ const Faqs = () => {
         </div>
       </header>
 
-      <section className="faqs-main ds-section ds-section--muted" aria-label="FAQ categories and answers">
-        <div className="container">
-          <div
-            className="faqs-tabs"
-            role="tablist"
-            aria-label="FAQ categories"
-          >
-            {FAQ_CATEGORIES.map((cat) => {
-              const selected = cat.slug === activeCategory
-              return (
-                <button
-                  key={cat.slug}
-                  type="button"
-                  role="tab"
-                  id={`faq-tab-${cat.slug}`}
-                  className={`faqs-tabs__btn${selected ? ' is-active' : ''}`}
-                  aria-selected={selected}
-                  aria-controls={`faq-panel-${cat.slug}`}
-                  tabIndex={selected ? 0 : -1}
-                  onClick={() => handleCategoryChange(cat.slug)}
-                >
-                  {cat.title}
-                </button>
-              )
-            })}
-          </div>
+      <section className="faqs-main ds-section" aria-label="FAQ categories and answers">
+        <div className="faqs-main__backdrop" aria-hidden="true" />
+        <div className="container faqs-main__container">
+          <LayoutGroup id="faqs-tabs">
+            <div
+              className="faqs-tabs"
+              role="tablist"
+              aria-label="FAQ categories"
+              ref={tabsRef}
+            >
+              {FAQ_CATEGORIES.map((cat) => {
+                const selected = cat.slug === activeCategory
+                return (
+                  <button
+                    key={cat.slug}
+                    type="button"
+                    role="tab"
+                    id={`faq-tab-${cat.slug}`}
+                    className={`faqs-tabs__btn${selected ? ' is-active' : ''}`}
+                    aria-selected={selected}
+                    aria-controls={`faq-panel-${cat.slug}`}
+                    tabIndex={selected ? 0 : -1}
+                    onClick={() => handleCategoryChange(cat.slug)}
+                  >
+                    {selected && !prefersReducedMotion ? (
+                      <motion.span
+                        layoutId="faqs-tab-indicator"
+                        className="faqs-tabs__indicator"
+                        transition={{ type: 'spring', stiffness: 420, damping: 36 }}
+                      />
+                    ) : selected ? (
+                      <span className="faqs-tabs__indicator" />
+                    ) : null}
+                    <span className="faqs-tabs__label">{cat.shortTitle}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </LayoutGroup>
 
           <div
             className="faqs-panel"
@@ -210,30 +223,46 @@ const Faqs = () => {
             ref={listRef}
           >
             <header className="faqs-panel__header">
-              <h2 className="faqs-panel__title">{activeMeta?.title}</h2>
-              <p className="faqs-panel__desc">{activeMeta?.description}</p>
+              <div className="faqs-panel__meta">
+                <span className="faqs-panel__badge">
+                  {String(activeTabIndex + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h2 className="faqs-panel__title">{activeMeta?.title}</h2>
+                  <p className="faqs-panel__desc">{activeMeta?.description}</p>
+                </div>
+              </div>
+              {!loading && visibleItems.length > 0 ? (
+                <p className="faqs-panel__count">
+                  {visibleItems.length} {visibleItems.length === 1 ? 'question' : 'questions'}
+                </p>
+              ) : null}
             </header>
 
             {loading ? (
-              <p className="faqs-loading">Loading questions…</p>
+              <div className="faqs-loading" aria-live="polite">
+                <span className="faqs-loading__pulse" aria-hidden="true" />
+                Loading questions…
+              </div>
             ) : visibleItems.length === 0 ? (
               <p className="faqs-empty">No published questions in this section yet.</p>
             ) : (
               <motion.dl
                 className="faqs-list"
                 key={activeCategory}
-                initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
                 animate={
                   prefersReducedMotion || listInView
                     ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 16 }
+                    : { opacity: 0, y: 20 }
                 }
-                transition={{ duration: 0.45, ease }}
+                transition={{ duration: 0.48, ease }}
               >
-                {visibleItems.map((item) => (
+                {visibleItems.map((item, index) => (
                   <FaqAccordionItem
                     key={item.id}
                     item={item}
+                    index={index}
                     isOpen={openId === item.id}
                     onToggle={toggle}
                     prefersReducedMotion={prefersReducedMotion}
@@ -260,7 +289,7 @@ const Faqs = () => {
             <span className="faqs-cta__eyebrow">{faqsPage.cta.eyebrow}</span>
             <h2 id="faqs-cta-heading">{faqsPage.cta.title}</h2>
             <p>{faqsPage.cta.body}</p>
-            <Link to={faqsPage.cta.path} className="ds-btn ds-btn--primary">
+            <Link to={faqsPage.cta.path} className="ds-btn ds-btn--primary faqs-cta__btn">
               {faqsPage.cta.button}
               <i className="fas fa-arrow-right" aria-hidden="true" />
             </Link>
