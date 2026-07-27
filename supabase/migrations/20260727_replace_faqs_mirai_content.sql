@@ -5,16 +5,15 @@
 ALTER TABLE public.faqs DROP CONSTRAINT IF EXISTS faqs_category_check;
 
 ALTER TABLE public.faqs
-  ADD CONSTRAINT faqs_category_check CHECK (
-    category IN ('mirai_shoulder', 'osteosynt', 'orthosintex')
-  );
-
-ALTER TABLE public.faqs
   ADD COLUMN IF NOT EXISTS answer_image_url TEXT;
 
 -- Remove previous General / Clinical seed (and any other rows)
 DELETE FROM public.faqs;
 
+ALTER TABLE public.faqs
+  ADD CONSTRAINT faqs_category_check CHECK (
+    category IN ('mirai_shoulder', 'osteosynt', 'orthosintex')
+  );
 -- Seed UK branch (branch_id = 2)
 INSERT INTO public.faqs (
   branch_id,
