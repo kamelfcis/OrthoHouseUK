@@ -42,6 +42,13 @@ export const pageSeo = {
     keywords:
       'contact ORTHOHOUSE UK, orthopaedic product enquiry, hospital supplier contact, London medical device distributor'
   },
+  faqs: {
+    title: 'FAQs — MIRAI®, Osteosynt & Orthosintex',
+    description:
+      'Product FAQs for the MIRAI® Shoulder System, Osteosynt (EincoBio) bone substitutes, and Orthosintex (Episcan) foot and ankle fixation from ORTHOHOUSE UK.',
+    keywords:
+      'ORTHOHOUSE UK FAQs, MIRAI shoulder system, Osteosynt EincoBio, Orthosintex Episcan, orthopaedic implants UK'
+  },
   blog: {
     title: 'Blog — Clinical Insights',
     description:

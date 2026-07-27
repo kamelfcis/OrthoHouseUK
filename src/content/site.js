@@ -8,6 +8,7 @@ export const nav = {
     { name: 'Our Partners', path: '/partners', key: 'partners' },
     { name: 'Products', path: '/products' },
     { name: 'Blog', path: '/blog', key: 'blog' },
+    { name: 'FAQs', path: '/faqs' },
     { name: 'Contact Us', path: '/contact' }
   ],
   cta: 'Speak with our team',
@@ -34,6 +35,7 @@ export const footer = {
       title: 'Company',
       links: [
         { name: 'About Us', path: '/about' },
+        { name: 'FAQs', path: '/faqs' },
         { name: 'Contact Us', path: '/contact' }
       ]
     }

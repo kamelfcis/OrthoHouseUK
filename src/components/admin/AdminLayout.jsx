@@ -94,6 +94,12 @@ const AdminLayout = () => {
       show: true,
     },
     {
+      icon: 'fas fa-circle-question',
+      label: 'FAQs',
+      path: '/admin/faqs',
+      show: true,
+    },
+    {
       icon: 'fas fa-envelope',
       label: 'Messages',
       path: '/admin/messages',

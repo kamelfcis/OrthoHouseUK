@@ -23,6 +23,7 @@ const Team = lazy(() => import('./pages/Team'))
 const Gallery = lazy(() => import('./pages/Gallery'))
 const Testimonials = lazy(() => import('./pages/Testimonials'))
 const Contact = lazy(() => import('./pages/Contact'))
+const Faqs = lazy(() => import('./pages/Faqs'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const Login = lazy(() => import('./pages/admin/Login'))
 const Dashboard = lazy(() => import('./pages/admin/Dashboard'))
@@ -38,6 +39,7 @@ const AdminUsers = lazy(() => import('./pages/admin/Users'))
 const AdminBranches = lazy(() => import('./pages/admin/Branches'))
 const AdminSocialMedia = lazy(() => import('./pages/admin/SocialMedia'))
 const AdminNavigation = lazy(() => import('./pages/admin/Navigation'))
+const AdminFaqs = lazy(() => import('./pages/admin/Faqs'))
 
 function App() {
   const [showCookieConsent, setShowCookieConsent] = useState(false)
@@ -74,6 +76,7 @@ function App() {
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/testimonials" element={<Testimonials />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/faqs" element={<Faqs />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
@@ -163,6 +166,11 @@ function App() {
         <Route path="navigation" element={
           <Suspense fallback={<RouteLoader />}>
             <AdminNavigation />
+          </Suspense>
+        } />
+        <Route path="faqs" element={
+          <Suspense fallback={<RouteLoader />}>
+            <AdminFaqs />
           </Suspense>
         } />
         <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
