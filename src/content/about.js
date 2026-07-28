@@ -21,32 +21,32 @@ export const aboutPage = {
       {
         date: 'Jul 2022',
         dateTime: '2022-07',
-        title: 'UK establishment'
+        title: 'Established in the UK'
       },
       {
         date: 'Oct 2022',
         dateTime: '2022-10',
-        title: 'London headquarters'
+        title: 'London Office Opening'
       },
       {
         date: 'Jun 2023',
         dateTime: '2023-06',
-        title: 'Foot & ankle business unit'
+        title: 'Foot & Ankle Introduction'
       },
       {
         date: 'Dec 2023',
         dateTime: '2023-12',
-        title: 'Trauma business unit'
+        title: 'Trauma Incorporation'
       },
       {
         date: 'Feb 2024',
         dateTime: '2024-02',
-        title: 'Eincobio bone graft'
+        title: 'Osteosynt bone substitutes integration'
       },
       {
         date: '2024',
         dateTime: '2024',
-        title: 'Permedica arthroplasty'
+        title: 'Permedica Introduction'
       },
       {
         date: 'Oct 2025',
@@ -54,9 +54,9 @@ export const aboutPage = {
         title: 'NHS Scotland framework'
       },
       {
-        date: 'Nov 2025',
-        dateTime: '2025-11',
-        title: 'Scotland headquarters'
+        date: 'April 2026',
+        dateTime: '2026-04',
+        title: 'Scotland Office Opening'
       }
     ]
   },

@@ -159,12 +159,12 @@ export const homeUkJourney = {
   milestones: [
     {
       date: 'Jul 2022',
-      title: 'UK establishment',
+      title: 'Established in the UK',
       description: 'ORTHOHOUSE UK officially established to serve the British orthopaedic market.'
     },
     {
       date: 'Oct 2022',
-      title: 'London headquarters',
+      title: 'London Office Opening',
       description: 'Opened our UK office at 2 Kingdom Street, Paddington, London.'
     },
     {
@@ -179,17 +179,17 @@ export const homeUkJourney = {
     },
     {
       date: '2024',
-      title: 'Eincobio bone graft',
+      title: 'Osteosynt bone substitutes integration',
       description: 'Added Eincobio regenerative bone graft solutions to our portfolio.'
     },
     {
       date: '2024',
-      title: 'Permedica arthroplasty',
+      title: 'Permedica Introduction',
       description: 'Introduced Permedica joint replacement products for UK surgeons.'
     },
     {
-      date: 'Oct 2025',
-      title: 'NHS Scotland framework',
+      date: 'Nov 2025',
+      title: 'NHS Scotland Inclusion',
       description: 'Approved supplier on the NHS Scotland Orthopaedic Trauma & Extremity framework.'
     }
   ]
