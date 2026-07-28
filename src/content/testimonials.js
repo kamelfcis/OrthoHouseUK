@@ -17,13 +17,6 @@ export const testimonialsPage = {
       rating: 5
     },
     {
-      name: 'Dr Helen Fraser',
-      role: 'Clinical Director, Orthopaedic Department',
-      image: '/assets/images/testimonial-2.jpg',
-      text: 'From procurement to theatre support, ORTHOHOUSE UK delivers consistently. Their understanding of NHS pathways and regulatory requirements gives us confidence in every product they supply.',
-      rating: 5
-    },
-    {
       name: 'Mr Raj Patel',
       role: 'Foot & Ankle Surgeon',
       image: '/assets/images/testimonial-3.jpg',
