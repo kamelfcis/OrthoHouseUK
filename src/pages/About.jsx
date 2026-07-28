@@ -47,7 +47,7 @@ const About = () => {
   const heroChildVariants = {
     hidden: { opacity: 0, y: 24, skewY: 4 },
     visible: {
-      opacity: 1,
+      opacity: 0.4,
       y: 0,
       skewY: 0,
       transition: {

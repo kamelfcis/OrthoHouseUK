@@ -26,9 +26,9 @@ export const contactPage = {
   offices: [
     {
       id: 'uk',
-      heading: 'England Office',
+      heading: 'London Office',
       ...SHARED_CONTACT,
-      addressLines: ['2 Kingdom St, W2 6BD London,United Kingdom']
+      addressLines: ['2 Kingdom St, W2 6BD London']
     },
     {
       id: 'scotland',
@@ -36,9 +36,9 @@ export const contactPage = {
       ...SHARED_CONTACT,
       addressLines: [
         'Maxim Business Park, Maxim 1 - 1st floor',
-        '2 Parklands Way, Eurocentral',
-        'Lanarkshire / Dumfries & Galloway Region, ML1 4WR',
-        'United Kingdom'
+        '2 Parklands Way,',
+        'ML1 4WR',
+        ''
       ]
     }
   ],

@@ -106,14 +106,23 @@ export const ceoVisionMission = {
       title: 'Vision',
       text: 'We aspire to be one of the top leading medical devices providers in the Orthopaedic surgical field in the World',
       brandLine: 'ORTHOHOUSE',
+      panelLabel: 'Vision',
       author: null
     },
     mission: {
       title: 'Mission',
       text: 'We are committed to deliver innovative Orthopaedic solutions aligned with industry needs through strategic partnerships, premium products, and value-driven healthcare services.',
       brandLine: 'ORTHOHOUSE',
-      author: null  
+      panelLabel: 'Mission',
+      author: null
     }
+  },
+  ceoImage: {
+    webp: '/assets/optimized/team/ceo-waleed-emad-800.webp',
+    webpSrcSet:
+      '/assets/optimized/team/ceo-waleed-emad-400.webp 400w, /assets/optimized/team/ceo-waleed-emad-800.webp 800w, /assets/optimized/team/ceo-waleed-emad-1200.webp 1200w',
+    jpeg: '/assets/images/ceo.jpeg',
+    sizes: '(max-width: 991px) 100vw, 45vw'
   },
   ceoImageAlt: 'Waleed Emad, chief executive and founder of ORTHOHOUSE UK'
 }

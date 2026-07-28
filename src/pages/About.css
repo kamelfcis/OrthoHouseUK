@@ -87,6 +87,7 @@
   line-height: 1.08;
   letter-spacing: -0.025em;
   color: var(--white);
+  opacity: 0.4;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -219,6 +220,7 @@
   align-items: center;
   justify-content: center;
   color: var(--white);
+  opacity: 0.4;
   font-size: 3rem;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 95, 154, 0.3);

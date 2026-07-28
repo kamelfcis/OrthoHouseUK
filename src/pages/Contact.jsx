@@ -82,15 +82,6 @@ const OfficeCard = ({ office, index }) => {
           <i className="fas fa-phone" aria-hidden="true" />
           {office.callUs}
         </a>
-        <a
-          className="ds-btn ds-btn--secondary"
-          href={office.directionsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <i className="fas fa-directions" aria-hidden="true" />
-          {office.directions}
-        </a>
       </div>
     </motion.aside>
   )
