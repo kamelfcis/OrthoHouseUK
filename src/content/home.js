@@ -211,7 +211,7 @@ export const homeAccreditations = {
       id: 'nhs-scotland',
       title: 'NHS Scotland approved',
       image: '/assets/images/accreditations/nhs-logo.png',
-      imageAlt: 'NHS logo'
+      imageAlt: 'NHS Scotland logo'
     },
     {
       id: 'ukrp',
