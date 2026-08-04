@@ -25,50 +25,6 @@ const About = () => {
     threshold: 0.2
   })
 
-  const [heroRef, heroInView] = useInView({
-    triggerOnce: true,
-    threshold: 0.25
-  })
-
-  const heroContainerVariants = {
-    hidden: { opacity: 0, y: 60 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.85,
-        ease: [0.22, 1, 0.36, 1],
-        staggerChildren: 0.12,
-        delayChildren: 0.1
-      }
-    }
-  }
-
-  const heroChildVariants = {
-    hidden: { opacity: 0, y: 24, skewY: 4 },
-    visible: {
-      opacity: 0.4,
-      y: 0,
-      skewY: 0,
-      transition: {
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  }
-
-  const heroLineVariants = {
-    hidden: { opacity: 0, x: -36 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  }
-
   return (
     <div className="about-page">
       <SEO
@@ -85,20 +41,7 @@ const About = () => {
           alt={aboutPage.hero.imageAlt}
         />
         <div className="about-hero__overlay" aria-hidden="true" />
-        <div className="about-hero__container container">
-          <motion.div
-            className="about-hero__content"
-            ref={heroRef}
-            variants={heroContainerVariants}
-            initial="hidden"
-            animate={heroInView ? 'visible' : 'hidden'}
-          >
-            <motion.h1 className="about-hero__title" variants={heroChildVariants}>
-              <motion.span variants={heroLineVariants}>{aboutPage.hero.titleLine1}</motion.span>
-              <motion.span variants={heroLineVariants}>{aboutPage.hero.titleLine2}</motion.span>
-            </motion.h1>
-          </motion.div>
-        </div>
+        <h1 className="sr-only">{pageSeo.about.title}</h1>
       </div>
 
       <AboutUkJourney />

@@ -261,15 +261,6 @@
 @media (min-width: 1440px) and (max-height: 900px) {
   .about-hero {
     min-height: clamp(420px, 68vh, 560px);
-    align-items: flex-end;
-  }
-
-  .about-hero__container {
-    padding-block: clamp(64px, min(6vw, 8vh), 96px) clamp(28px, min(3vw, 4vh), 44px);
-  }
-
-  .about-hero__title {
-    font-size: clamp(2.25rem, 3.5vw, 3rem);
   }
 
   .blog-hero,

@@ -15,11 +15,8 @@
 .about-hero {
   position: relative;
   overflow: hidden;
-  display: flex;
-  align-items: flex-end;
   /* Match photo aspect; cap by viewport height so short laptops don't overflow */
   min-height: clamp(520px, min(calc(100vw / 1.66), 88vh), 88vh);
-  color: var(--white);
   isolation: isolate;
 }
 
@@ -62,76 +59,15 @@
     );
 }
 
-.about-hero__container {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  min-width: 0;
-  /* padding-block only — preserves .container horizontal inset on desktop */
-  padding-block: clamp(72px, min(8vw, 10vh), 120px) clamp(36px, min(4vw, 6vh), 56px);
-}
-
-.about-hero__content {
-  max-width: 720px;
-  width: 100%;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(14px, 2vw, 20px);
-}
-
-.about-hero__title {
-  font-family: var(--font-headers), Georgia, 'Times New Roman', serif;
-  font-size: clamp(2.5rem, 5.2vw, 4rem);
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  color: var(--white);
-  opacity: 0.4;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-  max-width: 100%;
-  min-width: 0;
-  overflow-wrap: break-word;
-  word-break: normal;
-  hyphens: none;
-  text-shadow: 0 2px 28px rgba(0, 0, 0, 0.35);
-}
-
-.about-hero__title span {
-  display: block;
-  max-width: 100%;
-}
-
-/* Tablet & below: shorter, calmer hero — image + type both tuned so the
-   two-line title always fits without wrapping to an awkward 3rd line. */
 @media (max-width: 768px) {
   .about-hero {
     min-height: clamp(440px, 66vh, 580px);
-    align-items: flex-end;
   }
 
   .about-hero__media .hero-background__img {
     object-position: center 40%;
   }
 
-  .about-hero__container {
-    padding-block: clamp(76px, 16vw, 108px) clamp(40px, 8vw, 52px);
-    padding-inline: var(--ds-space-6);
-  }
-
-  .about-hero__title {
-    font-size: clamp(2rem, 6.4vw, 2.5rem);
-    line-height: 1.12;
-    letter-spacing: -0.015em;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), 0 10px 30px rgba(0, 0, 0, 0.35);
-  }
-
-  /* Full-width, bottom-weighted scrim — text now spans the whole viewport
-     on mobile rather than just the left half, so contrast must hold edge
-     to edge without turning muddy. */
   .about-hero__overlay {
     background:
       linear-gradient(
@@ -148,25 +84,6 @@
 @media (max-width: 480px) {
   .about-hero {
     min-height: clamp(400px, 58vh, 500px);
-  }
-
-  .about-hero__container {
-    padding-block: clamp(68px, 20vw, 92px) clamp(32px, 8vw, 44px);
-    padding-inline: var(--ds-space-5);
-  }
-
-  .about-hero__title {
-    font-size: clamp(1.75rem, 7.6vw, 2.15rem);
-  }
-}
-
-@media (max-width: 380px) {
-  .about-hero__container {
-    padding-inline: var(--ds-space-4);
-  }
-
-  .about-hero__title {
-    font-size: clamp(1.6rem, 8.2vw, 1.9rem);
   }
 }
 
@@ -719,17 +636,7 @@
 }
 
 @media (min-width: 1440px) {
-  .about-hero__content {
-    max-width: min(780px, 55%);
-  }
-
   .about-hero {
     min-height: clamp(520px, min(calc(100vw / 1.66), 78vh), 780px);
-  }
-}
-
-@media (min-width: 1920px) {
-  .about-hero__content {
-    max-width: min(820px, 50%);
   }
 }

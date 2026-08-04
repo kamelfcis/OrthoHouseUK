@@ -11,15 +11,14 @@ import { buildLocalImage } from '../utils/responsiveImage'
 // —— Page heroes —————————————————————————————————————————————————————————————
 
 /** About hero — ORTHOHOUSE trade show exhibition booth */
-export const aboutHeroImage = {
+export const aboutHeroImage = buildLocalImage({
   category: 'about',
   name: 'about',
-  src: '/assets/about.png',
   alt: 'ORTHOHOUSE UK exhibition booth at an orthopaedic trade show',
-  width: 1619,
-  height: 972,
-  source: 'legacy'
-}
+  source: 'legacy',
+  width: 1616,
+  height: 973
+})
 
 /** Contact hero — legacy office photography (high resolution) */
 export const contactHeroImage = buildLocalImage({
