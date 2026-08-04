@@ -49,9 +49,9 @@ export const aboutPage = {
         title: 'Permedica Introduction'
       },
       {
-        date: 'Oct 2025',
-        dateTime: '2025-10',
-        title: 'NHS Scotland framework'
+        date: 'Nov 2025',
+        dateTime: '2025-11',
+        title: 'NHS Scotland Inclusion'
       },
       {
         date: 'April 2026',
@@ -88,6 +88,7 @@ export const aboutPage = {
 }
 
 export const ceoVisionMission = {
+  eyebrow: 'Leadership',
   tabs: {
     ceo: 'CEO message',
     vision: 'Vision',
@@ -116,13 +117,5 @@ export const ceoVisionMission = {
       panelLabel: 'Mission',
       author: null
     }
-  },
-  ceoImage: {
-    webp: '/assets/optimized/team/ceo-waleed-emad-800.webp',
-    webpSrcSet:
-      '/assets/optimized/team/ceo-waleed-emad-400.webp 400w, /assets/optimized/team/ceo-waleed-emad-800.webp 800w, /assets/optimized/team/ceo-waleed-emad-1200.webp 1200w',
-    jpeg: '/assets/images/ceo.jpeg',
-    sizes: '(max-width: 991px) 100vw, 45vw'
-  },
-  ceoImageAlt: 'Waleed Emad, chief executive and founder of ORTHOHOUSE UK'
+  }
 }
