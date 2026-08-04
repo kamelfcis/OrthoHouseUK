@@ -13,7 +13,7 @@ export const chatUi = {
 }
 
 export const chatContact = `Reach the ORTHOHOUSE UK team here:
-- Address: 2 Kingdom St, W2 6BD London , United Kingdom
+- Address: 2 Kingdom St, W2 6BD London
 - Phone: +44 20 3368 3036 (Mon–Fri, 9 a.m.–5 p.m.)
 - Email: infoUK@ortho-house.com
 - Contact form: /contact`
