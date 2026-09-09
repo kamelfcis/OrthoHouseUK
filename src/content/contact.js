@@ -35,9 +35,8 @@ export const contactPage = {
       heading: 'Scotland office',
       ...SHARED_CONTACT,
       addressLines: [
-        'Maxim Business Park, Maxim 1 - 1st floor',
-        '2 Parklands Way,',
-        'ML1 4WR',
+        'Maxim 1, Eurocentral, Motherwell ML1 4WE',
+        
         ''
       ]
     }
