@@ -102,7 +102,7 @@ Our team will follow up promptly to arrange a consultation.`
   },
   {
     keywords: ['team', 'staff', 'specialist', 'specialists', 'doctor', 'doctors'],
-    response: `Learn about our UK team on the Team page at /team. Our commercial and clinical specialists support surgeons and hospitals with product expertise, education, and responsive service.`
+    response: `Our commercial and clinical specialists support surgeons and hospitals with product expertise, education, and responsive service. Reach them via the Contact page at /contact.`
   },
   {
     keywords: ['gallery', 'photos', 'images', 'pictures', 'showcase'],

@@ -2,17 +2,34 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { parseFaqAnswer } from '../../utils/parseFaqAnswer'
 
-const TEAM_PAGE_PATTERN = /Meet the Team page/i
+const CONTACT_PAGE_PATTERN = /Contact page/i
+
+const labelFromImageUrl = (url) => {
+  if (!url) return 'View illustration'
+  try {
+    const path = url.includes('://') ? new URL(url).pathname : url.split('?')[0]
+    const base = path.split('/').filter(Boolean).pop() || ''
+    const withoutExt = base.replace(/\.[a-z0-9]+$/i, '')
+    const words = withoutExt
+      .replace(/[-_]+/g, ' ')
+      .trim()
+      .replace(/\s+/g, ' ')
+    if (!words) return 'View illustration'
+    return words.charAt(0).toUpperCase() + words.slice(1)
+  } catch {
+    return 'View illustration'
+  }
+}
 
 const renderInlineText = (text) => {
   if (!text) return null
-  if (TEAM_PAGE_PATTERN.test(text)) {
-    const parts = text.split(TEAM_PAGE_PATTERN)
+  if (CONTACT_PAGE_PATTERN.test(text)) {
+    const parts = text.split(CONTACT_PAGE_PATTERN)
     return (
       <>
         {parts[0]}
-        <Link to="/team" className="faqs-answer__link">
-          Meet the Team page
+        <Link to="/contact" className="faqs-answer__link">
+          Contact page
         </Link>
         {parts[1] || ''}
       </>
@@ -21,8 +38,9 @@ const renderInlineText = (text) => {
   return text
 }
 
-const FaqAnswerContent = ({ answer, imageUrl }) => {
+const FaqAnswerContent = ({ answer, imageUrl, imageTitle }) => {
   const blocks = useMemo(() => parseFaqAnswer(answer), [answer])
+  const mediaLabel = useMemo(() => labelFromImageUrl(imageUrl), [imageUrl])
 
   return (
     <div className="faqs-answer">
@@ -80,9 +98,15 @@ const FaqAnswerContent = ({ answer, imageUrl }) => {
       })}
 
       {imageUrl ? (
-        <figure className="faqs-answer__figure">
-          <img src={imageUrl} alt="" loading="lazy" decoding="async" />
-        </figure>
+        <a
+          className="faqs-answer__media-link"
+          href={`/faqs/media?src=${encodeURIComponent(imageUrl)}&title=${encodeURIComponent(imageTitle || '')}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i className="fas fa-up-right-from-square" aria-hidden="true" />
+          <span>{mediaLabel}</span>
+        </a>
       ) : null}
     </div>
   )

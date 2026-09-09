@@ -64,16 +64,12 @@ const loadSupabase = async () => {
   return supabase
 }
 
-// Card-sized renditions: consumers of this map render thumbnails/cards only;
-// full-resolution images are fetched by ProductDetail directly.
 const buildProductImageMap = (rows) => {
   const map = {}
   rows?.forEach((img) => {
     if (!map[img.product_id]) {
       map[img.product_id] = toPublicStorageUrl('product-images', img.image_url, {
-        width: 640,
-        quality: 75,
-        cacheKey: img.image_id ?? img.created_at ?? img.image_url
+        cacheKey: img.image_id ?? img.updated_at ?? img.image_url
       })
     }
   })
@@ -153,7 +149,7 @@ const fetchBranchDataFromApi = async (branchCode) => {
 
     supabase
       .from('product_images')
-      .select('image_id, product_id, image_url, is_primary, image_order, created_at')
+      .select('image_id, product_id, image_url, is_primary, image_order')
       .eq('branch_id', branch.branch_id)
       .order('is_primary', { ascending: false })
       .order('image_order', { ascending: true })

@@ -4,8 +4,11 @@ import { supabase } from '../lib/supabase'
 import { getBranchDataSnapshot } from '../lib/branchDataCache'
 import { toPublicStorageUrl } from '../lib/storageUrl'
 import SEO from '../components/SEO/SEO'
+import HeroBackground from '../components/common/HeroBackground'
+import { productDetailHeroImage } from '../data/localAssets'
 import { productDetail } from '../content/products'
 import { generateProductSchema, generateBreadcrumbSchema } from '../utils/seoData'
+import { parseProductSpecs } from '../utils/parseProductSpecs'
 import ProductImageLightbox from '../components/product/ProductImageLightbox'
 import './ProductDetail.css'
 
@@ -272,6 +275,7 @@ const ProductDetail = () => {
   const partnerName = product.partners?.partner_name
   const summaryText = product.branchProduct?.local_description || product.description
   const activeSpecs = productImages[selectedImageIndex]?.specifications?.trim() || product.specifications
+  const { specs, indications } = parseProductSpecs(activeSpecs)
   const showPsiContact = product.product_id === PSI_PRODUCT_ID
   const activeImage = productImages[selectedImageIndex]
   const activeImageFailed = activeImage?.url ? failedImageUrls.has(activeImage.url) : false
@@ -304,8 +308,12 @@ const ProductDetail = () => {
         structuredData={structuredData}
       />
       <div className="product-detail-hero">
-        <span className="product-hero-grid" aria-hidden="true"></span>
-        <span className="product-hero-scanline" aria-hidden="true"></span>
+        <HeroBackground
+          className="product-detail-hero__media"
+          image={productDetailHeroImage}
+          alt={productDetailHeroImage.alt}
+        />
+        <div className="product-detail-hero__overlay" aria-hidden="true" />
         <span className="product-hero-corner product-hero-corner--tl" aria-hidden="true"></span>
         <span className="product-hero-corner product-hero-corner--br" aria-hidden="true"></span>
         <div className="container">
@@ -320,25 +328,12 @@ const ProductDetail = () => {
           </div>
 
           <h1 className="product-hero-title">{product.product_name}</h1>
-
-          <div className="product-hero-stats">
-            {ukBranch?.branch_name && (
-              <div className="hero-stat">
-                <i className="fas fa-map-marker-alt"></i>
-                <span>{productDetail.stats.availableIn(ukBranch.branch_name)}</span>
-              </div>
-            )}
-            {partnerName && (
-              <div className="hero-stat">
-                <i className="fas fa-handshake"></i>
-                <span>{productDetail.stats.partneredWith(partnerName)}</span>
-              </div>
-            )}
-          </div>
         </div>
       </div>
 
       <div className="product-detail-section">
+        <span className="product-detail-section__backdrop" aria-hidden="true" />
+        <span className="product-detail-section__grain" aria-hidden="true" />
         <div className="container">
           <div className="product-detail-content">
             {/* Product Images */}
@@ -519,11 +514,26 @@ const ProductDetail = () => {
                       <i className="fas fa-list-ul"></i>
                       {productDetail.labels.specifications}
                     </h3>
-                    <ul className="specifications-list">
-                      {activeSpecs.split('\n').filter(spec => spec.trim()).map((spec, index) => (
-                        <li key={index}>{spec.trim()}</li>
-                      ))}
-                    </ul>
+                    {specs.length > 0 && (
+                      <ul className="specifications-list">
+                        {specs.map((spec, index) => (
+                          <li key={index}>{spec}</li>
+                        ))}
+                      </ul>
+                    )}
+                    {indications.length > 0 && (
+                      <>
+                        <h4 className="content-title content-title--sub">
+                          <i className="fas fa-list-ul" aria-hidden="true" />
+                          Common Indications
+                        </h4>
+                        <ul className="specifications-list">
+                          {indications.map((indication, index) => (
+                            <li key={index}>{indication}</li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
                   </div>
                 )}
 

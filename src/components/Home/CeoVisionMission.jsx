@@ -10,7 +10,6 @@ import { ceoVisionMission } from '../../content/about'
 import './CeoVisionMission.css'
 
 const TAB_KEYS = ['ceo', 'vision', 'mission']
-const SIDE_KEYS = ['vision', 'mission']
 
 const previewLine = (text, max = 72) => {
   const cleaned = String(text || '').replace(/\s+/g, ' ').trim()
@@ -28,9 +27,9 @@ const CeoVisionMission = () => {
 
   const { eyebrow, tabs, content } = ceoVisionMission
   const currentContent = content[activeTab]
+  const sideKeys = TAB_KEYS.filter((key) => key !== activeTab)
   const show = inView || reduceMotion
   const showQuote = activeTab === 'ceo'
-  const showWordmark = activeTab !== 'ceo'
 
   const panelMotion = reduceMotion
     ? { initial: { opacity: 1 }, animate: { opacity: 1 }, exit: { opacity: 1 } }
@@ -94,7 +93,7 @@ const CeoVisionMission = () => {
       <div className="container">
         <div className="ceo-mix">
           <motion.header className="ceo-mix__header" {...stagger(0)}>
-            <p className="ceo-mix__eyebrow">{eyebrow || 'Leadership'}</p>
+            <p className="ceo-mix__eyebrow">{eyebrow || ''}</p>
             <LayoutGroup id="ceo-mix-tabs">
               <div
                 className="ceo-mix__tabs"
@@ -153,11 +152,6 @@ const CeoVisionMission = () => {
                       ”
                     </span>
                   ) : null}
-                  {showWordmark ? (
-                    <span className="ceo-mix__wordmark" aria-hidden="true">
-                      ORTHOHOUSE
-                    </span>
-                  ) : null}
 
                   <h2
                     id="ceo-vision-mission-heading"
@@ -193,16 +187,14 @@ const CeoVisionMission = () => {
             </motion.div>
 
             <motion.aside className="ceo-mix__bento" {...stagger(0.18)}>
-              {SIDE_KEYS.map((key) => {
+              {sideKeys.map((key) => {
                 const item = content[key]
-                const active = activeTab === key
                 return (
                   <button
                     key={key}
                     type="button"
-                    className={`ceo-mix__card${active ? ' is-active' : ''}`}
+                    className="ceo-mix__card"
                     onClick={() => setActiveTab(key)}
-                    aria-pressed={active}
                     aria-controls={`ceo-panel-${key}`}
                   >
                     <span className="ceo-mix__card-label">{tabs[key]}</span>

@@ -38,10 +38,5 @@ export const productDetail = {
     overview: 'Overview',
     specifications: 'Specifications',
     specialNotes: 'Special notes'
-  },
-  stats: {
-    availableIn: (branch) => `Available in ${branch}`,
-    imageCount: (count) => `${count} image${count !== 1 ? 's' : ''}`,
-    partneredWith: (name) => `Partnered with ${name}`
   }
 }

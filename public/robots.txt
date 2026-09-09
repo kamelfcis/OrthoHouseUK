@@ -16,7 +16,6 @@ Allow: /blog/*
 Allow: /partners
 Allow: /partners/*
 Allow: /contact
-Allow: /team
 Allow: /gallery
 Allow: /testimonials
 

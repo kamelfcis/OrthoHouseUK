@@ -8,7 +8,7 @@
   <!-- Primary Meta Tags -->
   <title>ORTHOHOUSE UK - Advanced Prosthetics & Biomedical Engineering Solutions</title>
   <meta name="title" content="ORTHOHOUSE UK - Advanced Prosthetics & Biomedical Engineering Solutions">
-  <meta name="description" content="ORTHOHOUSE UK - Leading provider of prosthetic limbs, orthotic solutions, biomedical devices, and rehabilitation services. Expert consultations and personalized care for patients worldwide.">
+  <meta name="description" content="ORTHOHOUSE UK - Leading provider of prosthetic limbs, orthotic solutions, biomedical devices, and rehabilitation services. Expert consultations and personalised care for patients worldwide.">
   <meta name="keywords" content="orthohouseuk, orthohouse uk, prosthetics, orthotics, biomedical engineering, prosthetic limbs, orthotic devices, rehabilitation, medical devices, custom prosthetics, patient care, healthcare technology, UK prosthetics">
   <meta name="author" content="ORTHOHOUSE UK">
   <meta name="application-name" content="ORTHOHOUSE UK">
@@ -46,7 +46,6 @@
   <!-- Preconnect for Performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="preconnect" href="https://ljfkmtuxqaznnmmxeydf.supabase.co" crossorigin>
   <link rel="dns-prefetch" href="https://ljfkmtuxqaznnmmxeydf.supabase.co">
   <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
@@ -59,10 +58,6 @@
   <!-- Google Fonts - non-blocking load -->
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></noscript>
-  
-  <!-- Font Awesome - Load asynchronously -->
-  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
   
   <!-- Canonical URL (will be updated dynamically) -->
   <link rel="canonical" href="https://orthohouseuk.com/">
@@ -103,16 +98,5 @@
   </div>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
-  <script>
-    // Async load Font Awesome fallback
-    if (!document.querySelector('link[href*="font-awesome"]')) {
-      var link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
-      link.media = 'print';
-      link.onload = function() { this.media = 'all'; };
-      document.head.appendChild(link);
-    }
-  </script>
 </body>
 </html>

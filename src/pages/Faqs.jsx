@@ -55,6 +55,7 @@ const FaqAccordionItem = ({ item, index, isOpen, onToggle, prefersReducedMotion 
                 <FaqAnswerContent
                   answer={item.answer}
                   imageUrl={item.answer_image_url}
+                  imageTitle={item.question}
                 />
               </div>
             </motion.div>
@@ -164,6 +165,7 @@ const Faqs = () => {
         <div className="faqs-hero__grain" aria-hidden="true" />
         <div className="container faqs-hero__content">
           <motion.div
+            className="faqs-hero__copy"
             initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, ease }}
@@ -232,11 +234,6 @@ const Faqs = () => {
                   <p className="faqs-panel__desc">{activeMeta?.description}</p>
                 </div>
               </div>
-              {!loading && visibleItems.length > 0 ? (
-                <p className="faqs-panel__count">
-                  {visibleItems.length} {visibleItems.length === 1 ? 'question' : 'questions'}
-                </p>
-              ) : null}
             </header>
 
             {loading ? (

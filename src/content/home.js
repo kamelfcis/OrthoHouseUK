@@ -189,7 +189,7 @@ export const homeUkJourney = {
     },
     {
       date: 'Nov 2025',
-      title: 'NHS Scotland Inclusion',
+      title: 'NHS Scotland Framework Awarded',
       description: 'Approved supplier on the NHS Scotland Orthopaedic Trauma & Extremity framework.'
     }
   ]
@@ -281,14 +281,4 @@ export const homeFaq = {
         'Use our contact form or call our London office. A member of the relevant business unit will respond within one working day with product literature, pricing guidance, or a follow-up call.'
     }
   ]
-}
-
-export const homeTeamTeaser = {
-  eyebrow: 'Our people',
-  title: 'Meet our specialist team',
-  subtitle:
-    'Clinical, regulatory, and commercial specialists dedicated to supporting UK surgeons and hospital teams.',
-  featuredCount: 3,
-  viewAll: 'Meet the full team',
-  viewAllPath: '/team'
 }

@@ -51,7 +51,7 @@ export const aboutPage = {
       {
         date: 'Nov 2025',
         dateTime: '2025-11',
-        title: 'NHS Scotland Inclusion'
+        title: 'NHS Scotland Framework Awarded'
       },
       {
         date: 'April 2026',
@@ -71,7 +71,7 @@ export const aboutPage = {
       {
         title: 'Education',
         icon: 'fas fa-graduation-cap',
-        text: 'Provides World Class Continous Medical Education For Junior Surgeons.'
+        text: 'Provides World Class Continuous Medical Education (CME) for HCPs at all levels.'
       },
       {
         title: 'Partnership Trust',
@@ -88,7 +88,7 @@ export const aboutPage = {
 }
 
 export const ceoVisionMission = {
-  eyebrow: 'Leadership',
+  eyebrow: '',
   tabs: {
     ceo: 'CEO message',
     vision: 'Vision',
@@ -96,7 +96,7 @@ export const ceoVisionMission = {
   },
   content: {
     ceo: {
-      title: 'A message from our chief executive',
+      title: 'CEO Message from our chief executive',
       text: 'My aim is to build an organisation that makes a genuine difference across the UK healthcare sector. At ORTHOHOUSE UK, we are dedicated to advancing orthopaedic care by supplying high-quality implants and clinical support to surgeons and hospitals nationwide. We look forward to continuing our growth alongside NHS and private-sector partners, and to strengthening our contribution to clinical education across the United Kingdom.',
       author: {
         name: 'Waleed Emad',

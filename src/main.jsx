@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import App from './App'
 import './index.css'
+import '@fortawesome/fontawesome-free/css/all.min.css'
 import { prefetchBranchData } from './lib/branchDataCache'
 
 if (typeof window !== 'undefined') {

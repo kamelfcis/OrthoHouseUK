@@ -40,6 +40,16 @@ export const partnersHeroImage = buildLocalImage({
   height: 4000
 })
 
+/** Product detail hero — orthopaedic medical device craftsmanship */
+export const productDetailHeroImage = buildLocalImage({
+  category: 'products',
+  name: 'our-products-banner',
+  alt: 'Orthopaedic brace and medical device craftsmanship at ORTHOHOUSE UK',
+  source: 'legacy',
+  width: 8159,
+  height: 5439
+})
+
 // —— Homepage editorial ——————————————————————————————————————————————————————
 
 export const homeValuePropImage = buildLocalImage({

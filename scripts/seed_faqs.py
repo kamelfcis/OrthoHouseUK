@@ -31,7 +31,7 @@ SEED = [
     (
         'mirai_shoulder',
         'What is the MIRAI® Shoulder System provided by OrthoHouse? What clinical indications does it cover, and what configurations are available?',
-        'Distributed by OrthoHouse, the MIRAI® Shoulder System is a comprehensive, modular shoulder arthroplasty platform designed for both Anatomical and Reverse Shoulder Arthroplasty (RSA). It offers UK orthopedic consultants maximum intraoperative flexibility, joint stability, and optimal biomechanical restoration across primary, trauma, and revision cases.\n\nThe MIRAI® system is a fully convertible platform supporting seamless intraoperative transitions through three versatile stem configurations:\nStemless Version (utilizing the high-fixation Humeral Core Cage)\nStemmed Version\nTrauma Version (utilizing the dedicated Trauma Core)\n\nSources:\nPermedica Orthopaedics – MIRAI® System Overview & Product Catalog\nPermedica Orthopaedics – MIRAI® Modular Shoulder System Brochure',
+        'Distributed by OrthoHouse, the MIRAI® Shoulder System is a comprehensive, modular shoulder arthroplasty platform designed for both Anatomical and Reverse Shoulder Arthroplasty (RSA). It offers UK orthopaedic consultants maximum intraoperative flexibility, joint stability, and optimal biomechanical restoration across primary, trauma, and revision cases.\n\nThe MIRAI® system is a fully convertible platform supporting seamless intraoperative transitions through three versatile stem configurations:\nStemless Version (utilising the high-fixation Humeral Core Cage)\nStemmed Version\nTrauma Version (utilising the dedicated Trauma Core)\n\nSources:\nPermedica Orthopaedics – MIRAI® System Overview & Product Catalogue\nPermedica Orthopaedics – MIRAI® Modular Shoulder System Brochure',
         1,
         None,
     ),
@@ -45,7 +45,7 @@ SEED = [
     (
         'mirai_shoulder',
         'How does TRASER® technology improve fixation in stemless cases?',
-        "TRASER®'s open-pore 3D printing trabecular matrix provides an ideal scaffold for osteoblast migration and vascularization. In stemless configurations, the Humeral Core Cage with TRASER® delivers immediate mechanical stability and long-term bone preservation without invading the humeral canal.\n\nSource: Permedica Orthopaedics – TRASER® Technology White Paper & Surgical Technique",
+        "TRASER®'s open-pore 3D printing trabecular matrix provides an ideal scaffold for osteoblast migration and vascularisation. In stemless configurations, the Humeral Core Cage with TRASER® delivers immediate mechanical stability and long-term bone preservation without invading the humeral canal.\n\nSource: Permedica Orthopaedics – TRASER® Technology White Paper & Surgical Technique",
         3,
         None,
     ),
@@ -72,7 +72,7 @@ SEED = [
     ),
     (
         'mirai_shoulder',
-        'Can UK consultants visit a reference center, attend workshops, or discuss clinical outcomes with peer surgeons?',
+        'Can UK consultants visit a reference centre, attend workshops, or discuss clinical outcomes with peer surgeons?',
         'Yes. OrthoHouse maintains active clinical reference networks across Europe and the Middle East. We facilitate peer-to-peer discussions, Cadaver workshops, clinical observation sessions, and academic data sharing with leading consultants using the system.\n\nSource: OrthoHouse Medical Education & Clinical Events Portal',
         7,
         None,
@@ -94,14 +94,14 @@ SEED = [
     (
         'osteosynt',
         'What forms does it come in?',
-        'Injectable (pre-hydrated)\nGranules\nSpheres\nBlocks and wedges\nCervical blocks and craniotomy buttons\n\nPlease note: Blocks and wedges can be cut to size, and custom shapes are available upon request (with a lead time of approximately 4 weeks).',
+        'Injectable (pre-hydrated)\nGranules\nSpheres\nBlocks and wedges\nCervical blocks and craniotomy buttons\n\nPlease note: Blocks and wedges can be cut to sizes.\n\nPlease note: Custom shapes are available upon request with a lead time of approximately 4 weeks.',
         3,
         None,
     ),
     (
         'osteosynt',
         'What indications is OSTEOSYNT® approved for?',
-        'OSTEOSYNT® is used across orthopedics, dentistry, plastic, and maxillofacial surgery to repair, reconstruct, or recover bone loss. OSTEOSYNT® has been used for over 40 years in infections, revision surgery, spine deformities, fractures, fusions, revision prosthesis, pseudo arthritis, and more.',
+        'OSTEOSYNT® is used across orthopaedics, dentistry, plastic, and maxillofacial surgery to repair, reconstruct, or recover bone loss. OSTEOSYNT® has been used for over 40 years in infections, revision surgery, spine deformities, fractures, fusions, revision prosthesis, pseudo arthritis, and more.',
         4,
         None,
     ),
@@ -136,7 +136,7 @@ SEED = [
     (
         'osteosynt',
         'How do I order?',
-        'Please visit our Meet the Team page to speak with your local OrthoHouse representative.',
+        'Please visit our Contact page to speak with your local OrthoHouse representative.',
         9,
         None,
     ),

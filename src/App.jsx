@@ -19,11 +19,11 @@ const Services = lazy(() => import('./pages/Services'))
 const PartnerInfo = lazy(() => import('./pages/PartnerInfo'))
 const Products = lazy(() => import('./pages/Products'))
 const ProductDetail = lazy(() => import('./pages/ProductDetail'))
-const Team = lazy(() => import('./pages/Team'))
 const Gallery = lazy(() => import('./pages/Gallery'))
 const Testimonials = lazy(() => import('./pages/Testimonials'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Faqs = lazy(() => import('./pages/Faqs'))
+const FaqMedia = lazy(() => import('./pages/FaqMedia'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 const Login = lazy(() => import('./pages/admin/Login'))
 const Dashboard = lazy(() => import('./pages/admin/Dashboard'))
@@ -72,11 +72,12 @@ function App() {
               <Route path="/partners/:id" element={<PartnerInfo />} />
               <Route path="/products" element={<Products />} />
               <Route path="/products/:id" element={<ProductDetail />} />
-              <Route path="/team" element={<Team />} />
+              <Route path="/team" element={<Navigate to="/contact" replace />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/testimonials" element={<Testimonials />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/faqs" element={<Faqs />} />
+              <Route path="/faqs/media" element={<FaqMedia />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

@@ -19,7 +19,6 @@ const staticPages = [
   { url: '/blog', priority: '0.8', changefreq: 'weekly', lastmod: currentDate },
   { url: '/partners', priority: '0.8', changefreq: 'monthly', lastmod: currentDate },
   { url: '/contact', priority: '0.7', changefreq: 'monthly', lastmod: currentDate },
-  { url: '/team', priority: '0.6', changefreq: 'monthly', lastmod: currentDate },
   { url: '/gallery', priority: '0.6', changefreq: 'monthly', lastmod: currentDate },
   { url: '/testimonials', priority: '0.6', changefreq: 'monthly', lastmod: currentDate }
 ]
