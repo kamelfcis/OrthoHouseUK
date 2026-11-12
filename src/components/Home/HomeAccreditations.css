@@ -32,11 +32,28 @@
   box-shadow: var(--ds-shadow-sm);
   padding: var(--ds-space-2);
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .home-accreditations__icon img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Wide MHRA wordmark needs a larger circle and inset so it stays inside */
+.home-accreditations__icon--mhra {
+  width: 96px;
+  height: 96px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.home-accreditations__icon--mhra img {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
   object-fit: contain;
 }
 

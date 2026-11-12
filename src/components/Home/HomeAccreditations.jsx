@@ -27,7 +27,11 @@ const HomeAccreditations = () => {
               className="home-accreditations__badge ds-card reveal-item"
               style={{ '--reveal-delay': `${index * 0.1}s` }}
             >
-              <div className="home-accreditations__icon">
+              <div
+                className={`home-accreditations__icon${
+                  item.id === 'mhra' ? ' home-accreditations__icon--mhra' : ''
+                }`}
+              >
                 <img
                   src={item.image}
                   alt={item.imageAlt}
